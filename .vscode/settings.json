@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^npm install aceternity-ui lucide-react framer-motion$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
