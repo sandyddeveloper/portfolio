@@ -44,7 +44,6 @@ function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-// Selected Work Datasets
 const PROJECTS_DATA: ProjectData[] = [
   {
     id: 'analytics-platform',
