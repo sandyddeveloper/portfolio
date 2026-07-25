@@ -4,12 +4,6 @@
 
 :root {
   color-scheme: dark light;
-  --bg-dark: #1A1A12;
-  --primary-umber: #362312;
-  --hover-mocha: #3B270C;
-  --text-silver: #E0DDDD;
-  --border-divider: #334155;
-  --accent-cedar: #4B3A26;
 }
 
 html {
@@ -18,8 +12,8 @@ html {
 }
 
 html.dark {
-  background-color: #1A1A12;
-  color: #E0DDDD;
+  background-color: #030712;
+  color: #f3f4f6;
 }
 
 html.light {
@@ -42,9 +36,8 @@ body {
 
 html.dark body {
   background: 
-    radial-gradient(circle at 50% 0%, rgba(75, 58, 38, 0.25), transparent 45%),
-    #1A1A12;
-  color: #E0DDDD;
+    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05), transparent 45%),
+    #030712;
 }
 
 html.light body {
@@ -53,28 +46,9 @@ html.light body {
     #ffffff;
 }
 
-/* Dark mode default overrides */
-html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
-  color: #E0DDDD;
-}
-
-html.dark .btn-primary,
-html.dark .btn-umber {
-  background-color: #362312;
-  color: #E0DDDD;
-  border: 1px solid #4B3A26;
-  transition: all 0.2s ease;
-}
-
-html.dark .btn-primary:hover,
-html.dark .btn-umber:hover {
-  background-color: #3B270C;
-  border-color: #334155;
-}
-
 ::selection {
-  background: rgba(75, 58, 38, 0.5);
-  color: #E0DDDD;
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
 }
 
 /* Minimal Custom Scrollbar */
@@ -87,10 +61,10 @@ html.dark .btn-umber:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: rgba(148, 163, 184, 0.2);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4B3A26;
+  background: rgba(148, 163, 184, 0.4);
 }

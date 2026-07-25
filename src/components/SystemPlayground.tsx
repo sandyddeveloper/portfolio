@@ -149,11 +149,11 @@ export function SystemPlayground() {
 
       {/* Main Sandbox Container */}
       <div className={`rounded-2xl border shadow-sm backdrop-blur-xl transition-all overflow-hidden ${
-        theme === 'dark' ? 'border-divider bg-darkBg/95 text-silver shadow-lg shadow-black/40' : 'border-slate-200 bg-white'
+        theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-white'
       }`}>
         {/* Top Control Bar */}
         <div className={`flex flex-wrap items-center justify-between gap-4 border-b px-6 py-3.5 ${
-          theme === 'dark' ? 'border-divider bg-umber/30' : 'border-slate-200 bg-slate-50'
+          theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'
         }`}>
           {/* Navigation Tabs */}
           <div className="flex items-center gap-2">
@@ -161,8 +161,8 @@ export function SystemPlayground() {
               onClick={() => setActiveTab('api')}
               className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === 'api'
-                  ? theme === 'dark' ? 'bg-umber text-silver border border-cedar font-bold shadow-md' : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-sm shadow-cyan-500/20'
-                  : theme === 'dark' ? 'text-slate-400 hover:text-silver hover:bg-umber/50' : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-sm shadow-cyan-500/20'
+                  : theme === 'dark' ? 'text-slate-400 hover:text-slate-200' : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Terminal className="h-4 w-4" />
@@ -230,9 +230,9 @@ export function SystemPlayground() {
                       onClick={() => setSelectedEndpoint(ep)}
                       className={`w-full text-left rounded-2xl border p-4 transition-all cursor-pointer ${
                         selectedEndpoint.id === ep.id
-                          ? theme === 'dark' ? 'border-cedar bg-umber/80 text-silver shadow-md' : 'border-cyan-500/50 bg-cyan-500/10 shadow-lg shadow-cyan-500/10'
+                          ? 'border-cyan-500/50 bg-cyan-500/10 shadow-lg shadow-cyan-500/10'
                           : theme === 'dark'
-                          ? 'border-divider bg-darkBg hover:bg-umber/40'
+                          ? 'border-slate-800 bg-slate-950/40 hover:bg-slate-800/50'
                           : 'border-slate-200 bg-slate-50 hover:bg-white'
                       }`}
                     >
@@ -242,21 +242,21 @@ export function SystemPlayground() {
                         }`}>
                           {ep.method}
                         </span>
-                        <span className={`text-xs font-mono ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>{ep.latencyMs}ms</span>
+                        <span className="text-xs font-mono text-cyan-400">{ep.latencyMs}ms</span>
                       </div>
-                      <p className={`mt-2 text-xs font-mono font-semibold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
+                      <p className={`mt-2 text-xs font-mono font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
                         {ep.url}
                       </p>
-                      <p className={`mt-1 text-[11px] leading-relaxed line-clamp-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>
+                      <p className={`mt-1 text-[11px] leading-relaxed line-clamp-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
                         {ep.desc}
                       </p>
                     </button>
                   ))}
 
                   {/* Latency History Graph Mock */}
-                  <div className={`mt-4 rounded-2xl border p-4 ${theme === 'dark' ? 'border-divider bg-darkBg' : 'border-slate-200 bg-slate-50'}`}>
+                  <div className={`mt-4 rounded-2xl border p-4 ${theme === 'dark' ? 'border-slate-800 bg-slate-950/40' : 'border-slate-200 bg-slate-50'}`}>
                     <div className="flex items-center justify-between text-xs mb-2">
-                      <span className={`font-semibold ${theme === 'dark' ? 'text-silver' : 'text-slate-700'}`}>Live Request Latency</span>
+                      <span className={`font-semibold ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>Live Request Latency</span>
                       <span className="text-emerald-400 font-mono text-[11px]">Real-time telemetry</span>
                     </div>
                     <div className="flex items-end gap-2 h-14 pt-2">
@@ -264,9 +264,9 @@ export function SystemPlayground() {
                         <div key={idx} className="flex-1 flex flex-col items-center gap-1 group">
                           <div
                             style={{ height: `${Math.min(100, (val / 60) * 100)}%` }}
-                            className={`w-full rounded-t-sm transition-all ${theme === 'dark' ? 'bg-amber-700 group-hover:bg-amber-600' : 'bg-gradient-to-t from-cyan-600 to-emerald-400 group-hover:bg-cyan-300'}`}
+                            className="w-full rounded-t-sm bg-gradient-to-t from-cyan-600 to-emerald-400 transition-all group-hover:bg-cyan-300"
                           />
-                          <span className="text-[9px] font-mono text-slate-400">{val}ms</span>
+                          <span className="text-[9px] font-mono text-slate-500">{val}ms</span>
                         </div>
                       ))}
                     </div>
@@ -277,7 +277,7 @@ export function SystemPlayground() {
                 <div className="lg:col-span-7 flex flex-col gap-4">
                   {/* Endpoint Request Bar */}
                   <div className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3.5 ${
-                    theme === 'dark' ? 'border-divider bg-darkBg' : 'border-slate-200 bg-slate-100'
+                    theme === 'dark' ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-slate-100'
                   }`}>
                     <div className="flex items-center gap-2 flex-1 min-w-0 font-mono text-xs">
                       <span className={`rounded-md px-2 py-1 font-bold ${
@@ -285,7 +285,7 @@ export function SystemPlayground() {
                       }`}>
                         {selectedEndpoint.method}
                       </span>
-                      <span className={`truncate font-semibold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
+                      <span className={`truncate font-semibold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
                         https://api.santhu.dev{selectedEndpoint.url}
                       </span>
                     </div>
@@ -293,11 +293,7 @@ export function SystemPlayground() {
                     <button
                       onClick={handleRunRequest}
                       disabled={isLoading}
-                      className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-xs font-semibold shadow-md transition-all cursor-pointer disabled:opacity-50 ${
-                        theme === 'dark'
-                          ? 'bg-umber border-cedar text-silver hover:bg-mocha'
-                          : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-cyan-500/20 hover:brightness-110'
-                      }`}
+                      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-md shadow-cyan-500/20 hover:brightness-110 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
                     >
                       {isLoading ? (
                         <>
@@ -306,7 +302,7 @@ export function SystemPlayground() {
                         </>
                       ) : (
                         <>
-                          <Play className="h-3.5 w-3.5 fill-current" />
+                          <Play className="h-3.5 w-3.5 fill-white" />
                           <span>Run Request</span>
                         </>
                       )}
@@ -314,10 +310,8 @@ export function SystemPlayground() {
                   </div>
 
                   {/* Response Terminal Box */}
-                  <div className={`flex-1 rounded-2xl border p-4 font-mono text-xs shadow-inner overflow-hidden flex flex-col ${
-                    theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-800 bg-slate-950 text-slate-200'
-                  }`}>
-                    <div className={`flex items-center justify-between border-b pb-3 mb-3 ${theme === 'dark' ? 'border-divider text-slate-400' : 'border-slate-800 text-slate-400'}`}>
+                  <div className="flex-1 rounded-2xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-200 shadow-inner overflow-hidden flex flex-col">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 text-slate-400">
                       <div className="flex items-center gap-2">
                         <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
                         <span className="text-emerald-400 font-bold">
@@ -326,13 +320,13 @@ export function SystemPlayground() {
                         <span className="text-slate-500">•</span>
                         <span>{selectedEndpoint.latencyMs}ms latency</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+                      <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
                         <CheckCircle2 className="h-3 w-3 text-emerald-400" />
                         <span>JSON Payload</span>
                       </div>
                     </div>
 
-                    <pre className={`flex-1 overflow-x-auto leading-relaxed font-mono p-1 ${theme === 'dark' ? 'text-amber-200/90' : 'text-cyan-300/90'}`}>
+                    <pre className="flex-1 overflow-x-auto text-cyan-300/90 leading-relaxed font-mono p-1">
                       {JSON.stringify(lastResponse?.response || selectedEndpoint.response, null, 2)}
                     </pre>
                   </div>
@@ -361,13 +355,9 @@ export function SystemPlayground() {
                 {/* Architecture Nodes Flow Diagram */}
                 <div className="relative pt-4">
                   {/* Glowing Connection Stream Line */}
-                  <div className={`hidden md:block absolute top-[52px] left-12 right-12 h-0.5 z-0 ${
-                    theme === 'dark' ? 'bg-amber-800/40' : 'bg-slate-800'
-                  }`}>
+                  <div className="hidden md:block absolute top-[52px] left-12 right-12 h-0.5 bg-slate-800 -z-0">
                     <motion.div
-                      className={`h-full w-24 ${
-                        theme === 'dark' ? 'bg-gradient-to-r from-transparent via-amber-200 to-transparent' : 'bg-gradient-to-r from-transparent via-cyan-400 to-transparent'
-                      }`}
+                      className="h-full w-24 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-sm shadow-cyan-400"
                       animate={{ x: ['0%', '400%'] }}
                       transition={{ repeat: Infinity, duration: 2.2, ease: 'linear' }}
                     />
@@ -375,81 +365,73 @@ export function SystemPlayground() {
 
                   <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-5 relative z-10">
                     {/* Node 1: Client UI */}
-                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all ${
-                      theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-slate-50'
+                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all hover:border-cyan-500/40 ${
+                      theme === 'dark' ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-slate-50'
                     }`}>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                      }`}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                         <Globe className="h-6 w-6" />
                       </div>
                       <div className="my-3">
-                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>Client Browser</h4>
-                        <p className={`text-[10px] font-mono mt-0.5 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>Next.js 16 + React 19</p>
+                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Client Browser</h4>
+                        <p className="text-[10px] text-cyan-400 font-mono mt-0.5">Next.js 16 + React 19</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono">Edge Hydration</span>
+                      <span className="text-[10px] text-slate-500 font-mono">Edge Hydration</span>
                     </div>
 
                     {/* Node 2: CDN Edge */}
-                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all ${
-                      theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-slate-50'
+                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all hover:border-blue-500/40 ${
+                      theme === 'dark' ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-slate-50'
                     }`}>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-blue-500/10 text-blue-400 border border-blue-500/30'
-                      }`}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-400 border border-blue-500/30">
                         <Zap className="h-6 w-6" />
                       </div>
                       <div className="my-3">
-                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>Vercel Edge Network</h4>
-                        <p className={`text-[10px] font-mono mt-0.5 ${theme === 'dark' ? 'text-amber-200' : 'text-blue-400'}`}>Global Anycast CDN</p>
+                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Vercel Edge Network</h4>
+                        <p className="text-[10px] text-blue-400 font-mono mt-0.5">Global Anycast CDN</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono">&lt; 15ms TTFB</span>
+                      <span className="text-[10px] text-slate-500 font-mono">&lt; 15ms TTFB</span>
                     </div>
 
                     {/* Node 3: API Gateway */}
                     <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all shadow-lg ${
-                      theme === 'dark' ? 'border-cedar bg-umber/90 text-silver shadow-black/60' : 'border-cyan-500/40 bg-cyan-50'
+                      theme === 'dark' ? 'border-cyan-500/40 bg-cyan-500/10 shadow-cyan-500/10' : 'border-cyan-500/40 bg-cyan-50'
                     }`}>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-                        theme === 'dark' ? 'bg-mocha text-silver border border-cedar' : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
-                      }`}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
                         <Server className="h-6 w-6" />
                       </div>
                       <div className="my-3">
-                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>API Gateway / Server</h4>
-                        <p className={`text-[10px] font-mono mt-0.5 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>Node.js & Python API</p>
+                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>API Gateway / Server</h4>
+                        <p className="text-[10px] text-cyan-400 font-mono mt-0.5">Node.js & Python API</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono">Server Actions + JWT</span>
+                      <span className="text-[10px] text-slate-500 font-mono">Server Actions + JWT</span>
                     </div>
 
                     {/* Node 4: Redis Cache */}
-                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all ${
-                      theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-slate-50'
+                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all hover:border-emerald-500/40 ${
+                      theme === 'dark' ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-slate-50'
                     }`}>
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                         <Cpu className="h-6 w-6" />
                       </div>
                       <div className="my-3">
-                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>Distributed Cache</h4>
+                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Distributed Cache</h4>
                         <p className="text-[10px] text-emerald-400 font-mono mt-0.5">Redis Enterprise</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono">Sub-5ms Memory Lookup</span>
+                      <span className="text-[10px] text-slate-500 font-mono">Sub-5ms Memory Lookup</span>
                     </div>
 
                     {/* Node 5: Database */}
-                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all ${
-                      theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-slate-50'
+                    <div className={`flex flex-col items-center justify-between rounded-2xl border p-4 text-center transition-all hover:border-indigo-500/40 ${
+                      theme === 'dark' ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-slate-50'
                     }`}>
-                      <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
-                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30'
-                      }`}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
                         <Database className="h-6 w-6" />
                       </div>
                       <div className="my-3">
-                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>Primary Store</h4>
-                        <p className={`text-[10px] font-mono mt-0.5 ${theme === 'dark' ? 'text-amber-200' : 'text-indigo-400'}`}>PostgreSQL + Prisma</p>
+                        <h4 className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Primary Store</h4>
+                        <p className="text-[10px] text-indigo-400 font-mono mt-0.5">PostgreSQL + Prisma</p>
                       </div>
-                      <span className="text-[10px] text-slate-400 font-mono">ACID + Connection Pool</span>
+                      <span className="text-[10px] text-slate-500 font-mono">ACID + Connection Pool</span>
                     </div>
                   </div>
                 </div>
@@ -466,17 +448,15 @@ export function SystemPlayground() {
                 className="space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <div className={`flex items-center gap-2 text-xs font-mono ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>
+                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-400">
                     <HardDrive className="h-4 w-4" />
                     <span>server/actions/telemetry.ts</span>
                   </div>
-                  <span className="text-[11px] text-slate-400">TypeScript 5.0 • Strict Mode</span>
+                  <span className="text-[11px] text-slate-500">TypeScript 5.0 • Strict Mode</span>
                 </div>
 
-                <div className={`rounded-2xl border p-5 font-mono text-xs shadow-inner overflow-x-auto ${
-                  theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-800 bg-slate-950 text-slate-200'
-                }`}>
-                  <pre className={`leading-relaxed ${theme === 'dark' ? 'text-amber-200/90' : 'text-cyan-300'}`}>{CODE_SNIPPET}</pre>
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5 font-mono text-xs text-slate-200 shadow-inner overflow-x-auto">
+                  <pre className="text-cyan-300 leading-relaxed">{CODE_SNIPPET}</pre>
                 </div>
               </motion.div>
             )}

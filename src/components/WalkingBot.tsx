@@ -189,25 +189,25 @@ export function WalkingBot() {
       {/* 1. VISITOR INTAKE FORM MODAL */}
       <AnimatePresence>
         {showIntakeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-darkBg/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md rounded-2xl border border-cedar bg-darkBg/95 p-6 shadow-2xl backdrop-blur-2xl text-silver font-sans space-y-4"
+              className="relative w-full max-w-md rounded-2xl border border-cyan-500/30 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl text-white font-sans space-y-4"
             >
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-divider pb-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
-                  <Scan className="h-5 w-5 text-amber-200" />
+                  <Scan className="h-5 w-5 text-cyan-400" />
                   <div>
-                    <h3 className="text-sm font-bold text-silver">Portfolio Intake & Scan</h3>
+                    <h3 className="text-sm font-bold">Portfolio Intake & Scan</h3>
                     <p className="text-[11px] text-slate-400 font-mono">Tailors information for your specific visit</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowIntakeModal(false)}
-                  className="rounded-lg p-1.5 text-slate-400 hover:bg-mocha hover:text-silver transition-colors"
+                  className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -217,53 +217,53 @@ export function WalkingBot() {
               <form onSubmit={handleIntakeSubmit} className="space-y-3.5 text-xs">
                 <div className="grid grid-cols-2 gap-2.5">
                   <div>
-                    <label className="block text-[11px] font-medium text-silver mb-1">First Name *</label>
+                    <label className="block text-[11px] font-medium text-slate-300 mb-1">First Name *</label>
                     <input
                       type="text"
                       required
                       value={visitor.firstName}
                       onChange={(e) => setVisitor({ ...visitor, firstName: e.target.value })}
                       placeholder="e.g. Alex"
-                      className="w-full rounded-xl bg-umber/50 border border-divider px-3 py-2 text-silver placeholder-slate-500 focus:outline-none focus:border-cedar"
+                      className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-medium text-silver mb-1">Last Name</label>
+                    <label className="block text-[11px] font-medium text-slate-300 mb-1">Last Name</label>
                     <input
                       type="text"
                       value={visitor.lastName}
                       onChange={(e) => setVisitor({ ...visitor, lastName: e.target.value })}
                       placeholder="e.g. Morgan"
-                      className="w-full rounded-xl bg-umber/50 border border-divider px-3 py-2 text-silver placeholder-slate-500 focus:outline-none focus:border-cedar"
+                      className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-silver mb-1">Email or Phone Number *</label>
+                  <label className="block text-[11px] font-medium text-slate-300 mb-1">Email or Phone Number *</label>
                   <input
                     type="text"
                     required
                     value={visitor.contact}
                     onChange={(e) => setVisitor({ ...visitor, contact: e.target.value })}
                     placeholder="alex@company.com or +1 555..."
-                    className="w-full rounded-xl bg-umber/50 border border-divider px-3 py-2 text-silver placeholder-slate-500 focus:outline-none focus:border-cedar"
+                    className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400"
                   />
                 </div>
 
                 {/* Persona Selector */}
                 <div>
-                  <label className="block text-[11px] font-medium text-silver mb-1.5">I am visiting as a:</label>
+                  <label className="block text-[11px] font-medium text-slate-300 mb-1.5">I am visiting as a:</label>
                   <div className="grid grid-cols-3 gap-1.5 font-mono text-[11px]">
                     <button
                       type="button"
                       onClick={() => setVisitor({ ...visitor, persona: 'hr' })}
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2.5 transition-all ${visitor.persona === 'hr'
-                          ? 'border-cedar bg-umber text-silver font-bold shadow-md'
-                          : 'border-divider bg-darkBg text-slate-400 hover:text-silver hover:bg-umber/50'
+                          ? 'border-cyan-400 bg-cyan-500/10 text-cyan-300 font-bold'
+                          : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                         }`}
                     >
-                      <UserCheck className="h-4 w-4 text-amber-200" />
+                      <UserCheck className="h-4 w-4 text-cyan-400" />
                       <span>HR / Recruiter</span>
                     </button>
 
@@ -271,8 +271,8 @@ export function WalkingBot() {
                       type="button"
                       onClick={() => setVisitor({ ...visitor, persona: 'client' })}
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2.5 transition-all ${visitor.persona === 'client'
-                          ? 'border-emerald-400 bg-emerald-500/10 text-emerald-300 font-bold shadow-md'
-                          : 'border-divider bg-darkBg text-slate-400 hover:text-silver hover:bg-umber/50'
+                          ? 'border-emerald-400 bg-emerald-500/10 text-emerald-300 font-bold'
+                          : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                         }`}
                     >
                       <Briefcase className="h-4 w-4 text-emerald-400" />
@@ -283,8 +283,8 @@ export function WalkingBot() {
                       type="button"
                       onClick={() => setVisitor({ ...visitor, persona: 'developer' })}
                       className={`flex flex-col items-center gap-1 rounded-xl border p-2.5 transition-all ${visitor.persona === 'developer'
-                          ? 'border-purple-400 bg-purple-500/10 text-purple-300 font-bold shadow-md'
-                          : 'border-divider bg-darkBg text-slate-400 hover:text-silver hover:bg-umber/50'
+                          ? 'border-purple-400 bg-purple-500/10 text-purple-300 font-bold'
+                          : 'border-slate-800 bg-slate-950 text-slate-400 hover:text-slate-200'
                         }`}
                     >
                       <Code2 className="h-4 w-4 text-purple-400" />
@@ -294,19 +294,19 @@ export function WalkingBot() {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-medium text-silver mb-1">Reason for Visit / Project Inquiry (Optional)</label>
+                  <label className="block text-[11px] font-medium text-slate-300 mb-1">Reason for Visit / Project Inquiry (Optional)</label>
                   <textarea
                     rows={2}
                     value={visitor.reason}
                     onChange={(e) => setVisitor({ ...visitor, reason: e.target.value })}
                     placeholder="e.g. Looking for a Full-Stack Lead / Planning a web app..."
-                    className="w-full rounded-xl bg-umber/50 border border-divider px-3 py-2 text-silver placeholder-slate-500 focus:outline-none focus:border-cedar resize-none"
+                    className="w-full rounded-xl bg-slate-950 border border-slate-800 px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-cyan-400 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-umber border border-cedar py-2.5 text-xs font-bold text-silver hover:bg-mocha transition-all cursor-pointer shadow-lg shadow-black/40"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-cyan-500/20 border border-cyan-400/40 py-2.5 text-xs font-bold text-cyan-300 hover:bg-cyan-500/30 transition-all cursor-pointer shadow-lg shadow-cyan-500/10"
                 >
                   <Sparkles className="h-4 w-4" />
                   Generate Tailored Briefing
@@ -320,22 +320,22 @@ export function WalkingBot() {
       {/* 2. PERSONA-TAILORED BRIEFING POP-UP CONTAINER */}
       <AnimatePresence>
         {showBriefingModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-darkBg/85 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg rounded-2xl border border-divider bg-darkBg/95 p-6 shadow-2xl backdrop-blur-2xl text-silver font-sans space-y-4 max-h-[85vh] overflow-y-auto"
+              className="relative w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-950/95 p-6 shadow-2xl backdrop-blur-2xl text-white font-sans space-y-4 max-h-[85vh] overflow-y-auto"
             >
               {/* Header */}
-              <div className="flex items-center justify-between border-b border-divider pb-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                   <div>
-                    <h3 className="text-sm font-bold text-silver">
+                    <h3 className="text-sm font-bold">
                       Briefing for {visitor.firstName || 'Visitor'} {visitor.lastName}
                     </h3>
-                    <span className="text-[10px] font-mono text-amber-200 uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider">
                       Tailored Persona: {visitor.persona === 'hr' ? '👔 HR / Recruiter' : visitor.persona === 'client' ? '💼 Client / Project Founder' : '💻 Developer / Tech Peer'}
                     </span>
                   </div>
@@ -343,7 +343,7 @@ export function WalkingBot() {
 
                 <button
                   onClick={() => setShowBriefingModal(false)}
-                  className="rounded-lg p-1.5 text-slate-400 hover:bg-mocha hover:text-silver transition-colors"
+                  className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -352,43 +352,43 @@ export function WalkingBot() {
               {/* PERSONA CONTENT 1: HR / RECRUITER */}
               {visitor.persona === 'hr' && (
                 <div className="space-y-4 text-xs">
-                  <div className="rounded-xl border border-cedar bg-umber/40 p-3.5 leading-relaxed text-silver">
-                    <p className="font-semibold text-amber-200 mb-1">🎯 Executive Hiring Summary</p>
+                  <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-3.5 leading-relaxed text-cyan-200">
+                    <p className="font-semibold text-white mb-1">🎯 Executive Hiring Summary</p>
                     Santhosh Raj is a <strong>Senior Full-Stack Engineer (@sandyddeveloper)</strong> specializing in building high-concurrency Node.js/Python backends, sub-32ms SQL performance, and modern Next.js 16 frontend systems.
                   </div>
 
                   <div className="space-y-2 font-mono text-[11px]">
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Target Roles:</span>
-                      <span className="font-bold text-silver">Full-Stack Lead / Senior Engineer</span>
+                      <span className="font-bold text-white">Full-Stack Lead / Senior Engineer</span>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Primary Stack:</span>
-                      <span className="text-amber-200 font-bold">Next.js 16, TS, Node, Python, SQL</span>
+                      <span className="text-cyan-300 font-bold">Next.js 16, TS, Node, Python, SQL</span>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">GitHub Activity:</span>
                       <span className="text-emerald-400 font-bold">41 Public Repositories</span>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Production Availability:</span>
                       <span className="text-purple-400 font-bold">99.95% High Uptime Track Record</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-divider flex flex-wrap gap-2">
+                  <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2">
                     <a
                       href={`mailto:${targetContactEmail}?subject=Full-Stack Role Inquiry`}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-umber border border-cedar py-2 text-xs font-bold text-silver hover:bg-mocha transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500/20 border border-cyan-400/40 py-2 text-xs font-bold text-cyan-300 hover:bg-cyan-500/30 transition-all"
                     >
                       <Mail className="h-3.5 w-3.5" /> Email Candidate
                     </a>
                     <button
                       onClick={() => handleJumpTo('#projects')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-darkBg border border-divider py-2 text-xs font-bold text-silver hover:bg-umber/50 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
                     >
                       <Briefcase className="h-3.5 w-3.5" /> View Projects
                     </button>
@@ -405,23 +405,23 @@ export function WalkingBot() {
                   </div>
 
                   <div className="space-y-2 font-mono text-[11px]">
-                    <div className="rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-emerald-400 font-bold block mb-0.5">1. Full-Stack Web Development</span>
                       <span className="text-slate-400">Next.js 16, React, Node.js, Python backends & clean modern styling.</span>
                     </div>
 
-                    <div className="rounded-lg border border-divider bg-umber/30 p-2.5">
-                      <span className="text-amber-200 font-bold block mb-0.5">2. Database & API Performance</span>
+                    <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
+                      <span className="text-cyan-400 font-bold block mb-0.5">2. Database & API Performance</span>
                       <span className="text-slate-400">PostgreSQL indexing, Redis caching, zero-lock query optimization.</span>
                     </div>
 
-                    <div className="rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-purple-400 font-bold block mb-0.5">3. Rapid Time-to-Market</span>
                       <span className="text-slate-400">High-velocity shipping, clean maintainable code, zero technical debt.</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-divider flex flex-wrap gap-2">
+                  <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2">
                     <a
                       href={`mailto:${targetContactEmail}?subject=Project Discovery Consultation`}
                       className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 py-2 text-xs font-bold text-emerald-300 hover:bg-emerald-500/30 transition-all"
@@ -430,7 +430,7 @@ export function WalkingBot() {
                     </a>
                     <button
                       onClick={() => handleJumpTo('#sql-lab')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-darkBg border border-divider py-2 text-xs font-bold text-silver hover:bg-umber/50 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
                     >
                       <Sparkles className="h-3.5 w-3.5" /> Test SQL Sandbox
                     </button>
@@ -441,40 +441,40 @@ export function WalkingBot() {
               {/* PERSONA CONTENT 3: DEVELOPER / PEER */}
               {visitor.persona === 'developer' && (
                 <div className="space-y-4 text-xs">
-                  <div className="rounded-xl border border-cedar bg-umber/40 p-3.5 leading-relaxed text-silver">
-                    <p className="font-semibold text-amber-200 mb-1">💻 Developer Tech Specs</p>
+                  <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-3.5 leading-relaxed text-purple-200">
+                    <p className="font-semibold text-white mb-1">💻 Developer Tech Specs</p>
                     Welcome fellow dev! Explore Santhosh Raj&apos;s real-time GitHub telemetry (`@sandyddeveloper`), interactive SQL sandbox, and distributed architecture topology.
                   </div>
 
                   <div className="space-y-2 font-mono text-[11px]">
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">GitHub Profile:</span>
                       <a
                         href="https://github.com/sandyddeveloper"
                         target="_blank"
                         rel="noreferrer"
-                        className="text-amber-200 font-bold hover:underline flex items-center gap-1"
+                        className="text-purple-400 font-bold hover:underline flex items-center gap-1"
                       >
                         @sandyddeveloper <ExternalLink className="h-3 w-3" />
                       </a>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-lg border border-divider bg-umber/30 p-2.5">
+                    <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Interactive Demos:</span>
-                      <span className="text-amber-200 font-bold">SQL Lab & System Topology</span>
+                      <span className="text-cyan-400 font-bold">SQL Lab & System Topology</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-divider flex flex-wrap gap-2">
+                  <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2">
                     <button
                       onClick={() => handleJumpTo('#system-design')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-umber border border-cedar py-2 text-xs font-bold text-silver hover:bg-mocha transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-purple-500/20 border border-purple-400/40 py-2 text-xs font-bold text-purple-300 hover:bg-purple-500/30 transition-all"
                     >
                       <Code2 className="h-3.5 w-3.5" /> System Design Sandbox
                     </button>
                     <button
                       onClick={() => handleJumpTo('#telemetry')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-darkBg border border-divider py-2 text-xs font-bold text-silver hover:bg-umber/50 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
                     >
                       <ChevronRight className="h-3.5 w-3.5" /> GitHub Telemetry
                     </button>
@@ -494,36 +494,36 @@ export function WalkingBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="mb-3 w-72 sm:w-80 rounded-2xl border border-divider bg-darkBg/95 p-4 shadow-2xl backdrop-blur-2xl text-silver font-sans"
+            className="mb-3 w-72 sm:w-80 rounded-2xl border border-slate-800 bg-slate-950/95 p-4 shadow-2xl backdrop-blur-2xl text-slate-100 font-sans"
           >
             {/* Header Bar */}
-            <div className="flex items-center justify-between border-b border-divider pb-2.5 mb-3">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
               <div className="flex items-center gap-2">
-                <span className="flex h-2 w-2 rounded-full bg-amber-300 animate-pulse" />
-                <span className="text-xs font-bold tracking-tight text-silver">
+                <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+                <span className="text-xs font-bold tracking-tight text-white">
                   RoboX 3D Companion
                 </span>
               </div>
 
               {/* Navigation Tabs */}
-              <div className="flex items-center gap-1 bg-umber border border-divider p-0.5 rounded-lg text-[11px]">
+              <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-0.5 rounded-lg text-[11px]">
                 <button
                   onClick={() => setActiveTab('chat')}
-                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'chat' ? 'bg-cedar text-silver font-bold' : 'text-slate-400 hover:text-silver'
+                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'chat' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400 hover:text-white'
                     }`}
                 >
                   Chat
                 </button>
                 <button
                   onClick={() => setActiveTab('actions')}
-                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'actions' ? 'bg-cedar text-silver font-bold' : 'text-slate-400 hover:text-silver'
+                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'actions' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400 hover:text-white'
                     }`}
                 >
                   Actions
                 </button>
                 <button
                   onClick={() => setActiveTab('nav')}
-                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'nav' ? 'bg-cedar text-silver font-bold' : 'text-slate-400 hover:text-silver'
+                  className={`px-2 py-0.5 rounded-md font-medium transition-all ${activeTab === 'nav' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400 hover:text-white'
                     }`}
                 >
                   Nav
@@ -532,14 +532,14 @@ export function WalkingBot() {
 
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-mocha hover:text-silver transition-colors"
+                className="rounded-lg p-1 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
             </div>
 
             {/* Message Bubble Box */}
-            <div className="rounded-xl border border-divider bg-umber/40 p-3 text-xs leading-relaxed text-silver">
+            <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-xs leading-relaxed text-slate-200">
               {speechText}
             </div>
 
@@ -549,19 +549,19 @@ export function WalkingBot() {
                 <div className="flex flex-wrap gap-1">
                   <button
                     onClick={handleOpenScanForm}
-                    className="rounded-lg border border-cedar bg-umber px-2 py-1 text-[11px] font-bold text-silver hover:bg-mocha transition-all flex items-center gap-1 shadow-sm"
+                    className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-[11px] font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all flex items-center gap-1"
                   >
                     🔍 Scan & Tailor Briefing
                   </button>
                   <button
                     onClick={() => setSpeechText(KNOWLEDGE_BASE.skills)}
-                    className="rounded-lg border border-divider bg-darkBg px-2 py-1 text-[11px] text-slate-300 hover:border-cedar hover:text-silver transition-all"
+                    className="rounded-lg border border-slate-800 bg-slate-900 px-2 py-1 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                   >
                     🛠️ Tech Stack
                   </button>
                   <button
                     onClick={() => setSpeechText(KNOWLEDGE_BASE.projects)}
-                    className="rounded-lg border border-divider bg-darkBg px-2 py-1 text-[11px] text-slate-300 hover:border-cedar hover:text-silver transition-all"
+                    className="rounded-lg border border-slate-800 bg-slate-900 px-2 py-1 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                   >
                     💼 Projects
                   </button>
@@ -573,11 +573,11 @@ export function WalkingBot() {
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="Ask RoboX or type 'scan'..."
-                    className="w-full rounded-xl bg-umber/50 border border-divider px-3 py-1.5 text-xs text-silver placeholder-slate-500 focus:outline-none focus:border-cedar"
+                    className="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
                   />
                   <button
                     type="submit"
-                    className="rounded-xl bg-umber border border-cedar px-2.5 py-1.5 text-silver hover:bg-mocha transition-all"
+                    className="rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1.5 text-cyan-400 hover:bg-cyan-500/20 transition-all"
                   >
                     <Send className="h-3.5 w-3.5" />
                   </button>
@@ -587,18 +587,18 @@ export function WalkingBot() {
 
             {/* TAB 2: 3D ACTIONS */}
             {activeTab === 'actions' && (
-              <div className="mt-3 space-y-2.5 border-t border-divider pt-2.5 text-xs">
+              <div className="mt-3 space-y-2.5 border-t border-slate-800/80 pt-2.5 text-xs">
                 <div className="grid grid-cols-2 gap-1.5">
                   <button
                     onClick={handleOpenScanForm}
-                    className="col-span-2 rounded-xl border border-cedar bg-umber px-3 py-2 text-[11px] font-bold text-silver hover:bg-mocha transition-all flex items-center justify-center gap-1.5 shadow-md"
+                    className="col-span-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-3 py-2 text-[11px] font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all flex items-center justify-center gap-1.5"
                   >
-                    <Scan className="h-3.5 w-3.5 text-amber-200" /> 🔍 Scan & Tailor Briefing
+                    <Scan className="h-3.5 w-3.5" /> 🔍 Scan & Tailor Briefing
                   </button>
 
                   <button
                     onClick={() => { setAction('dance'); playSound('beep'); }}
-                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'dance' ? 'bg-pink-500/10 border-pink-500/40 text-pink-400' : 'bg-darkBg border-divider text-slate-300 hover:text-silver hover:bg-umber/50'
+                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'dance' ? 'bg-pink-500/10 border-pink-500/40 text-pink-400' : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
                       }`}
                   >
                     💃 3D Dance Party
@@ -606,7 +606,7 @@ export function WalkingBot() {
 
                   <button
                     onClick={() => { setAction('idle'); playSound('beep'); }}
-                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'idle' ? 'bg-umber text-silver border-cedar font-bold' : 'bg-darkBg text-slate-400 border-divider'
+                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'idle' ? 'bg-slate-800 text-white border-slate-700' : 'bg-slate-900 text-slate-400 border-slate-800'
                       }`}
                   >
                     ⏸️ Reset Action
@@ -617,37 +617,37 @@ export function WalkingBot() {
 
             {/* TAB 3: NAVIGATION JUMPS */}
             {activeTab === 'nav' && (
-              <div className="mt-3 space-y-1.5 border-t border-divider pt-2.5 text-xs">
+              <div className="mt-3 space-y-1.5 border-t border-slate-800/80 pt-2.5 text-xs">
                 <button
                   onClick={() => handleJumpTo('#sql-lab')}
-                  className="w-full flex items-center justify-between rounded-xl border border-divider bg-darkBg px-3 py-2 text-[11px] text-slate-300 hover:border-cedar hover:text-silver hover:bg-umber/40 transition-all"
+                  className="w-full flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                 >
                   <span>1. SQL Performance Lab</span>
-                  <ArrowDownRight className="h-3.5 w-3.5 text-amber-200" />
+                  <ArrowDownRight className="h-3.5 w-3.5 text-cyan-400" />
                 </button>
 
                 <button
                   onClick={() => handleJumpTo('#system-design')}
-                  className="w-full flex items-center justify-between rounded-xl border border-divider bg-darkBg px-3 py-2 text-[11px] text-slate-300 hover:border-cedar hover:text-silver hover:bg-umber/40 transition-all"
+                  className="w-full flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                 >
                   <span>2. System Design Sandbox</span>
-                  <ArrowDownRight className="h-3.5 w-3.5 text-amber-200" />
+                  <ArrowDownRight className="h-3.5 w-3.5 text-cyan-400" />
                 </button>
 
                 <button
                   onClick={() => handleJumpTo('#blog')}
-                  className="w-full flex items-center justify-between rounded-xl border border-divider bg-darkBg px-3 py-2 text-[11px] text-slate-300 hover:border-cedar hover:text-silver hover:bg-umber/40 transition-all"
+                  className="w-full flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                 >
                   <span>3. Engineering Case Studies</span>
-                  <ArrowDownRight className="h-3.5 w-3.5 text-amber-200" />
+                  <ArrowDownRight className="h-3.5 w-3.5 text-cyan-400" />
                 </button>
 
                 <button
                   onClick={() => handleJumpTo('#projects')}
-                  className="w-full flex items-center justify-between rounded-xl border border-divider bg-darkBg px-3 py-2 text-[11px] text-slate-300 hover:border-cedar hover:text-silver hover:bg-umber/40 transition-all"
+                  className="w-full flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
                 >
                   <span>4. Selected Work & Projects</span>
-                  <ArrowDownRight className="h-3.5 w-3.5 text-amber-200" />
+                  <ArrowDownRight className="h-3.5 w-3.5 text-cyan-400" />
                 </button>
               </div>
             )}
