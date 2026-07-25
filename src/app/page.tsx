@@ -385,7 +385,7 @@ function PortfolioContent() {
             {/* Main Hero Card (8 Cols) */}
             <div className={`lg:col-span-8 flex flex-col justify-between rounded-2xl border p-8 md:p-10 shadow-sm backdrop-blur-xl transition-all ${
               theme === 'dark'
-                ? 'border-slate-800/80 bg-slate-950/70'
+                ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40'
                 : 'border-slate-200 bg-white/90'
             }`}>
               <div className="space-y-5">
@@ -399,14 +399,14 @@ function PortfolioContent() {
 
                 {/* Main Headline */}
                 <h1 className={`text-4xl sm:text-5xl font-bold tracking-tight leading-[1.12] ${
-                  theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  theme === 'dark' ? 'text-silver' : 'text-slate-900'
                 }`}>
-                  Building <span className="text-cyan-400">scalable</span> full-stack systems and clean web apps.
+                  Building <span className={theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}>scalable</span> full-stack systems and clean web apps.
                 </h1>
 
                 {/* Subtitle */}
                 <p className={`text-sm leading-relaxed max-w-xl ${
-                  theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
                 }`}>
                   Full-Stack Engineer specialized in Next.js 16, TypeScript, Node.js, Python, and PostgreSQL. Delivering sub-30ms APIs, low-latency databases, and interface-first web experiences.
                 </p>
@@ -416,7 +416,11 @@ function PortfolioContent() {
               <div className="pt-6 flex flex-wrap items-center gap-3">
                 <a
                   href="#sql-lab"
-                  className="flex items-center gap-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 px-5 py-2.5 text-xs font-semibold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer"
+                  className={`flex items-center gap-1.5 rounded-full px-5 py-2.5 text-xs font-semibold transition-all cursor-pointer ${
+                    theme === 'dark'
+                      ? 'bg-umber border border-cedar text-silver hover:bg-mocha shadow-md'
+                      : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+                  }`}
                 >
                   <Terminal className="h-3.5 w-3.5" />
                   <span>Launch SQL Lab</span>
@@ -424,7 +428,11 @@ function PortfolioContent() {
 
                 <a
                   href="#system-design"
-                  className="flex items-center gap-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 px-5 py-2.5 text-xs font-semibold text-blue-400 hover:bg-blue-500/20 transition-all cursor-pointer"
+                  className={`flex items-center gap-1.5 rounded-full px-5 py-2.5 text-xs font-semibold transition-all cursor-pointer ${
+                    theme === 'dark'
+                      ? 'bg-umber border border-cedar text-silver hover:bg-mocha shadow-md'
+                      : 'bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500/20'
+                  }`}
                 >
                   <Layers className="h-3.5 w-3.5" />
                   <span>Architecture Builder</span>
@@ -433,10 +441,10 @@ function PortfolioContent() {
                 <button
                   onClick={() => setIsCmdPaletteOpen(true)}
                   className={`hidden sm:flex items-center gap-1.5 rounded-full border px-3.5 py-2.5 text-xs font-mono transition-all cursor-pointer ${
-                    theme === 'dark' ? 'border-slate-800 bg-slate-900 text-slate-400 hover:text-white' : 'border-slate-200 bg-slate-50 text-slate-600'
+                    theme === 'dark' ? 'border-divider bg-umber text-silver hover:bg-mocha' : 'border-slate-200 bg-slate-50 text-slate-600'
                   }`}
                 >
-                  <Search className="h-3 w-3 text-cyan-400" />
+                  <Search className="h-3 w-3 text-amber-200" />
                   <span>⌘K</span>
                 </button>
               </div>
@@ -444,33 +452,33 @@ function PortfolioContent() {
 
             {/* Minimal Terminal Card (4 Cols) */}
             <div className={`lg:col-span-4 flex flex-col justify-between rounded-2xl border p-5 shadow-sm backdrop-blur-xl transition-all overflow-hidden ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-slate-900 text-slate-100'
+              theme === 'dark' ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40' : 'border-slate-200 bg-slate-900 text-slate-100'
             }`}>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
+              <div className="flex items-center justify-between border-b border-divider pb-2.5">
                 <div className="flex items-center gap-1.5">
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-cedar" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-cedar" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-cedar" />
                 </div>
-                <span className="text-[10px] font-mono text-slate-500">santhu@node:~/fullstack</span>
+                <span className="text-[10px] font-mono text-slate-400">santhu@node:~/fullstack</span>
               </div>
 
-              <div className="py-4 font-mono text-[11px] text-cyan-300 space-y-2 leading-relaxed">
-                <p className="text-slate-400">{terminalText}</p>
+              <div className="py-4 font-mono text-[11px] text-amber-200 space-y-2 leading-relaxed">
+                <p className="text-slate-300">{terminalText}</p>
                 <div className="text-emerald-400/90 space-y-0.5 text-[10px]">
                   <p>✔ Next.js 16 App Router</p>
                   <p>✔ Node.js & Python API gateway</p>
                   <p>✔ Redis enterprise cache</p>
                   <p>✔ PostgreSQL connection pool</p>
                 </div>
-                <div className="flex items-center gap-1 text-slate-400 text-[10px]">
-                  <span className="text-cyan-400">&gt;</span>
+                <div className="flex items-center gap-1 text-slate-300 text-[10px]">
+                  <span className="text-amber-200">&gt;</span>
                   <span>Ready for production</span>
                 </div>
               </div>
 
-              <div className="border-t border-slate-800/80 pt-2.5 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                <button onClick={handleCopyEmail} className="flex items-center gap-1 text-cyan-400 hover:underline">
+              <div className="border-t border-divider pt-2.5 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                <button onClick={handleCopyEmail} className="flex items-center gap-1 text-amber-200 hover:underline">
                   <Mail className="h-3 w-3" /> Copy Email
                 </button>
                 <span>Full-Stack v2.4</span>
@@ -479,19 +487,19 @@ function PortfolioContent() {
 
             {/* Sub Metric Cards (3 x 4 Cols) */}
             <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
+              theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-white'
             }`}>
               <div className="flex items-center gap-3">
-                <Zap className="h-4 w-4 text-cyan-400" />
+                <Zap className={`h-4 w-4 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} />
                 <div>
-                  <h3 className="text-xl font-bold font-mono text-cyan-400">Sub-32ms</h3>
+                  <h3 className={`text-xl font-bold font-mono ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>Sub-32ms</h3>
                   <p className="text-[11px] text-slate-400">Average API Latency Benchmark</p>
                 </div>
               </div>
             </div>
 
             <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
+              theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-white'
             }`}>
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
@@ -503,12 +511,12 @@ function PortfolioContent() {
             </div>
 
             <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
+              theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-white'
             }`}>
               <div className="flex items-center gap-3">
-                <Sparkles className="h-4 w-4 text-indigo-400" />
+                <Sparkles className={`h-4 w-4 ${theme === 'dark' ? 'text-amber-200' : 'text-indigo-400'}`} />
                 <div>
-                  <h3 className="text-xl font-bold font-mono text-indigo-400">100 / 100</h3>
+                  <h3 className={`text-xl font-bold font-mono ${theme === 'dark' ? 'text-amber-200' : 'text-indigo-400'}`}>100 / 100</h3>
                   <p className="text-[11px] text-slate-400">Lighthouse Performance Score</p>
                 </div>
               </div>
@@ -520,46 +528,46 @@ function PortfolioContent() {
         <section id="about" className="scroll-mt-24">
           <div className={`rounded-2xl border p-8 md:p-10 transition-all ${
             theme === 'dark'
-              ? 'border-slate-800/80 bg-slate-950/60'
+              ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40'
               : 'border-slate-200 bg-white'
           }`}>
             <div className="max-w-none w-full space-y-5">
               <span className={`text-xs font-semibold uppercase tracking-wider ${
-                theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'
               }`}>
                 Engineering Philosophy
               </span>
               <h2 className={`text-2xl font-bold ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
+                theme === 'dark' ? 'text-silver' : 'text-slate-900'
               }`}>
                 End-to-End Ownership: From Database Architecture to Clean User Interfaces.
               </h2>
               <p className={`text-sm leading-relaxed ${
-                theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
               }`}>
                 I specialize in building clean, resilient full-stack web applications. My focus is on writing maintainable code, optimizing database query pipelines, structuring clean RESTful/GraphQL APIs, and creating minimal, responsive interfaces.
               </p>
 
               {/* Minimal Pillars */}
               <div className="grid gap-4 sm:grid-cols-3 pt-2">
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                  <Server className="h-4 w-4 text-cyan-400 mb-2" />
-                  <h3 className="text-xs font-bold">Scalable APIs</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-divider bg-umber/40' : 'border-slate-200 bg-slate-50'}`}>
+                  <Server className={`h-4 w-4 mb-2 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} />
+                  <h3 className="text-xs font-bold text-silver">Scalable APIs</h3>
+                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>
                     REST & GraphQL services with low latency.
                   </p>
                 </div>
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                  <Code2 className="h-4 w-4 text-blue-400 mb-2" />
-                  <h3 className="text-xs font-bold">Modern Frontend</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-divider bg-umber/40' : 'border-slate-200 bg-slate-50'}`}>
+                  <Code2 className={`h-4 w-4 mb-2 ${theme === 'dark' ? 'text-amber-200' : 'text-blue-400'}`} />
+                  <h3 className="text-xs font-bold text-silver">Modern Frontend</h3>
+                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>
                     Next.js App Router, TypeScript & Tailwind.
                   </p>
                 </div>
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-divider bg-umber/40' : 'border-slate-200 bg-slate-50'}`}>
                   <Database className="h-4 w-4 text-emerald-400 mb-2" />
-                  <h3 className="text-xs font-bold">Data & DevOps</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                  <h3 className="text-xs font-bold text-silver">Data & DevOps</h3>
+                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-500'}`}>
                     PostgreSQL, Redis caching & Docker.
                   </p>
                 </div>
@@ -588,12 +596,12 @@ function PortfolioContent() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className={`text-xs font-semibold uppercase tracking-wider ${
-                theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'
               }`}>
                 Selected Work & Engineering
               </span>
               <h2 className={`text-3xl font-bold tracking-tight mt-1 ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
+                theme === 'dark' ? 'text-silver' : 'text-slate-900'
               }`}>
                 Featured Systems & Applications
               </h2>
@@ -607,8 +615,8 @@ function PortfolioContent() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${
                     selectedCategory === cat
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-                      : theme === 'dark' ? 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
+                      ? theme === 'dark' ? 'bg-umber text-silver border border-cedar font-bold shadow-md' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      : theme === 'dark' ? 'bg-darkBg border border-divider text-slate-400 hover:text-silver hover:bg-umber/50' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   {cat}
@@ -624,20 +632,24 @@ function PortfolioContent() {
                 key={project.id}
                 className={`group flex flex-col justify-between rounded-2xl border p-5 transition-all duration-300 ${
                   theme === 'dark'
-                    ? 'border-slate-800/80 bg-slate-950/70 text-slate-100 hover:border-cyan-500/40 hover:bg-slate-950'
+                    ? 'border-divider bg-darkBg text-silver hover:border-cedar hover:bg-umber/40 shadow-lg shadow-black/40'
                     : 'border-slate-200 bg-white text-slate-900 hover:border-cyan-500/40 hover:shadow-lg'
                 }`}
               >
                   {/* High-Tech Icon Banner Header */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-bold shadow-sm shadow-cyan-500/10">
+                      <div className={`flex h-9 w-9 items-center justify-center rounded-xl font-bold shadow-sm ${
+                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
+                      }`}>
                         {project.category === 'Full-Stack' && <Zap className="h-4 w-4" />}
                         {project.category === 'Backend & APIs' && <Server className="h-4 w-4" />}
                         {project.category === 'Frontend UX' && <Code2 className="h-4 w-4" />}
                         {project.category === 'AI & Automation' && <Sparkles className="h-4 w-4" />}
                       </div>
-                      <span className="rounded-full bg-cyan-500/10 border border-cyan-500/30 px-3 py-0.5 text-[10px] font-bold text-cyan-400 font-mono">
+                      <span className={`rounded-full px-3 py-0.5 text-[10px] font-bold font-mono ${
+                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
+                      }`}>
                         {project.category}
                       </span>
                     </div>
@@ -648,11 +660,13 @@ function PortfolioContent() {
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                  <h3 className={`mt-4 text-xl font-bold transition-colors ${
+                    theme === 'dark' ? 'text-silver group-hover:text-amber-200' : 'text-slate-900 group-hover:text-cyan-400'
+                  }`}>
                     {project.title}
                   </h3>
 
-                  <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
                     {project.description}
                   </p>
 
@@ -662,7 +676,7 @@ function PortfolioContent() {
                       <span
                         key={tech}
                         className={`rounded-lg border px-2.5 py-1 text-[10px] font-mono ${
-                          theme === 'dark' ? 'border-slate-800 bg-slate-900/80 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'
+                          theme === 'dark' ? 'border-divider bg-umber/50 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'
                         }`}
                       >
                         {tech}
@@ -671,10 +685,12 @@ function PortfolioContent() {
                   </div>
 
                 {/* Bottom Trigger */}
-                <div className="mt-6 flex items-center justify-between border-t border-slate-800/60 pt-4">
+                <div className={`mt-6 flex items-center justify-between border-t pt-4 ${theme === 'dark' ? 'border-divider' : 'border-slate-800/60'}`}>
                   <button
                     onClick={() => setActiveProject(project)}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:underline cursor-pointer group-hover:text-cyan-300"
+                    className={`flex items-center gap-1.5 text-xs font-semibold hover:underline cursor-pointer ${
+                      theme === 'dark' ? 'text-amber-200 hover:text-white' : 'text-cyan-400 hover:text-cyan-300'
+                    }`}
                   >
                     <span>View Architecture & Credentials</span>
                     <ArrowRight className="h-3.5 w-3.5" />
@@ -686,7 +702,7 @@ function PortfolioContent() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors"
+                        className="text-slate-400 hover:text-silver transition-colors"
                         title="GitHub"
                       >
                         <GithubIcon className="h-4 w-4" />
@@ -697,7 +713,7 @@ function PortfolioContent() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors"
+                        className="text-slate-400 hover:text-silver transition-colors"
                         title="Live Demo"
                       >
                         <ExternalLink className="h-4 w-4" />
@@ -716,7 +732,7 @@ function PortfolioContent() {
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className={`text-xs font-semibold uppercase tracking-wider ${
-                  theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                  theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'
                 }`}>
                   Core Competencies & Stack
                 </span>
@@ -726,7 +742,7 @@ function PortfolioContent() {
                 </span>
               </div>
               <h2 className={`text-3xl font-bold tracking-tight ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
+                theme === 'dark' ? 'text-silver' : 'text-slate-900'
               }`}>
                 Technology Matrix & Skill Proficiency
               </h2>
@@ -740,7 +756,7 @@ function PortfolioContent() {
                 placeholder="Filter technologies (e.g. React, Python)..."
                 className={`rounded-xl border px-3.5 py-2 text-xs transition-all w-full sm:w-64 font-mono ${
                   theme === 'dark'
-                    ? 'border-slate-800 bg-slate-950 text-white placeholder-slate-500 focus:border-cyan-400'
+                    ? 'border-divider bg-darkBg text-silver placeholder-slate-500 focus:border-cedar'
                     : 'border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-cyan-600'
                 }`}
               />
@@ -757,19 +773,19 @@ function PortfolioContent() {
                   key={idx}
                   className={`group relative flex flex-col justify-between rounded-2xl border p-6 transition-all duration-300 ${
                     theme === 'dark'
-                      ? 'border-slate-800/80 bg-slate-950/80 text-slate-100 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(6,182,212,0.1)]'
+                      ? 'border-divider bg-darkBg text-silver hover:border-cedar hover:shadow-lg shadow-black/40'
                       : 'border-slate-200 bg-white text-slate-900 hover:border-cyan-500/40 hover:shadow-lg'
                   }`}
                 >
                   {/* Category Accent Line */}
-                  <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-full bg-gradient-to-r ${group.color}`} />
+                  <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-full ${theme === 'dark' ? 'bg-amber-800' : `bg-gradient-to-r ${group.color}`}`} />
 
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                      <h3 className={`text-base font-bold transition-colors ${theme === 'dark' ? 'text-silver group-hover:text-amber-200' : 'text-white group-hover:text-cyan-300'}`}>
                         {group.category}
                       </h3>
-                      <span className="text-[10px] font-mono text-slate-500">
+                      <span className="text-[10px] font-mono text-slate-400">
                         {group.skills.length} Stack Items
                       </span>
                     </div>
@@ -781,13 +797,13 @@ function PortfolioContent() {
                             <span className={`font-mono text-[11px] font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
                               {skill.name}
                             </span>
-                            <span className="text-[10px] font-mono text-cyan-400 font-bold">{skill.level}%</span>
+                            <span className={`text-[10px] font-mono font-bold ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>{skill.level}%</span>
                           </div>
 
-                          <div className="h-1.5 w-full rounded-full bg-slate-900 border border-slate-800/80 overflow-hidden p-0.5">
+                          <div className={`h-1.5 w-full rounded-full border overflow-hidden p-0.5 ${theme === 'dark' ? 'bg-umber border-divider' : 'bg-slate-900 border-slate-800/80'}`}>
                             <div
                               style={{ width: `${skill.level}%` }}
-                              className={`h-full rounded-full bg-gradient-to-r ${group.color} transition-all duration-500`}
+                              className={`h-full rounded-full transition-all duration-500 ${theme === 'dark' ? 'bg-amber-700' : `bg-gradient-to-r ${group.color}`}`}
                             />
                           </div>
                         </div>
@@ -795,9 +811,9 @@ function PortfolioContent() {
                     </div>
                   </div>
 
-                  <div className="mt-5 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
+                  <div className={`mt-5 pt-3 border-t flex items-center justify-between text-[10px] font-mono ${theme === 'dark' ? 'border-divider text-slate-400' : 'border-slate-800/60 text-slate-500'}`}>
                     <span>Verified Production Depth</span>
-                    <span className="text-cyan-400">High Mastery</span>
+                    <span className={theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}>High Mastery</span>
                   </div>
                 </div>
               );
@@ -809,34 +825,34 @@ function PortfolioContent() {
         <section id="experience" className="space-y-6 scroll-mt-24">
           <div>
             <span className={`text-xs font-semibold uppercase tracking-wider ${
-              theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+              theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'
             }`}>
               Track Record
             </span>
             <h2 className={`text-2xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-slate-900'
+              theme === 'dark' ? 'text-silver' : 'text-slate-900'
             }`}>
               Engineering Experience
             </h2>
           </div>
 
-          <div className="relative border-l border-slate-800 ml-3 pl-5 space-y-6">
+          <div className={`relative border-l ml-3 pl-5 space-y-6 ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
             {EXPERIENCE_DATA.map((exp, idx) => (
               <div key={idx} className="relative group">
-                <div className="absolute -left-[25px] top-1.5 h-3 w-3 rounded-full border-2 border-cyan-400 bg-slate-950" />
+                <div className={`absolute -left-[25px] top-1.5 h-3 w-3 rounded-full border-2 ${theme === 'dark' ? 'border-amber-200 bg-darkBg' : 'border-cyan-400 bg-slate-950'}`} />
 
                 <div className={`rounded-2xl border p-5 transition-all ${
-                  theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
+                  theme === 'dark' ? 'border-divider bg-darkBg text-silver shadow-md' : 'border-slate-200 bg-white'
                 }`}>
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
-                    <h3 className="text-base font-bold">{exp.role}</h3>
-                    <span className="text-[11px] font-mono text-cyan-400">{exp.period}</span>
+                    <h3 className="text-base font-bold text-silver">{exp.role}</h3>
+                    <span className={`text-[11px] font-mono ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>{exp.period}</span>
                   </div>
 
                   <p className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
                     {exp.company}
                   </p>
-                  <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                  <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
                     {exp.description}
                   </p>
 
@@ -858,39 +874,39 @@ function PortfolioContent() {
         <section id="contact" className="scroll-mt-24">
           <div className={`rounded-2xl border p-8 md:p-10 transition-all ${
             theme === 'dark'
-              ? 'border-slate-800/80 bg-slate-950/80'
+              ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40'
               : 'border-slate-200 bg-white'
           }`}>
             <div className="grid gap-8 lg:grid-cols-12">
               <div className="lg:col-span-5 space-y-5">
                 <span className={`text-xs font-semibold uppercase tracking-wider ${
-                  theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
+                  theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'
                 }`}>
                   Get In Touch
                 </span>
-                <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
                   Let&apos;s Build Something Extraordinary.
                 </h2>
-                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
                   Available for full-time Full-Stack roles, architecture consulting, and high-impact web apps.
                 </p>
 
                 <div className="space-y-2 pt-1">
-                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                    <Mail className="h-4 w-4 text-cyan-400" />
+                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-divider bg-umber/40' : 'border-slate-200 bg-slate-50'}`}>
+                    <Mail className={`h-4 w-4 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} />
                     <div>
-                      <p className="text-[10px] uppercase font-bold text-slate-500">Direct Email</p>
-                      <button onClick={handleCopyEmail} className="text-xs font-mono font-semibold text-cyan-400 hover:underline">
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Direct Email</p>
+                      <button onClick={handleCopyEmail} className={`text-xs font-mono font-semibold hover:underline ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>
                         santhu.dev@example.com
                       </button>
                     </div>
                   </div>
 
-                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-divider bg-umber/40' : 'border-slate-200 bg-slate-50'}`}>
                     <Globe className="h-4 w-4 text-emerald-400" />
                     <div>
-                      <p className="text-[10px] uppercase font-bold text-slate-500">Location</p>
-                      <p className="text-xs font-semibold">Remote / Worldwide</p>
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Location</p>
+                      <p className="text-xs font-semibold text-silver">Remote / Worldwide</p>
                     </div>
                   </div>
                 </div>
@@ -900,7 +916,7 @@ function PortfolioContent() {
                 <form onSubmit={handleContactSubmit} className="space-y-3.5">
                   <div className="grid gap-3.5 sm:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-medium mb-1">Your Name *</label>
+                      <label className="block text-xs font-medium mb-1 text-silver">Your Name *</label>
                       <input
                         type="text"
                         value={contactForm.name}
@@ -909,14 +925,14 @@ function PortfolioContent() {
                         required
                         className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
                           theme === 'dark'
-                            ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
+                            ? 'border-divider bg-umber/50 text-silver placeholder-slate-500 focus:border-cedar'
                             : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
                         }`}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium mb-1">Your Email *</label>
+                      <label className="block text-xs font-medium mb-1 text-silver">Your Email *</label>
                       <input
                         type="email"
                         value={contactForm.email}
@@ -925,7 +941,7 @@ function PortfolioContent() {
                         required
                         className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
                           theme === 'dark'
-                            ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
+                            ? 'border-divider bg-umber/50 text-silver placeholder-slate-500 focus:border-cedar'
                             : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
                         }`}
                       />
@@ -933,13 +949,13 @@ function PortfolioContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium mb-1">Subject</label>
+                    <label className="block text-xs font-medium mb-1 text-silver">Subject</label>
                     <select
                       value={contactForm.subject}
                       onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
                       className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
                         theme === 'dark'
-                          ? 'border-slate-800 bg-slate-900 text-white focus:border-cyan-400'
+                          ? 'border-divider bg-umber/50 text-silver focus:border-cedar'
                           : 'border-slate-300 bg-slate-50 text-slate-900 focus:border-cyan-600'
                       }`}
                     >
@@ -950,7 +966,7 @@ function PortfolioContent() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium mb-1">Message *</label>
+                    <label className="block text-xs font-medium mb-1 text-silver">Message *</label>
                     <textarea
                       rows={4}
                       value={contactForm.message}
@@ -959,7 +975,7 @@ function PortfolioContent() {
                       required
                       className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
                         theme === 'dark'
-                          ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
+                          ? 'border-divider bg-umber/50 text-silver placeholder-slate-500 focus:border-cedar'
                           : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
                       }`}
                     />
@@ -968,7 +984,11 @@ function PortfolioContent() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-5 py-3 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
+                    className={`w-full flex items-center justify-center gap-1.5 rounded-xl border px-5 py-3 text-xs font-bold transition-all cursor-pointer disabled:opacity-50 ${
+                      theme === 'dark'
+                        ? 'bg-umber border-cedar text-silver hover:bg-mocha shadow-md'
+                        : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+                    }`}
                   >
                     {isSubmitting ? (
                       <>

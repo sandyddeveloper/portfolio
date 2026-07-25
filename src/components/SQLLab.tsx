@@ -98,11 +98,11 @@ export function SQLLab() {
 
       {/* Main Container */}
       <div className={`rounded-2xl border shadow-sm backdrop-blur-xl transition-all overflow-hidden ${
-        theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-white'
+        theme === 'dark' ? 'border-divider bg-darkBg/95 text-silver shadow-lg shadow-black/40' : 'border-slate-200 bg-white'
       }`}>
         {/* Control Bar */}
         <div className={`flex flex-wrap items-center justify-between gap-3 border-b px-6 py-3.5 ${
-          theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'
+          theme === 'dark' ? 'border-divider bg-umber/30' : 'border-slate-200 bg-slate-50'
         }`}>
           {/* Query Presets */}
           <div className="flex flex-wrap items-center gap-1.5">
@@ -112,8 +112,8 @@ export function SQLLab() {
                 onClick={() => handleSelectPreset(preset)}
                 className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
                   selectedPreset.id === preset.id
-                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                    : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+                    ? theme === 'dark' ? 'bg-umber text-silver border border-cedar font-bold' : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
+                    : theme === 'dark' ? 'text-slate-400 hover:text-silver hover:bg-umber/50' : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {preset.name}
@@ -151,7 +151,7 @@ export function SQLLab() {
                 onChange={(e) => setCustomQuery(e.target.value)}
                 className={`w-full rounded-xl border px-4 py-3 text-xs font-mono transition-all ${
                   theme === 'dark'
-                    ? 'border-slate-800 bg-slate-900 text-cyan-300 focus:border-cyan-400'
+                    ? 'border-divider bg-umber/50 text-silver focus:border-cedar'
                     : 'border-slate-300 bg-slate-50 text-slate-900 focus:border-cyan-600'
                 }`}
               />
@@ -159,7 +159,11 @@ export function SQLLab() {
             <button
               onClick={handleRunQuery}
               disabled={isExecuting}
-              className="flex items-center justify-center gap-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-5 py-3 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
+              className={`flex items-center justify-center gap-2 rounded-xl border px-5 py-3 text-xs font-bold transition-all cursor-pointer disabled:opacity-50 ${
+                theme === 'dark'
+                  ? 'bg-umber border-cedar text-silver hover:bg-mocha shadow-md'
+                  : 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+              }`}
             >
               {isExecuting ? (
                 <>
@@ -168,7 +172,7 @@ export function SQLLab() {
                 </>
               ) : (
                 <>
-                  <Play className="h-3.5 w-3.5 fill-cyan-400" />
+                  <Play className="h-3.5 w-3.5 fill-current" />
                   <span>Run Query</span>
                 </>
               )}
@@ -176,15 +180,17 @@ export function SQLLab() {
           </div>
 
           {/* Results Table & Telemetry */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-200 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 text-slate-400">
+          <div className={`rounded-xl border p-4 font-mono text-xs space-y-3 ${
+            theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-800 bg-slate-950 text-slate-200'
+          }`}>
+            <div className={`flex items-center justify-between border-b pb-2.5 ${theme === 'dark' ? 'border-divider text-slate-400' : 'border-slate-800 text-slate-400'}`}>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                 <span className="text-emerald-400 font-bold">Query Execution Completed</span>
                 <span>•</span>
-                <span className="text-cyan-400">{lastExecutionTime}ms execution speed</span>
+                <span className={theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}>{lastExecutionTime}ms execution speed</span>
               </div>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-slate-400">
                 {isIndexed ? '⚡ B-Tree Scan' : '⚠️ Sequential Table Scan'}
               </span>
             </div>
@@ -193,13 +199,13 @@ export function SQLLab() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-[11px]">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-500">
+                  <tr className={`border-b text-slate-400 ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
                     {Object.keys(selectedPreset.rows[0] || {}).map((col) => (
                       <th key={col} className="pb-2 font-bold uppercase">{col}</th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tbody className={`divide-y text-silver ${theme === 'dark' ? 'divide-divider' : 'divide-slate-800/60'}`}>
                   {selectedPreset.rows.map((row, idx) => (
                     <tr key={idx}>
                       {Object.values(row).map((val, i) => (
