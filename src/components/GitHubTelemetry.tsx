@@ -93,7 +93,7 @@ export function GitHubTelemetry() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}`}>
+            <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-600'}`}>
               Dynamic GitHub API Telemetry • @sandyddeveloper
             </span>
             <span className="rounded-md bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400 font-mono flex items-center gap-1">
@@ -101,7 +101,7 @@ export function GitHubTelemetry() {
               100% LIVE DATA
             </span>
           </div>
-          <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+          <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
             Real GitHub Activity & Commit Feed
           </h2>
         </div>
@@ -109,7 +109,7 @@ export function GitHubTelemetry() {
         <button
           onClick={fetchLiveGitHubData}
           disabled={loading}
-          className="flex items-center gap-1.5 text-xs font-mono text-cyan-400 hover:underline cursor-pointer disabled:opacity-50"
+          className={`flex items-center gap-1.5 text-xs font-mono hover:underline cursor-pointer disabled:opacity-50 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}
         >
           <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
           <span>Sync Live API</span>
@@ -120,39 +120,41 @@ export function GitHubTelemetry() {
       <div className="grid gap-5 md:grid-cols-12">
         {/* User Dynamic Profile & Live Activity Card (4 Cols) */}
         <div className={`md:col-span-4 flex flex-col justify-between rounded-2xl border p-6 shadow-sm backdrop-blur-xl transition-all ${
-          theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-white'
+          theme === 'dark' ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40' : 'border-slate-200 bg-white'
         }`}>
           {loading ? (
             <div className="py-12 text-center text-xs font-mono text-slate-400 space-y-2">
-              <RefreshCw className="h-5 w-5 animate-spin text-cyan-400 mx-auto" />
+              <RefreshCw className="h-5 w-5 animate-spin text-amber-200 mx-auto" />
               <p>Fetching Live GitHub API Data...</p>
             </div>
           ) : user ? (
             <div className="space-y-5">
               {/* User Avatar & Name */}
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/10 border-2 border-cyan-400/40 text-cyan-400 shadow-sm shadow-cyan-500/20">
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${
+                  theme === 'dark' ? 'bg-umber border-2 border-cedar text-silver' : 'bg-cyan-500/10 border-2 border-cyan-400/40 text-cyan-400'
+                }`}>
                   <GithubIcon className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold">{user.name || user.login}</h3>
-                  <a href={user.html_url} target="_blank" rel="noreferrer" className="text-xs font-mono text-cyan-400 hover:underline">
+                  <h3 className="text-sm font-bold text-silver">{user.name || user.login}</h3>
+                  <a href={user.html_url} target="_blank" rel="noreferrer" className={`text-xs font-mono hover:underline ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>
                     @{user.login}
                   </a>
                 </div>
               </div>
 
               {user.bio && (
-                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
                   {user.bio}
                 </p>
               )}
 
               {/* Dynamic GitHub Metrics */}
-              <div className="space-y-2.5 pt-3 border-t border-slate-800 font-mono text-xs">
+              <div className={`space-y-2.5 pt-3 border-t font-mono text-xs ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Public Repositories:</span>
-                  <span className="font-bold text-cyan-400">{user.public_repos} Repos</span>
+                  <span className={`font-bold ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>{user.public_repos} Repos</span>
                 </div>
 
                 <div className="flex items-center justify-between">
@@ -174,10 +176,10 @@ export function GitHubTelemetry() {
               </div>
 
               {/* Heatmap Matrix dynamically derived from commit timestamps */}
-              <div className="space-y-2 pt-3 border-t border-slate-800">
+              <div className={`space-y-2 pt-3 border-t ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
                 <div className="flex items-center justify-between text-xs font-mono mb-1">
                   <span className="text-slate-400 flex items-center gap-1">
-                    <Activity className="h-3.5 w-3.5 text-cyan-400" /> Recent Event Matrix
+                    <Activity className={`h-3.5 w-3.5 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} /> Recent Event Matrix
                   </span>
                   <span className="text-emerald-400 font-bold">{commitList.length} Active</span>
                 </div>
@@ -191,7 +193,7 @@ export function GitHubTelemetry() {
                         className={`h-5 rounded-md transition-all ${
                           hasEvent
                             ? 'bg-emerald-400 shadow-sm shadow-emerald-400/40 scale-105'
-                            : 'bg-slate-800/60'
+                            : theme === 'dark' ? 'bg-umber/60' : 'bg-slate-800/60'
                         }`}
                         title={hasEvent ? `Live GitHub Event #${idx + 1}` : 'No public activity'}
                       />
@@ -201,37 +203,37 @@ export function GitHubTelemetry() {
               </div>
             </div>
           ) : (
-            <p className="text-xs font-mono text-slate-500">{error || 'No profile data'}</p>
+            <p className="text-xs font-mono text-slate-400">{error || 'No profile data'}</p>
           )}
 
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+          <div className={`mt-4 pt-3 border-t flex items-center justify-between text-[11px] font-mono text-slate-400 ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
             <span className="flex items-center gap-1 text-emerald-400">
               <ShieldCheck className="h-3.5 w-3.5" /> API Dynamic
             </span>
-            <span className="text-slate-500">GitHub v3</span>
+            <span className="text-slate-400">GitHub v3</span>
           </div>
         </div>
 
         {/* Real Live Commit Stream (8 Cols) */}
         <div className={`md:col-span-8 flex flex-col justify-between rounded-2xl border p-6 shadow-sm backdrop-blur-xl transition-all ${
-          theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-white'
+          theme === 'dark' ? 'border-divider bg-darkBg text-silver shadow-lg shadow-black/40' : 'border-slate-200 bg-white'
         }`}>
           <div>
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+            <div className={`flex items-center justify-between border-b pb-3 mb-4 ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
               <div className="flex items-center gap-2">
-                <GitCommit className="h-4 w-4 text-cyan-400" />
-                <h3 className="text-sm font-bold">Dynamic Live Commit & Event Stream</h3>
+                <GitCommit className={`h-4 w-4 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} />
+                <h3 className="text-sm font-bold text-silver">Dynamic Live Commit & Event Stream</h3>
               </div>
-              <span className="text-[10px] font-mono text-slate-500">Real-Time GitHub Events</span>
+              <span className="text-[10px] font-mono text-slate-400">Real-Time GitHub Events</span>
             </div>
 
             {loading ? (
               <div className="py-16 text-center text-xs font-mono text-slate-400 space-y-2">
-                <RefreshCw className="h-5 w-5 animate-spin text-cyan-400 mx-auto" />
+                <RefreshCw className="h-5 w-5 animate-spin text-amber-200 mx-auto" />
                 <p>Loading Live Commits from API...</p>
               </div>
             ) : commitList.length === 0 ? (
-              <div className="py-12 text-center text-xs font-mono text-slate-500">
+              <div className="py-12 text-center text-xs font-mono text-slate-400">
                 No recent public commit events found on GitHub.
               </div>
             ) : (
@@ -241,21 +243,23 @@ export function GitHubTelemetry() {
                     key={c.id}
                     className={`flex items-center justify-between rounded-xl border p-3 font-mono transition-all ${
                       theme === 'dark'
-                        ? 'border-slate-800/80 bg-slate-900/40 hover:border-cyan-500/30'
+                        ? 'border-divider bg-umber/40 hover:border-cedar hover:bg-umber/70'
                         : 'border-slate-200 bg-slate-50 hover:border-cyan-500/30'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="rounded-md bg-cyan-500/10 border border-cyan-500/30 px-2 py-1 text-[11px] font-bold text-cyan-400">
+                      <span className={`rounded-md px-2 py-1 text-[11px] font-bold ${
+                        theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
+                      }`}>
                         {c.sha}
                       </span>
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+                          <span className={`text-xs font-bold ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
                             {c.repoName}
                           </span>
-                          <span className="flex items-center gap-0.5 text-[10px] text-slate-500">
-                            <GitBranch className="h-3 w-3 text-cyan-400" /> {c.branch}
+                          <span className="flex items-center gap-0.5 text-[10px] text-slate-400">
+                            <GitBranch className={`h-3 w-3 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`} /> {c.branch}
                           </span>
                         </div>
                         <span className="text-[10px] text-slate-400 block mt-0.5">
@@ -268,7 +272,7 @@ export function GitHubTelemetry() {
                       <span className="text-[11px] font-semibold text-emerald-400 flex items-center gap-1 justify-end">
                         <CheckCircle2 className="h-3 w-3" /> Live Event
                       </span>
-                      <span className="text-[10px] text-slate-500 block">{c.date}</span>
+                      <span className="text-[10px] text-slate-400 block">{c.date}</span>
                     </div>
                   </div>
                 ))}
@@ -276,13 +280,13 @@ export function GitHubTelemetry() {
             )}
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400">
+          <div className={`mt-4 pt-3 border-t flex items-center justify-between text-[11px] font-mono text-slate-400 ${theme === 'dark' ? 'border-divider' : 'border-slate-800'}`}>
             <span>Fetched directly via GitHub REST API</span>
             <a
               href="https://github.com/sandyddeveloper?tab=overview"
               target="_blank"
               rel="noreferrer"
-              className="text-cyan-400 hover:underline flex items-center gap-1"
+              className={`hover:underline flex items-center gap-1 ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}
             >
               View Profile on GitHub →
             </a>

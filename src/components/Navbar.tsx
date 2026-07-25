@@ -46,10 +46,10 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
         className={`mx-auto flex w-full max-w-[1600px] items-center justify-between rounded-full border px-5 sm:px-8 py-2.5 backdrop-blur-xl transition-all duration-300 pointer-events-auto shadow-sm ${
           isScrolled
             ? theme === 'dark'
-              ? 'border-slate-800/80 bg-slate-950/90 shadow-slate-950/50'
+              ? 'border-divider bg-darkBg/95 shadow-lg shadow-black/50'
               : 'border-slate-200 bg-white/90 shadow-slate-200/50'
             : theme === 'dark'
-            ? 'border-slate-800/60 bg-slate-950/70'
+            ? 'border-divider/70 bg-darkBg/80'
             : 'border-slate-200/60 bg-white/80'
         }`}
       >
@@ -58,12 +58,12 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
           onClick={() => scrollToSection('#')}
           className="flex items-center gap-2 group cursor-pointer text-left"
         >
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-800 text-cyan-400 border border-slate-700">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-umber text-silver border border-cedar">
             <Terminal className="h-3.5 w-3.5" />
           </div>
           <div className="flex items-center gap-1.5">
-            <span className={`text-sm font-bold tracking-tight transition-colors ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-              Santhu<span className="text-cyan-400">.dev</span>
+            <span className={`text-sm font-bold tracking-tight transition-colors ${theme === 'dark' ? 'text-silver' : 'text-slate-900'}`}>
+              Santhu<span className="text-amber-200/80">.dev</span>
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" title="Available for work" />
           </div>
@@ -77,7 +77,7 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
               onClick={() => scrollToSection(link.href)}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
                 theme === 'dark'
-                  ? 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  ? 'text-slate-300 hover:text-silver hover:bg-umber/70'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
               }`}
             >
@@ -93,13 +93,13 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
             onClick={onOpenCmdPalette}
             className={`hidden sm:flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-mono transition-all cursor-pointer ${
               theme === 'dark'
-                ? 'border-slate-800 bg-slate-900 text-slate-400 hover:text-white hover:border-slate-700'
+                ? 'border-divider bg-umber text-silver hover:bg-mocha hover:border-cedar'
                 : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-slate-900'
             }`}
             title="Open Command Search (Cmd + K)"
           >
-            <Search className="h-3 w-3 text-cyan-400" />
-            <kbd className="text-[10px] text-slate-500 font-sans">⌘K</kbd>
+            <Search className="h-3 w-3 text-amber-200/80" />
+            <kbd className="text-[10px] text-slate-400 font-sans">⌘K</kbd>
           </button>
 
           {/* Theme Switcher */}
@@ -107,18 +107,22 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
             onClick={toggleTheme}
             className={`flex items-center justify-center rounded-full border p-1.5 transition-all cursor-pointer ${
               theme === 'dark'
-                ? 'border-slate-800 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-white'
+                ? 'border-divider bg-umber text-silver hover:bg-mocha'
                 : 'border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100'
             }`}
             title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
           >
-            {theme === 'dark' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            {theme === 'dark' ? <Sun className="h-3.5 w-3.5 text-amber-200" /> : <Moon className="h-3.5 w-3.5" />}
           </button>
 
           {/* Minimal Contact Button */}
           <button
             onClick={() => scrollToSection('#contact')}
-            className="flex items-center gap-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 px-3.5 py-1 text-xs font-semibold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer"
+            className={`flex items-center gap-1 rounded-full border px-3.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
+              theme === 'dark'
+                ? 'bg-umber border-cedar text-silver hover:bg-mocha'
+                : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20'
+            }`}
           >
             <Send className="h-3 w-3" />
             <span>Hire Me</span>
@@ -129,7 +133,7 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`flex md:hidden rounded-full border p-1.5 transition-colors ${
               theme === 'dark'
-                ? 'border-slate-800 bg-slate-900 text-slate-300'
+                ? 'border-cedar bg-umber text-silver'
                 : 'border-slate-200 bg-white text-slate-700'
             }`}
             aria-label="Toggle Navigation"
@@ -147,7 +151,7 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             className={`md:hidden mx-auto w-full max-w-[1600px] mt-2 rounded-2xl border backdrop-blur-2xl p-4 shadow-xl pointer-events-auto transition-colors ${
-              theme === 'dark' ? 'border-slate-800 bg-slate-950/95 text-slate-100' : 'border-slate-200 bg-white/95 text-slate-900'
+              theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-white/95 text-slate-900'
             }`}
           >
             <nav className="flex flex-col gap-1.5">
@@ -156,13 +160,15 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
                   setMobileMenuOpen(false);
                   if (onOpenCmdPalette) onOpenCmdPalette();
                 }}
-                className="flex items-center justify-between rounded-xl bg-slate-900 border border-slate-800 px-3 py-2 text-xs font-mono text-cyan-400 mb-1"
+                className={`flex items-center justify-between rounded-xl border px-3 py-2 text-xs font-mono mb-1 ${
+                  theme === 'dark' ? 'border-cedar bg-umber text-silver' : 'bg-slate-900 border border-slate-800 text-cyan-400'
+                }`}
               >
                 <div className="flex items-center gap-2">
                   <Search className="h-3.5 w-3.5" />
                   <span>Search Commands</span>
                 </div>
-                <kbd className="text-[10px] text-slate-500 font-sans">⌘K</kbd>
+                <kbd className={`text-[10px] font-sans ${theme === 'dark' ? 'text-amber-200' : 'text-slate-500'}`}>⌘K</kbd>
               </button>
 
               {NAV_LINKS.map((link) => (
@@ -171,7 +177,7 @@ export function Navbar({ onOpenCmdPalette }: { onOpenCmdPalette?: () => void }) 
                   onClick={() => scrollToSection(link.href)}
                   className={`rounded-lg px-3 py-2 text-left text-xs font-medium transition-all ${
                     theme === 'dark'
-                      ? 'text-slate-300 hover:bg-slate-900 hover:text-white'
+                      ? 'text-slate-300 hover:bg-mocha hover:text-silver'
                       : 'text-slate-700 hover:bg-slate-100'
                   }`}
                 >

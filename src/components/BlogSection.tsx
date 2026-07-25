@@ -125,13 +125,15 @@ export function BlogSection() {
             key={art.id}
             className={`group flex flex-col justify-between rounded-2xl border p-6 transition-all ${
               theme === 'dark'
-                ? 'border-slate-800/80 bg-slate-950/60 hover:border-cyan-500/40 text-slate-100'
+                ? 'border-divider bg-darkBg/90 hover:bg-umber/60 hover:border-cedar text-silver shadow-lg shadow-black/40'
                 : 'border-slate-200 bg-white hover:border-cyan-500/40 text-slate-900'
             }`}
           >
             <div>
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3">
-                <span className="rounded-md bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 font-bold text-cyan-400">
+                <span className={`rounded-md px-2 py-0.5 font-bold ${
+                  theme === 'dark' ? 'bg-umber border border-cedar text-silver' : 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400'
+                }`}>
                   {art.category}
                 </span>
                 <span>{art.readTime}</span>
@@ -166,7 +168,7 @@ export function BlogSection() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveArticle(null)}
-              className="fixed inset-0 bg-slate-950/80 backdrop-blur-md"
+              className="fixed inset-0 bg-darkBg/80 backdrop-blur-md"
             />
 
             <motion.div
@@ -174,15 +176,15 @@ export function BlogSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className={`relative z-10 w-full max-w-2xl rounded-2xl border shadow-xl overflow-hidden backdrop-blur-2xl transition-all max-h-[85vh] flex flex-col ${
-                theme === 'dark' ? 'border-slate-800 bg-slate-950/95 text-slate-100' : 'border-slate-200 bg-white/95 text-slate-900'
+                theme === 'dark' ? 'border-divider bg-darkBg text-silver' : 'border-slate-200 bg-white/95 text-slate-900'
               }`}
             >
-              <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+              <div className={`flex items-center justify-between border-b px-6 py-4 ${theme === 'dark' ? 'border-divider bg-umber/30' : 'border-slate-800'}`}>
                 <div>
-                  <span className="text-[10px] font-mono text-cyan-400 uppercase font-bold">{activeArticle.category} • {activeArticle.readTime}</span>
-                  <h3 className="text-lg font-bold mt-1">{activeArticle.title}</h3>
+                  <span className={`text-[10px] font-mono uppercase font-bold ${theme === 'dark' ? 'text-amber-200' : 'text-cyan-400'}`}>{activeArticle.category} • {activeArticle.readTime}</span>
+                  <h3 className="text-lg font-bold mt-1 text-silver">{activeArticle.title}</h3>
                 </div>
-                <button onClick={() => setActiveArticle(null)} className="rounded-lg p-1.5 text-slate-400 hover:text-white">
+                <button onClick={() => setActiveArticle(null)} className="rounded-lg p-1.5 text-slate-400 hover:text-silver">
                   <X className="h-4 w-4" />
                 </button>
               </div>

@@ -25,7 +25,7 @@ export function BackgroundCanvas() {
           top: `${mousePos.y - 250}px`,
           background:
             theme === 'dark'
-              ? 'radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, transparent 70%)'
+              ? 'radial-gradient(circle, rgba(75, 58, 38, 0.35) 0%, transparent 70%)'
               : 'radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%)',
         }}
       />
@@ -36,7 +36,7 @@ export function BackgroundCanvas() {
         style={{
           backgroundImage:
             theme === 'dark'
-              ? 'radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px)'
+              ? 'radial-gradient(rgba(224, 221, 221, 0.15) 1px, transparent 1px)'
               : 'radial-gradient(rgba(15, 23, 42, 0.12) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
