@@ -158,8 +158,8 @@ export function SystemDesignCanvas() {
           </div>
 
           {/* Telemetry Log Footer */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-300 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-emerald-400 font-bold">Topology Status: Optimal</span>
               <span className="text-slate-600">•</span>

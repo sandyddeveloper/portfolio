@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Layers, Database, Shield, Zap, CheckCircle2, Key, Terminal, Eye } from 'lucide-react';
+import { X, ExternalLink, Layers, Database, Shield, Zap, CheckCircle2, Key, SquareTerminal, Eye } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -222,7 +222,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               <div className="space-y-4 font-mono text-xs">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <span className="text-cyan-400 font-bold flex items-center gap-1.5">
-                    <Terminal className="h-4 w-4" /> Live System Payload Stream Video Intro
+                    <SquareTerminal className="h-4 w-4" /> Live System Payload Stream Video Intro
                   </span>
                   <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md">
                     ● STREAM ACTIVE

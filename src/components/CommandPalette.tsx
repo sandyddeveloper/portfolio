@@ -7,7 +7,7 @@ import {
   Command,
   Sun,
   Moon,
-  Terminal,
+  SquareTerminal,
   Layers,
   Code2,
   FileText,
@@ -53,7 +53,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       id: 'sql-lab',
       title: 'Run Live SQL Query & Index Performance Sandbox',
       category: 'Database & Systems',
-      icon: Terminal,
+      icon: SquareTerminal,
       action: () => {
         onClose();
         document.querySelector('#sql-lab')?.scrollIntoView({ behavior: 'smooth' });

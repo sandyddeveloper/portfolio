@@ -147,6 +147,7 @@ export function SQLLab() {
             <div className="flex-1 relative">
               <input
                 type="text"
+                aria-label="SQL Query Input"
                 value={customQuery}
                 onChange={(e) => setCustomQuery(e.target.value)}
                 className={`w-full rounded-xl border px-4 py-3 text-xs font-mono transition-all ${
@@ -177,10 +178,10 @@ export function SQLLab() {
 
           {/* Results Table & Telemetry */}
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-200 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 text-slate-400">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                <span className="text-emerald-400 font-bold">Query Execution Completed</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-800 pb-2.5 text-slate-400 gap-2 sm:gap-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <span className="text-emerald-400 font-bold">Query Completed</span>
                 <span>•</span>
                 <span className="text-cyan-400">{lastExecutionTime}ms execution speed</span>
               </div>

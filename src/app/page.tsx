@@ -1,22 +1,53 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { ThemeProvider, useTheme } from '@/context/ThemeContext';
 import { ToastProvider, useToast } from '@/components/Toast';
 import { Navbar } from '@/components/Navbar';
 import { WalkingBot } from '@/components/WalkingBot';
 import { SplashScreen } from '@/components/SplashScreen';
 import { SystemPlayground } from '@/components/SystemPlayground';
-import { SQLLab } from '@/components/SQLLab';
-import { SystemDesignCanvas } from '@/components/SystemDesignCanvas';
-import { BlogSection } from '@/components/BlogSection';
-import { GitHubTelemetry } from '@/components/GitHubTelemetry';
 import { ProjectModal, ProjectData } from '@/components/ProjectModal';
 import { BackgroundCanvas } from '@/components/BackgroundCanvas';
 import { CommandPalette } from '@/components/CommandPalette';
 import { Footer } from '@/components/Footer';
+import { HeroAvatarVoiceCard } from '@/components/HeroAvatarVoiceCard';
+import { UniqueContactSection } from '@/components/UniqueContactSection';
+import { SectionDivider } from '@/components/SectionDivider';
+
+// Lazy-loaded heavy interactive components for sub-second FCP/LCP performance
+const SQLLab = dynamic(() => import('@/components/SQLLab').then((m) => m.SQLLab), {
+  ssr: false,
+  loading: () => <div className="h-96 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
+
+const SystemDesignCanvas = dynamic(() => import('@/components/SystemDesignCanvas').then((m) => m.SystemDesignCanvas), {
+  ssr: false,
+  loading: () => <div className="h-96 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
+
+const InteractiveTechMatrix = dynamic(() => import('@/components/InteractiveTechMatrix').then((m) => m.InteractiveTechMatrix), {
+  ssr: false,
+  loading: () => <div className="h-96 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
+
+const ExperienceTimeline = dynamic(() => import('@/components/ExperienceTimeline').then((m) => m.ExperienceTimeline), {
+  ssr: false,
+  loading: () => <div className="h-64 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
+
+const BlogSection = dynamic(() => import('@/components/BlogSection').then((m) => m.BlogSection), {
+  ssr: false,
+  loading: () => <div className="h-64 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
+
+const GitHubTelemetry = dynamic(() => import('@/components/GitHubTelemetry').then((m) => m.GitHubTelemetry), {
+  ssr: false,
+  loading: () => <div className="h-64 w-full rounded-3xl border border-slate-800 bg-slate-950/60 animate-pulse" />
+});
 import {
-  Terminal,
+  SquareTerminal,
   Zap,
   Code2,
   Database,
@@ -32,8 +63,68 @@ import {
   Search,
   Layers,
   Key,
-  ArrowRight
+  ArrowRight,
+  ChevronDown,
+  Briefcase,
+  BookOpen,
+  Radio
 } from 'lucide-react';
+
+function CollapsibleMobileSection({
+  id,
+  title,
+  badge,
+  icon,
+  children,
+  defaultOpenOnMobile = false,
+}: {
+  id?: string;
+  title: string;
+  badge?: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+  defaultOpenOnMobile?: boolean;
+}) {
+  const [isOpenMobile, setIsOpenMobile] = useState(defaultOpenOnMobile);
+
+  return (
+    <div id={id} className="scroll-mt-24 space-y-3">
+      {/* Mobile Accordion Toggle Header (Visible on Mobile < md) */}
+      <div className="md:hidden flex items-center justify-between p-3.5 rounded-2xl border border-slate-800 bg-slate-950/80 shadow-md">
+        <button
+          onClick={() => setIsOpenMobile(!isOpenMobile)}
+          className="flex-1 flex items-center justify-between text-left cursor-pointer gap-2"
+        >
+          <div className="flex items-center gap-2.5">
+            {icon}
+            <div>
+              {badge && (
+                <span className="text-[10px] font-mono font-bold text-cyan-400 block uppercase tracking-wider">
+                  {badge}
+                </span>
+              )}
+              <h3 className="text-xs font-bold text-white">{title}</h3>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-[9px] font-mono font-semibold text-slate-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-md">
+              {isOpenMobile ? 'TAP TO CLOSE ✕' : 'TAP TO VIEW ▾'}
+            </span>
+            <ChevronDown
+              className={`h-4 w-4 text-cyan-400 transition-transform duration-300 ${isOpenMobile ? 'rotate-180' : ''
+                }`}
+            />
+          </div>
+        </button>
+      </div>
+
+      {/* Content Body: Collapsible on mobile < md, ALWAYS EXPANDED on md+ */}
+      <div className={isOpenMobile ? 'block' : 'hidden md:block'}>
+        {children}
+      </div>
+    </div>
+  );
+}
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -170,94 +261,84 @@ const PROJECTS_DATA: ProjectData[] = [
   }
 ];
 
-// Full-Stack Skills Categories
+// Full-Stack & Backend Skills Matrix (DataMoo.ai & Modern Stack)
 const SKILLS_DATA = [
   {
-    category: 'Frontend Engineering',
-    color: 'from-cyan-500 to-blue-500',
+    category: 'Backend & Scalable APIs',
+    color: 'from-blue-500 to-cyan-500',
     skills: [
-      { name: 'React 19 / Next.js 16', level: 96 },
-      { name: 'TypeScript', level: 94 },
-      { name: 'Tailwind CSS & Clean Systems', level: 98 },
-      { name: 'Framer Motion Animations', level: 92 },
-      { name: 'WebSockets & Real-Time UI', level: 90 },
+      { name: 'Python & Django / Django REST (DRF)', level: 96 },
+      { name: 'Node.js, Express & NestJS', level: 92 },
+      { name: 'PostgreSQL (psql), MySQL & MongoDB', level: 95 },
+      { name: 'Flask, REST APIs & JWT Security', level: 90 },
+      { name: 'Gunicorn & Nginx Server Routing', level: 88 },
     ]
   },
   {
-    category: 'Backend & Microservices',
-    color: 'from-blue-500 to-indigo-500',
+    category: 'Frontend & UI Systems',
+    color: 'from-cyan-500 to-indigo-500',
     skills: [
-      { name: 'Node.js & Express', level: 95 },
-      { name: 'Python (FastAPI / Django)', level: 88 },
-      { name: 'REST & GraphQL APIs', level: 94 },
-      { name: 'Next.js Server Actions', level: 92 },
-      { name: 'gRPC & RPC Protocols', level: 85 },
+      { name: 'React 19 & Next.js 16 (App Router)', level: 95 },
+      { name: 'TypeScript & JavaScript (HTML5/CSS3)', level: 96 },
+      { name: 'Tailwind CSS & MUI (Material UI)', level: 94 },
+      { name: 'Vite, Three.js & Chart.js', level: 88 },
+      { name: 'Bootstrap & Responsive Design', level: 92 },
     ]
   },
   {
-    category: 'Databases & Caching',
+    category: 'DevOps, Cloud & Infrastructure',
     color: 'from-indigo-500 to-purple-500',
     skills: [
-      { name: 'PostgreSQL & SQL Tuning', level: 92 },
-      { name: 'Redis Enterprise Cache', level: 94 },
-      { name: 'Prisma ORM & Schema Design', level: 96 },
-      { name: 'MongoDB & NoSQL Stores', level: 88 },
+      { name: 'Docker Containerization & Compose', level: 92 },
+      { name: 'AWS, Render, Netlify & Vercel', level: 90 },
+      { name: 'Domain Setup, SSL & Nginx Proxy', level: 94 },
+      { name: 'Git, GitHub, Postman & NPM', level: 96 },
     ]
   },
   {
-    category: 'DevOps & Cloud Infrastructure',
+    category: 'Domain & Emerging Tech',
     color: 'from-purple-500 to-pink-500',
     skills: [
-      { name: 'Docker & Containerization', level: 90 },
-      { name: 'AWS (EC2, S3, Lambda)', level: 86 },
-      { name: 'Vercel Edge Network', level: 95 },
-      { name: 'CI/CD Pipelines (GitHub Actions)', level: 92 },
-    ]
-  },
-  {
-    category: 'Architecture & Security',
-    color: 'from-pink-500 to-rose-500',
-    skills: [
-      { name: 'System Design & Scalability', level: 94 },
-      { name: 'OAuth 2.0 / JWT Security', level: 92 },
-      { name: 'Test-Driven Development (TDD)', level: 90 },
-      { name: 'Web Performance Optimization', level: 96 },
+      { name: 'Fintech Systems & Mutual Funds Domain', level: 95 },
+      { name: 'RAG AI (Retrieval-Augmented Gen)', level: 86 },
+      { name: 'LLMs, Vector Embeddings & Agents', level: 84 },
+      { name: 'Figma, Canva & Design Workflows', level: 88 },
     ]
   }
 ];
 
-// Career Timeline
+// Career & Experience Timeline
 const EXPERIENCE_DATA = [
   {
-    role: 'Senior Full-Stack Engineer',
-    company: 'NextGen Cloud Systems',
-    period: '2024 - Present',
-    description: 'Leading architectural design and development of enterprise web platforms and distributed microservices.',
+    role: 'Backend Developer',
+    company: 'DataMoo.ai',
+    period: 'Present',
+    description: 'Engineering scalable backend systems, Django REST APIs, and high-performance production microservices for Fintech (Mutual Funds) platforms.',
     achievements: [
-      'Architected Next.js micro-frontend platform serving 500k+ active monthly users',
-      'Reduced API latency from 180ms to 32ms by introducing Redis caching & query optimizations',
-      'Mentored junior engineers and established automated CI/CD pipeline standards'
+      'Architected high-concurrency Django & PostgreSQL backend services for Fintech mutual fund transaction engines',
+      'Engineered scalable REST APIs with JWT authentication, role-based security, and sub-30ms latency benchmarks',
+      'Deployed production workloads using Docker, Gunicorn, Nginx, and AWS infrastructure with zero-downtime pipelines'
     ]
   },
   {
-    role: 'Full-Stack Developer',
-    company: 'Apex Tech Solutions',
-    period: '2022 - 2024',
-    description: 'Built scalable web applications, REST/GraphQL APIs, and customer dashboards from ground up.',
+    role: 'Full-Stack & Systems Engineer',
+    company: 'Fintech & Production Systems',
+    period: '2023 - 2024',
+    description: 'Developed modern web applications, distributed REST APIs, and custom UI component libraries.',
     achievements: [
-      'Built real-time analytics dashboard with React, WebSockets, and Node.js',
-      'Refactored legacy monolith into modular Python FastAPI microservices',
-      'Implemented OAuth2 auth system with role-based access control (RBAC)'
+      'Built reactive frontend dashboards using React, Next.js 16, TypeScript, Vite, and Tailwind CSS',
+      'Orchestrated cloud deployments across Vercel, Render, Netlify, and custom domain SSL configurations',
+      'Integrated database query optimization for PostgreSQL, MySQL, and MongoDB data stores'
     ]
   },
   {
-    role: 'Frontend & UI Specialist',
-    company: 'Creative Web Labs',
-    period: '2020 - 2022',
-    description: 'Designed and crafted high-conversion user interfaces, accessible design systems, and responsive web apps.',
+    role: 'AI & RAG Systems Engineer',
+    company: 'Current Learning & Research Focus',
+    period: 'Active Focus',
+    description: 'Exploring Retrieval-Augmented Generation (RAG), vector embeddings, and LLM autonomous AI agent systems.',
     achievements: [
-      'Created custom design system library used across 12 client products',
-      'Achieved perfect 100/100 Lighthouse performance and accessibility scores'
+      'Engineering RAG AI knowledge retrieval pipelines utilizing vector embeddings and semantic similarity search',
+      'Constructing intelligent agent workflows for automated codebase indexing and contextual querying'
     ]
   }
 ];
@@ -363,9 +444,8 @@ function PortfolioContent() {
   };
 
   return (
-    <main className={`relative min-h-screen transition-colors duration-300 pb-0 pt-28 ${
-      theme === 'dark' ? 'text-slate-100' : 'text-slate-900'
-    }`}>
+    <main className={`relative min-h-screen transition-colors duration-300 pb-0 pt-28 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-900'
+      }`}>
       {/* Subtle Background Canvas */}
       <BackgroundCanvas />
 
@@ -378,256 +458,212 @@ function PortfolioContent() {
       {/* Floating Minimal Glass Navbar */}
       <Navbar onOpenCmdPalette={() => setIsCmdPaletteOpen(true)} />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-[1600px] flex-col gap-24 px-4 sm:px-8 lg:px-12 xl:px-16">
-        {/* MINIMALIST HERO BENTO GRID */}
-        <section className="pt-4">
-          <div className="grid gap-4 lg:grid-cols-12">
-            {/* Main Hero Card (8 Cols) */}
-            <div className={`lg:col-span-8 flex flex-col justify-between rounded-2xl border p-8 md:p-10 shadow-sm backdrop-blur-xl transition-all ${
-              theme === 'dark'
-                ? 'border-slate-800/80 bg-slate-950/70'
-                : 'border-slate-200 bg-white/90'
-            }`}>
-              <div className="space-y-5">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1600px] 2xl:max-w-[1800px] 3xl:max-w-[2200px] 4xl:max-w-[2800px] flex-col gap-16 sm:gap-20 lg:gap-24 px-3 xs:px-4 sm:px-8 lg:px-12 xl:px-16">
+        {/* CLEAN SINGLE-SCREEN HERO SECTION */}
+        <section className="pt-4 sm:pt-6">
+          <div className="grid gap-6 lg:grid-cols-12 items-stretch">
+            {/* Main Hero Headline (7 Cols - Merged with Background) */}
+            <div className="lg:col-span-7 flex flex-col justify-between py-2 sm:py-4">
+              <div className="space-y-6">
                 {/* Minimal Status Badge */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-[11px] font-semibold text-emerald-400 tracking-wide">
-                    Available for Full-Time Roles & Architecture
+                <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1.5">
+                  <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="text-xs font-semibold text-cyan-400 tracking-wide font-mono">
+                    Backend Developer @ DataMoo.ai | Fintech & Scalable APIs
                   </span>
                 </div>
 
                 {/* Main Headline */}
-                <h1 className={`text-4xl sm:text-5xl font-bold tracking-tight leading-[1.12] ${
-                  theme === 'dark' ? 'text-white' : 'text-slate-900'
-                }`}>
-                  Building <span className="text-cyan-400">scalable</span> full-stack systems and clean web apps.
+                <h1 className={`text-3xl xs:text-4xl sm:text-5xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-extrabold tracking-tight leading-[1.12] ${theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  }`}>
+                  Architecting <span className="text-cyan-400">scalable APIs</span> & high-performance backend systems.
                 </h1>
 
                 {/* Subtitle */}
-                <p className={`text-sm leading-relaxed max-w-xl ${
-                  theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
-                }`}>
-                  Full-Stack Engineer specialized in Next.js 16, TypeScript, Node.js, Python, and PostgreSQL. Delivering sub-30ms APIs, low-latency databases, and interface-first web experiences.
+                <p className={`text-sm sm:text-base leading-relaxed max-w-xl ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                  }`}>
+                  Software Developer at <strong>DataMoo.ai</strong> specialized in Python, Django REST Framework, PostgreSQL, Scalable Fintech (Mutual Funds) APIs, Docker, Next.js 16, and currently learning RAG AI Systems.
                 </p>
               </div>
 
               {/* CTAs */}
-              <div className="pt-6 flex flex-wrap items-center gap-3">
+              <div className="pt-6 flex flex-wrap items-center gap-3 border-t border-slate-800/60 mt-6">
+                <a
+                  href="#projects"
+                  className="flex items-center gap-2 rounded-2xl bg-cyan-500 border border-cyan-400 px-6 py-3 text-xs font-mono font-bold text-slate-950 hover:bg-cyan-400 transition-all cursor-pointer shadow-lg shadow-cyan-500/20"
+                >
+                  <Code2 className="h-4 w-4" />
+                  <span>View Selected Work</span>
+                </a>
+
                 <a
                   href="#sql-lab"
-                  className="flex items-center gap-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 px-5 py-2.5 text-xs font-semibold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer"
+                  className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-800 px-5 py-3 text-xs font-mono font-bold text-cyan-400 hover:border-cyan-500/40 transition-all cursor-pointer"
                 >
-                  <Terminal className="h-3.5 w-3.5" />
+                  <SquareTerminal className="h-4 w-4" />
                   <span>Launch SQL Lab</span>
                 </a>
 
                 <a
-                  href="#system-design"
-                  className="flex items-center gap-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 px-5 py-2.5 text-xs font-semibold text-blue-400 hover:bg-blue-500/20 transition-all cursor-pointer"
+                  href="#contact"
+                  className="flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/50 px-5 py-3 text-xs font-mono font-semibold text-slate-300 hover:text-white transition-all cursor-pointer"
                 >
-                  <Layers className="h-3.5 w-3.5" />
-                  <span>Architecture Builder</span>
+                  <Mail className="h-4 w-4 text-cyan-400" />
+                  <span>Contact Direct</span>
                 </a>
-
-                <button
-                  onClick={() => setIsCmdPaletteOpen(true)}
-                  className={`hidden sm:flex items-center gap-1.5 rounded-full border px-3.5 py-2.5 text-xs font-mono transition-all cursor-pointer ${
-                    theme === 'dark' ? 'border-slate-800 bg-slate-900 text-slate-400 hover:text-white' : 'border-slate-200 bg-slate-50 text-slate-600'
-                  }`}
-                >
-                  <Search className="h-3 w-3 text-cyan-400" />
-                  <span>⌘K</span>
-                </button>
               </div>
             </div>
 
-            {/* Minimal Terminal Card (4 Cols) */}
-            <div className={`lg:col-span-4 flex flex-col justify-between rounded-2xl border p-5 shadow-sm backdrop-blur-xl transition-all overflow-hidden ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-slate-900 text-slate-100'
-            }`}>
-              <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-                <div className="flex items-center gap-1.5">
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-                  <div className="h-2.5 w-2.5 rounded-full bg-slate-700" />
-                </div>
-                <span className="text-[10px] font-mono text-slate-500">santhu@node:~/fullstack</span>
-              </div>
-
-              <div className="py-4 font-mono text-[11px] text-cyan-300 space-y-2 leading-relaxed">
-                <p className="text-slate-400">{terminalText}</p>
-                <div className="text-emerald-400/90 space-y-0.5 text-[10px]">
-                  <p>✔ Next.js 16 App Router</p>
-                  <p>✔ Node.js & Python API gateway</p>
-                  <p>✔ Redis enterprise cache</p>
-                  <p>✔ PostgreSQL connection pool</p>
-                </div>
-                <div className="flex items-center gap-1 text-slate-400 text-[10px]">
-                  <span className="text-cyan-400">&gt;</span>
-                  <span>Ready for production</span>
-                </div>
-              </div>
-
-              <div className="border-t border-slate-800/80 pt-2.5 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                <button onClick={handleCopyEmail} className="flex items-center gap-1 text-cyan-400 hover:underline">
-                  <Mail className="h-3 w-3" /> Copy Email
-                </button>
-                <span>Full-Stack v2.4</span>
-              </div>
+            {/* Interactive Profile Photo & Voice Bio Avatar (5 Cols) */}
+            <div className="lg:col-span-5 flex flex-col">
+              <CollapsibleMobileSection
+                title="Interactive Voice Companion"
+                badge="VOICE BIO & COMPANION"
+                icon={<Radio className="h-4 w-4 text-cyan-400" />}
+              >
+                <HeroAvatarVoiceCard />
+              </CollapsibleMobileSection>
             </div>
+          </div>
 
-            {/* Sub Metric Cards (3 x 4 Cols) */}
-            <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
-            }`}>
-              <div className="flex items-center gap-3">
-                <Zap className="h-4 w-4 text-cyan-400" />
-                <div>
-                  <h3 className="text-xl font-bold font-mono text-cyan-400">Sub-32ms</h3>
-                  <p className="text-[11px] text-slate-400">Average API Latency Benchmark</p>
-                </div>
+          {/* Full-Width Telemetry & Metrics Strip */}
+          <div className="w-full  border-slate-800/60 mt-4 sm:mt-6">
+            <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 sm:p-5 rounded-2xl border transition-all ${theme === 'dark'
+              ? 'border-slate-800/80 bg-slate-950/60 backdrop-blur-md shadow-inner'
+              : 'border-slate-200 bg-white/80 backdrop-blur-md shadow-sm'
+              }`}>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-lg sm:text-xl font-bold font-mono text-cyan-400 block">Sub-30ms</span>
+                <span className="text-xs text-slate-400 font-mono">API Latency</span>
               </div>
-            </div>
-
-            <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
-            }`}>
-              <div className="flex items-center gap-3">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <div>
-                  <h3 className="text-xl font-bold font-mono text-emerald-400">99.95%</h3>
-                  <p className="text-[11px] text-slate-400">High Availability System Uptime</p>
-                </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-lg sm:text-xl font-bold font-mono text-emerald-400 block">99.99%</span>
+                <span className="text-xs text-slate-400 font-mono">System Uptime</span>
               </div>
-            </div>
-
-            <div className={`lg:col-span-4 rounded-2xl border p-5 transition-all ${
-              theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
-            }`}>
-              <div className="flex items-center gap-3">
-                <Sparkles className="h-4 w-4 text-indigo-400" />
-                <div>
-                  <h3 className="text-xl font-bold font-mono text-indigo-400">100 / 100</h3>
-                  <p className="text-[11px] text-slate-400">Lighthouse Performance Score</p>
-                </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-lg sm:text-xl font-bold font-mono text-blue-400 block">PostgreSQL</span>
+                <span className="text-xs text-slate-400 font-mono">Mutual Funds Stack</span>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-lg sm:text-xl font-bold font-mono text-amber-400 flex items-center gap-1.5">
+                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                  RAG AI
+                </span>
+                <span className="text-xs text-slate-400 font-mono">Active Learning</span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ABOUT SECTION */}
-        <section id="about" className="scroll-mt-24">
-          <div className={`rounded-2xl border p-8 md:p-10 transition-all ${
-            theme === 'dark'
+        <SectionDivider />
+
+        {/* SECTION 3: ABOUT & ENGINEERING BACKGROUND */}
+        <CollapsibleMobileSection
+          id="about"
+          title="About & Engineering Background"
+          badge="BIOGRAPHY & PHILOSOPHY"
+          icon={<Globe className="h-4 w-4 text-cyan-400" />}
+        >
+          <section className="space-y-4">
+            <div className="flex flex-col gap-1 border-b border-slate-800/60 pb-4">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
+                BIOGRAPHY & PHILOSOPHY
+              </span>
+              <h2 className="text-3xl font-extrabold tracking-tight text-white">
+                About & Engineering Background
+              </h2>
+            </div>
+
+            <div className={`rounded-3xl border p-8 md:p-10 transition-all ${theme === 'dark'
               ? 'border-slate-800/80 bg-slate-950/60'
               : 'border-slate-200 bg-white'
-          }`}>
-            <div className="max-w-none w-full space-y-5">
-              <span className={`text-xs font-semibold uppercase tracking-wider ${
-                theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
               }`}>
-                Engineering Philosophy
-              </span>
-              <h2 className={`text-2xl font-bold ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
-              }`}>
-                End-to-End Ownership: From Database Architecture to Clean User Interfaces.
-              </h2>
-              <p className={`text-sm leading-relaxed ${
-                theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
-              }`}>
-                I specialize in building clean, resilient full-stack web applications. My focus is on writing maintainable code, optimizing database query pipelines, structuring clean RESTful/GraphQL APIs, and creating minimal, responsive interfaces.
-              </p>
+              <div className="max-w-none w-full space-y-5">
+                <h3 className={`text-xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'
+                  }`}>
+                  End-to-End Ownership: From Database Architecture to Clean User Interfaces.
+                </h3>
+                <p className={`text-sm leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                  }`}>
+                  Backend Developer at DataMoo.ai specializing in building clean, resilient full-stack web applications. My focus is on writing maintainable code, optimizing database query pipelines, structuring clean RESTful APIs, and creating minimal, responsive interfaces.
+                </p>
 
-              {/* Minimal Pillars */}
-              <div className="grid gap-4 sm:grid-cols-3 pt-2">
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                  <Server className="h-4 w-4 text-cyan-400 mb-2" />
-                  <h3 className="text-xs font-bold">Scalable APIs</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                    REST & GraphQL services with low latency.
-                  </p>
-                </div>
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                  <Code2 className="h-4 w-4 text-blue-400 mb-2" />
-                  <h3 className="text-xs font-bold">Modern Frontend</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                    Next.js App Router, TypeScript & Tailwind.
-                  </p>
-                </div>
-                <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                  <Database className="h-4 w-4 text-emerald-400 mb-2" />
-                  <h3 className="text-xs font-bold">Data & DevOps</h3>
-                  <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                    PostgreSQL, Redis caching & Docker.
-                  </p>
+                {/* Minimal Pillars */}
+                <div className="grid gap-4 sm:grid-cols-3 pt-2">
+                  <div className={`rounded-2xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+                    <Server className="h-4 w-4 text-cyan-400 mb-2" />
+                    <h4 className="text-xs font-bold text-white">Scalable APIs</h4>
+                    <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                      RESTful services with low sub-30ms latency.
+                    </p>
+                  </div>
+                  <div className={`rounded-2xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+                    <Code2 className="h-4 w-4 text-blue-400 mb-2" />
+                    <h4 className="text-xs font-bold text-white">Modern Frontend</h4>
+                    <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                      Next.js 16 App Router, TypeScript & Tailwind.
+                    </p>
+                  </div>
+                  <div className={`rounded-2xl border p-4 ${theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
+                    <Database className="h-4 w-4 text-emerald-400 mb-2" />
+                    <h4 className="text-xs font-bold text-white">Data & DevOps</h4>
+                    <p className={`text-[11px] mt-1 ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                      PostgreSQL, Redis caching & Docker.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </CollapsibleMobileSection>
 
-        {/* 1. LIVE SQL & QUERY PERFORMANCE LAB */}
-        <SQLLab />
+        <SectionDivider />
 
-        {/* 2. INTERACTIVE SYSTEM DESIGN TOPOLOGY BUILDER */}
-        <SystemDesignCanvas />
+        {/* SECTION 4: SELECTED PROJECTS & PORTFOLIO */}
+        <CollapsibleMobileSection
+          id="projects"
+          title="Featured Systems & Applications"
+          badge="SELECTED WORK & PORTFOLIO"
+          icon={<Code2 className="h-4 w-4 text-cyan-400" />}
+        >
+          <section className="space-y-8">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between border-b border-slate-800/60 pb-4">
+              <div>
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
+                  SELECTED WORK & PORTFOLIO
+                </span>
+                <h2 className="text-3xl font-extrabold tracking-tight text-white mt-1">
+                  Featured Systems & Applications
+                </h2>
+              </div>
 
-        {/* SYSTEM ARCHITECTURE PLAYGROUND */}
-        <SystemPlayground />
-
-        {/* 3. TECHNICAL ARTICLES & CASE STUDIES */}
-        <BlogSection />
-
-        {/* 4. REAL-TIME GITHUB TELEMETRY */}
-        <GitHubTelemetry />
-
-        {/* 5. ULTRA-CLEAN SELECTED WORK & SYSTEMS */}
-        <section id="projects" className="space-y-8 scroll-mt-24">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <span className={`text-xs font-semibold uppercase tracking-wider ${
-                theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
-              }`}>
-                Selected Work & Engineering
-              </span>
-              <h2 className={`text-3xl font-bold tracking-tight mt-1 ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
-              }`}>
-                Featured Systems & Applications
-              </h2>
-            </div>
-
-            {/* Filter Chips */}
-            <div className="flex flex-wrap gap-1.5">
-              {['All', 'Full-Stack', 'Backend & APIs', 'Frontend UX', 'AI & Automation'].map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all cursor-pointer ${
-                    selectedCategory === cat
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              {/* Filter Chips */}
+              <div className="flex flex-wrap gap-1.5">
+                {['All', 'Full-Stack', 'Backend & APIs', 'Frontend UX', 'AI & Automation'].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`rounded-xl px-3.5 py-1.5 text-xs font-mono transition-all cursor-pointer ${selectedCategory === cat
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold'
                       : theme === 'dark' ? 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white' : 'bg-white border border-slate-200 text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+                      }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Clean Project Grid */}
-          <div className="grid gap-6 md:grid-cols-2">
-            {filteredProjects.map((project) => (
-              <article
-                key={project.id}
-                className={`group flex flex-col justify-between rounded-2xl border p-5 transition-all duration-300 ${
-                  theme === 'dark'
+            {/* Clean Project Grid */}
+            <div className="grid gap-6 md:grid-cols-2 3xl:grid-cols-3 4xl:grid-cols-4">
+              {filteredProjects.map((project) => (
+                <article
+                  key={project.id}
+                  className={`group flex flex-col justify-between rounded-3xl border p-6 transition-all duration-300 ${theme === 'dark'
                     ? 'border-slate-800/80 bg-slate-950/70 text-slate-100 hover:border-cyan-500/40 hover:bg-slate-950'
                     : 'border-slate-200 bg-white text-slate-900 hover:border-cyan-500/40 hover:shadow-lg'
-                }`}
-              >
+                    }`}
+                >
                   {/* High-Tech Icon Banner Header */}
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
@@ -661,332 +697,140 @@ function PortfolioContent() {
                     {project.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className={`rounded-lg border px-2.5 py-1 text-[10px] font-mono ${
-                          theme === 'dark' ? 'border-slate-800 bg-slate-900/80 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'
-                        }`}
+                        className={`rounded-lg border px-2.5 py-1 text-[10px] font-mono ${theme === 'dark' ? 'border-slate-800 bg-slate-900/80 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'
+                          }`}
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
 
-                {/* Bottom Trigger */}
-                <div className="mt-6 flex items-center justify-between border-t border-slate-800/60 pt-4">
-                  <button
-                    onClick={() => setActiveProject(project)}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:underline cursor-pointer group-hover:text-cyan-300"
-                  >
-                    <span>View Architecture & Credentials</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </button>
-
-                  <div className="flex items-center gap-2">
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors"
-                        title="GitHub"
-                      >
-                        <GithubIcon className="h-4 w-4" />
-                      </a>
-                    )}
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-slate-400 hover:text-white transition-colors"
-                        title="Live Demo"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* NEXT-LEVEL COMPETENCIES & TECHNOLOGY MATRIX */}
-        <section id="skills" className="space-y-8 scroll-mt-24">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className={`text-xs font-semibold uppercase tracking-wider ${
-                  theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
-                }`}>
-                  Core Competencies & Stack
-                </span>
-                <span className="rounded-md bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-bold text-emerald-400 font-mono flex items-center gap-1">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  PRODUCTION READY
-                </span>
-              </div>
-              <h2 className={`text-3xl font-bold tracking-tight ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
-              }`}>
-                Technology Matrix & Skill Proficiency
-              </h2>
-            </div>
-
-            <div className="relative">
-              <input
-                type="text"
-                value={skillSearch}
-                onChange={(e) => setSkillSearch(e.target.value)}
-                placeholder="Filter technologies (e.g. React, Python)..."
-                className={`rounded-xl border px-3.5 py-2 text-xs transition-all w-full sm:w-64 font-mono ${
-                  theme === 'dark'
-                    ? 'border-slate-800 bg-slate-950 text-white placeholder-slate-500 focus:border-cyan-400'
-                    : 'border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-cyan-600'
-                }`}
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {SKILLS_DATA.map((group, idx) => {
-              const filteredSkills = group.skills.filter((s) => s.name.toLowerCase().includes(skillSearch.toLowerCase()));
-              if (skillSearch && filteredSkills.length === 0) return null;
-
-              return (
-                <div
-                  key={idx}
-                  className={`group relative flex flex-col justify-between rounded-2xl border p-6 transition-all duration-300 ${
-                    theme === 'dark'
-                      ? 'border-slate-800/80 bg-slate-950/80 text-slate-100 hover:border-cyan-500/40 hover:shadow-[0_0_25px_rgba(6,182,212,0.1)]'
-                      : 'border-slate-200 bg-white text-slate-900 hover:border-cyan-500/40 hover:shadow-lg'
-                  }`}
-                >
-                  {/* Category Accent Line */}
-                  <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-full bg-gradient-to-r ${group.color}`} />
-
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                        {group.category}
-                      </h3>
-                      <span className="text-[10px] font-mono text-slate-500">
-                        {group.skills.length} Stack Items
-                      </span>
-                    </div>
-
-                    <div className="space-y-3.5">
-                      {(skillSearch ? filteredSkills : group.skills).map((skill) => (
-                        <div key={skill.name} className="space-y-1.5">
-                          <div className="flex items-center justify-between text-xs">
-                            <span className={`font-mono text-[11px] font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
-                              {skill.name}
-                            </span>
-                            <span className="text-[10px] font-mono text-cyan-400 font-bold">{skill.level}%</span>
-                          </div>
-
-                          <div className="h-1.5 w-full rounded-full bg-slate-900 border border-slate-800/80 overflow-hidden p-0.5">
-                            <div
-                              style={{ width: `${skill.level}%` }}
-                              className={`h-full rounded-full bg-gradient-to-r ${group.color} transition-all duration-500`}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[10px] font-mono text-slate-500">
-                    <span>Verified Production Depth</span>
-                    <span className="text-cyan-400">High Mastery</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* EXPERIENCE TIMELINE */}
-        <section id="experience" className="space-y-6 scroll-mt-24">
-          <div>
-            <span className={`text-xs font-semibold uppercase tracking-wider ${
-              theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
-            }`}>
-              Track Record
-            </span>
-            <h2 className={`text-2xl font-bold ${
-              theme === 'dark' ? 'text-white' : 'text-slate-900'
-            }`}>
-              Engineering Experience
-            </h2>
-          </div>
-
-          <div className="relative border-l border-slate-800 ml-3 pl-5 space-y-6">
-            {EXPERIENCE_DATA.map((exp, idx) => (
-              <div key={idx} className="relative group">
-                <div className="absolute -left-[25px] top-1.5 h-3 w-3 rounded-full border-2 border-cyan-400 bg-slate-950" />
-
-                <div className={`rounded-2xl border p-5 transition-all ${
-                  theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-white'
-                }`}>
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
-                    <h3 className="text-base font-bold">{exp.role}</h3>
-                    <span className="text-[11px] font-mono text-cyan-400">{exp.period}</span>
-                  </div>
-
-                  <p className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
-                    {exp.company}
-                  </p>
-                  <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                    {exp.description}
-                  </p>
-
-                  <div className="mt-3 space-y-1.5">
-                    {exp.achievements.map((ach, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                        <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}>{ach}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CONTACT SECTION */}
-        <section id="contact" className="scroll-mt-24">
-          <div className={`rounded-2xl border p-8 md:p-10 transition-all ${
-            theme === 'dark'
-              ? 'border-slate-800/80 bg-slate-950/80'
-              : 'border-slate-200 bg-white'
-          }`}>
-            <div className="grid gap-8 lg:grid-cols-12">
-              <div className="lg:col-span-5 space-y-5">
-                <span className={`text-xs font-semibold uppercase tracking-wider ${
-                  theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'
-                }`}>
-                  Get In Touch
-                </span>
-                <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
-                  Let&apos;s Build Something Extraordinary.
-                </h2>
-                <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
-                  Available for full-time Full-Stack roles, architecture consulting, and high-impact web apps.
-                </p>
-
-                <div className="space-y-2 pt-1">
-                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                    <Mail className="h-4 w-4 text-cyan-400" />
-                    <div>
-                      <p className="text-[10px] uppercase font-bold text-slate-500">Direct Email</p>
-                      <button onClick={handleCopyEmail} className="text-xs font-mono font-semibold text-cyan-400 hover:underline">
-                        santhu.dev@example.com
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className={`flex items-center gap-3 rounded-xl border p-3.5 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'}`}>
-                    <Globe className="h-4 w-4 text-emerald-400" />
-                    <div>
-                      <p className="text-[10px] uppercase font-bold text-slate-500">Location</p>
-                      <p className="text-xs font-semibold">Remote / Worldwide</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-7">
-                <form onSubmit={handleContactSubmit} className="space-y-3.5">
-                  <div className="grid gap-3.5 sm:grid-cols-2">
-                    <div>
-                      <label className="block text-xs font-medium mb-1">Your Name *</label>
-                      <input
-                        type="text"
-                        value={contactForm.name}
-                        onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                        placeholder="Alex Rivera"
-                        required
-                        className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
-                          theme === 'dark'
-                            ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
-                            : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
-                        }`}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-medium mb-1">Your Email *</label>
-                      <input
-                        type="email"
-                        value={contactForm.email}
-                        onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                        placeholder="alex@company.com"
-                        required
-                        className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
-                          theme === 'dark'
-                            ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
-                            : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
-                        }`}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-medium mb-1">Subject</label>
-                    <select
-                      value={contactForm.subject}
-                      onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
-                      className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
-                        theme === 'dark'
-                          ? 'border-slate-800 bg-slate-900 text-white focus:border-cyan-400'
-                          : 'border-slate-300 bg-slate-50 text-slate-900 focus:border-cyan-600'
-                      }`}
+                  {/* Bottom Trigger */}
+                  <div className="mt-6 flex items-center justify-between border-t border-slate-800/60 pt-4">
+                    <button
+                      onClick={() => setActiveProject(project)}
+                      className="flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:underline cursor-pointer group-hover:text-cyan-300"
                     >
-                      <option value="Full-Stack Role">Full-Time Full-Stack Role</option>
-                      <option value="Contract / Freelance">Contract / Architecture Consulting</option>
-                      <option value="General Inquiry">General Tech Inquiry</option>
-                    </select>
-                  </div>
+                      <span>View Architecture & Credentials</span>
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </button>
 
-                  <div>
-                    <label className="block text-xs font-medium mb-1">Message *</label>
-                    <textarea
-                      rows={4}
-                      value={contactForm.message}
-                      onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                      placeholder="Hi Santhu, we are looking for a Full-Stack Engineer..."
-                      required
-                      className={`w-full rounded-xl border px-3.5 py-2.5 text-xs transition-all ${
-                        theme === 'dark'
-                          ? 'border-slate-800 bg-slate-900 text-white placeholder-slate-500 focus:border-cyan-400'
-                          : 'border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-400 focus:border-cyan-600'
-                      }`}
-                    />
+                    <div className="flex items-center gap-2">
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-slate-400 hover:text-white transition-colors"
+                          title="GitHub"
+                        >
+                          <GithubIcon className="h-4 w-4" />
+                        </a>
+                      )}
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-slate-400 hover:text-white transition-colors"
+                          title="Live Demo"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-5 py-3 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Zap className="h-3.5 w-3.5 animate-spin" />
-                        <span>Transmitting...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-3.5 w-3.5" />
-                        <span>Send Message</span>
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
+                </article>
+              ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 5: WORK EXPERIENCE TIMELINE */}
+        <CollapsibleMobileSection
+          title="Career Journey & Experience"
+          badge="TIMELINE"
+          icon={<Briefcase className="h-4 w-4 text-cyan-400" />}
+        >
+          <ExperienceTimeline />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 6: CORE COMPETENCIES & TECHNOLOGY MATRIX */}
+        <CollapsibleMobileSection
+          id="skills"
+          title="Skills & Tech Matrix"
+          badge="TECH STACK"
+          icon={<Layers className="h-4 w-4 text-blue-400" />}
+        >
+          <InteractiveTechMatrix />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 7: LIVE SQL PERFORMANCE SANDBOX */}
+        <CollapsibleMobileSection
+          id="sql-lab"
+          title="SQL Query Performance Lab"
+          badge="DATABASE LAB"
+          icon={<Database className="h-4 w-4 text-emerald-400" />}
+        >
+          <SQLLab />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 8: DISTRIBUTED SYSTEM DESIGN TOPOLOGY BUILDER */}
+        <CollapsibleMobileSection
+          title="High-Scale System Design Canvas"
+          badge="SYSTEM ARCHITECTURE"
+          icon={<Server className="h-4 w-4 text-purple-400" />}
+        >
+          <SystemDesignCanvas />
+        </CollapsibleMobileSection>
+
+        {/* SYSTEM ARCHITECTURE PLAYGROUND */}
+        <CollapsibleMobileSection
+          title="Interactive System Playground"
+          badge="ARCHITECTURE DEMO"
+          icon={<SquareTerminal className="h-4 w-4 text-cyan-400" />}
+        >
+          <SystemPlayground />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 9: TECHNICAL ARTICLES & CASE STUDIES */}
+        <CollapsibleMobileSection
+          title="Technical Articles & Case Studies"
+          badge="STUDIES"
+          icon={<BookOpen className="h-4 w-4 text-amber-400" />}
+        >
+          <BlogSection />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 10: REAL-TIME GITHUB TELEMETRY */}
+        <CollapsibleMobileSection
+          title="Live GitHub Telemetry & Stats"
+          badge="GITHUB STATS"
+          icon={<Zap className="h-4 w-4 text-cyan-400" />}
+        >
+          <GitHubTelemetry />
+        </CollapsibleMobileSection>
+
+        <SectionDivider />
+
+        {/* SECTION 11: ENCRYPTED CONTACT COMMAND CONSOLE */}
+        <UniqueContactSection />
+      </div>
+
+      <div className="mt-16 sm:mt-24">
+        {/* <SectionDivider /> */}
       </div>
 
       {/* FULL-WIDTH MEGA FOOTER */}

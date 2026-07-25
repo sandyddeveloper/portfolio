@@ -35,10 +35,10 @@ interface VisitorData {
 
 const KNOWLEDGE_BASE: Record<string, string> = {
   default: "Greetings! 👋 I'm RoboX 3D. Click 'Scan & Tailor Briefing' to get a customized profile overview for your role!",
-  skills: "🛠️ Santhosh's Stack: Next.js 16, TypeScript, Node.js, Python, PostgreSQL, Redis & Docker!",
-  projects: "💼 Projects: Telemetry Dashboard, Workflow Engine, UI Framework & AI Copilot!",
-  contact: "📬 Contact Santhosh directly at santhu.dev@example.com for Full-Time Roles!",
-  joke: "🤖 Why do robots love Next.js 16? Because Server Actions execute at sub-20ms warp speed! ⚡",
+  skills: "🛠️ Santhosh's Stack: Backend Developer @ DataMoo.ai | Python, Django REST, PostgreSQL, Scalable Fintech APIs, Next.js, Docker & RAG AI!",
+  projects: "💼 Production Systems: Fintech Mutual Fund Transaction Engines, Django REST APIs, Docker Pipelines & RAG AI Agents!",
+  contact: "📬 Contact Santhosh Raj directly at santhoshrajk1812@gmail.com for Backend & Full-Stack engineering roles!",
+  joke: "🤖 Why do Python & Django developers love Next.js 16? Because server actions and REST APIs execute at warp speed! ⚡",
 };
 
 export function WalkingBot() {
@@ -48,6 +48,7 @@ export function WalkingBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState<BotAction>('idle');
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [scanningSectionTitle, setScanningSectionTitle] = useState<string | null>(null);
 
   // Form & Briefing Modals
   const [showIntakeModal, setShowIntakeModal] = useState(false);
@@ -64,6 +65,41 @@ export function WalkingBot() {
   const [speechText, setSpeechText] = useState(KNOWLEDGE_BASE.default);
   const [chatInput, setChatInput] = useState('');
   const [activeTab, setActiveTab] = useState<'chat' | 'actions' | 'nav'>('chat');
+
+  // Listen for Voice Bio Navigation and Travel Commands
+  React.useEffect(() => {
+    const handleTravelAndScan = (e: Event) => {
+      const customEvt = e as CustomEvent<{ sectionId: string; topicTitle: string }>;
+      if (!customEvt.detail) return;
+      const { sectionId, topicTitle } = customEvt.detail;
+
+      setAction('scan');
+      setScanningSectionTitle(topicTitle);
+      playSound('scan');
+
+      setSpeechText(`🚀 Traveling to ${topicTitle} [${sectionId}] ... Voice narration playing in background! 🎙️`);
+      setIsOpen(true);
+
+      const elem = document.querySelector(sectionId);
+      if (elem) {
+        elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Add glowing pulse border highlight
+        elem.classList.add('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950', 'transition-all', 'duration-500');
+        setTimeout(() => {
+          elem.classList.remove('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950');
+        }, 6000);
+      }
+
+      setTimeout(() => {
+        setAction('idle');
+        setScanningSectionTitle(null);
+      }, 5000);
+    };
+
+    window.addEventListener('bot-travel-and-scan', handleTravelAndScan);
+    return () => window.removeEventListener('bot-travel-and-scan', handleTravelAndScan);
+  }, []);
 
   const playSound = (type: 'beep' | 'scan') => {
     if (!soundEnabled || typeof window === 'undefined') return;
@@ -354,7 +390,7 @@ export function WalkingBot() {
                 <div className="space-y-4 text-xs">
                   <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-3.5 leading-relaxed text-cyan-200">
                     <p className="font-semibold text-white mb-1">🎯 Executive Hiring Summary</p>
-                    Santhosh Raj is a <strong>Senior Full-Stack Engineer (@sandyddeveloper)</strong> specializing in building high-concurrency Node.js/Python backends, sub-32ms SQL performance, and modern Next.js 16 frontend systems.
+                    Santhosh Raj is a <strong>Backend Developer @ DataMoo.ai</strong> and Full-Stack Engineer specializing in <strong>Python, Django REST Framework, PostgreSQL, Scalable Fintech (Mutual Funds) APIs</strong>, Docker, and currently engineering RAG AI systems.
                   </div>
 
                   <div className="space-y-2 font-mono text-[11px]">

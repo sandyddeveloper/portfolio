@@ -1,28 +1,39 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
 export function BackgroundCanvas() {
   const { theme } = useTheme();
-  const [mousePos, setMousePos] = useState({ x: -1000, y: -1000 });
+  const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let animationFrameId: number;
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      const x = e.clientX - 250;
+      const y = e.clientY - 250;
+      animationFrameId = requestAnimationFrame(() => {
+        if (glowRef.current) {
+          glowRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+        }
+      });
     };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Minimal Mouse-Tracking Spotlight Glow */}
+      {/* Minimal Mouse-Tracking Spotlight Glow (GPU Accelerated) */}
       <div
-        className="absolute w-[500px] h-[500px] rounded-full transition-opacity duration-300 blur-[140px]"
+        ref={glowRef}
+        className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full blur-[140px] will-change-transform"
         style={{
-          left: `${mousePos.x - 250}px`,
-          top: `${mousePos.y - 250}px`,
           background:
             theme === 'dark'
               ? 'radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, transparent 70%)'
