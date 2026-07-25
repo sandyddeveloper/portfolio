@@ -5,19 +5,14 @@ const config: Config = {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
-      colors: {
-        darkBg: '#1A1A12',
-        umber: {
-          DEFAULT: '#362312',
-          hover: '#3B270C',
-        },
-        mocha: '#3B270C',
-        silver: '#E0DDDD',
-        divider: '#334155',
-        cedar: '#4B3A26',
+      screens: {
+        xs: "420px",
+        "3xl": "1920px",
+        "4xl": "2560px",
+        "5xl": "3840px",
       },
       boxShadow: {
-        glass: "0 20px 80px rgba(26, 26, 18, 0.6)",
+        glass: "0 20px 80px rgba(15, 23, 42, 0.35)",
       },
       backgroundImage: {
         sparkle: "radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 44%)",
