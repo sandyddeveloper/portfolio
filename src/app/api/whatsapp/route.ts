@@ -96,7 +96,7 @@ export async function POST(request: Request) {
             </div>
 
             <div style="background-color: #0f172a; padding: 16px; border-radius: 12px; border: 1px solid #334155;">
-              <h4 style="color: #f59e0b; font-size: 12px; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">🛡️ Sender IP & Geolocation Telemetry</h4>
+              <h4 style="color: #f59e0b; font-size: 12px; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">Sender IP & Geolocation Telemetry</h4>
               <table style="width: 100%; font-size: 12px; color: #cbd5e1; border-collapse: collapse;">
                 <tr><td style="padding: 3px 0; color: #94a3b8;">IP Address:</td><td style="font-family: monospace; font-weight: bold; color: #fbbf24;">${geoInfo.ip}</td></tr>
                 <tr><td style="padding: 3px 0; color: #94a3b8;">Location:</td><td><strong>${geoInfo.city}, ${geoInfo.region}, ${geoInfo.country}</strong></td></tr>

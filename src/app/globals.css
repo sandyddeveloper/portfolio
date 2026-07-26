@@ -3,22 +3,25 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark light;
+  color-scheme: light dark;
 }
 
 html {
   scroll-behavior: smooth;
   min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 html.dark {
-  background-color: #030712;
+  background-color: #090514;
   color: #f3f4f6;
 }
 
 html.light {
   background-color: #ffffff;
-  color: #111827;
+  color: #090514;
 }
 
 * {
@@ -36,25 +39,24 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  transition: background-color 0.25s ease, color 0.25s ease;
   letter-spacing: -0.01em;
 }
 
 html.dark body {
   background: 
-    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.05), transparent 45%),
-    #030712;
+    radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.15), transparent 45%),
+    #090514;
 }
 
 html.light body {
   background: 
-    radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.06), transparent 50%),
+    radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.08), transparent 50%),
     #ffffff;
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.2);
-  color: #38bdf8;
+  background: rgba(147, 51, 234, 0.25);
+  color: #6b21a8;
 }
 
 /* Minimal Custom Scrollbar */
@@ -67,10 +69,47 @@ html.light body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.2);
+  background: rgba(147, 51, 234, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.4);
+  background: rgba(147, 51, 234, 0.5);
+}
+
+/* Lenis Smooth Scroll Acceleration Rules */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Spotlight Animation Keyframes */
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
 }

@@ -73,10 +73,10 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
             initial={{ y: '0%' }}
             animate={phase === 'exit' ? { y: '-100%' } : { y: '0%' }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute top-0 left-0 right-0 h-1/2 bg-slate-950 border-b border-cyan-500/30 z-20 overflow-hidden"
+            className="absolute top-0 left-0 right-0 h-1/2 bg-slate-950 border-b border-purple-500/30 z-20 overflow-hidden"
           >
             {/* Background Ambient Glow */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-cyan-500/10 blur-[130px] pointer-events-none" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-purple-600/15 blur-[130px] pointer-events-none" />
           </motion.div>
 
           {/* BOTTOM SHUTTER PANEL */}
@@ -84,10 +84,10 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
             initial={{ y: '0%' }}
             animate={phase === 'exit' ? { y: '100%' } : { y: '0%' }}
             transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="absolute bottom-0 left-0 right-0 h-1/2 bg-slate-950 border-t border-cyan-500/30 z-20 overflow-hidden"
+            className="absolute bottom-0 left-0 right-0 h-1/2 bg-slate-950 border-t border-purple-500/30 z-20 overflow-hidden"
           >
             {/* Background Ambient Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-600/10 blur-[130px] pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-purple-700/15 blur-[130px] pointer-events-none" />
           </motion.div>
 
           {/* CENTER LASER BEAM SEAM */}
@@ -99,19 +99,19 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                 : { opacity: 0.6, scaleX: 1, scaleY: 1 }
             }
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="absolute top-1/2 left-0 right-0 h-[2px] -translate-y-1/2 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_20px_#06b6d4] z-30 pointer-events-none"
+            className="absolute top-1/2 left-0 right-0 h-[2px] -translate-y-1/2 bg-gradient-to-r from-transparent via-purple-500 to-transparent shadow-[0_0_20px_#9333ea] z-30 pointer-events-none"
           />
 
           {/* TOP SKIP BUTTON */}
           <button
             onClick={handleSkip}
-            className="absolute top-4 right-4 z-40 flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900/90 px-3.5 py-1.5 text-[11px] font-mono font-semibold text-slate-300 hover:text-white hover:border-cyan-500/50 transition-all cursor-pointer shadow-lg shadow-cyan-500/10 backdrop-blur-md"
+            className="absolute top-4 right-4 z-40 flex items-center gap-1.5 rounded-full border border-purple-900/40 bg-slate-900/90 px-3.5 py-1.5 text-[11px] font-mono font-bold text-purple-300 hover:text-white hover:border-purple-500/50 transition-all cursor-pointer shadow-lg shadow-purple-500/10 backdrop-blur-md"
           >
             <span>Skip Intro</span>
-            <FastForward className="h-3 w-3 text-cyan-400" />
+            <FastForward className="h-3 w-3 text-purple-400" />
           </button>
 
-          {/* CENTRAL CONTENT CONTAINER - STABLE PIXEL-PERFECT ALIGNMENT */}
+          {/* CENTRAL CONTENT CONTAINER */}
           <motion.div
             initial={{ opacity: 1, scale: 1 }}
             animate={phase === 'exit' ? { opacity: 0, scale: 1.1, filter: 'blur(8px)' } : { opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -119,7 +119,7 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
             className="absolute inset-0 z-30 flex items-center justify-center"
           >
             <div className="flex flex-col items-center justify-center w-full max-w-md px-4 text-center">
-              {/* RoboX Avatar Horizontal Walkway (Fixed Stage Height) */}
+              {/* RoboX Avatar Horizontal Walkway */}
               <div className="relative w-full h-[180px] flex items-end justify-center pb-2 overflow-visible">
                 <motion.div
                   initial={{ x: '-100vw' }}
@@ -139,7 +139,7 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                   }
                   className="relative flex flex-col items-center"
                 >
-                  {/* Speech Bubble (Absolute Positioned with Fixed Reserved Height) */}
+                  {/* Speech Bubble */}
                   <div className="h-16 flex items-center justify-center mb-2">
                     <AnimatePresence mode="wait">
                       {phase === 'greeting' && (
@@ -148,14 +148,14 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ type: 'spring', stiffness: 350, damping: 22 }}
-                          className="relative z-40 w-72 xs:w-80 rounded-2xl border border-cyan-400/40 bg-slate-900/95 p-3 shadow-2xl shadow-cyan-500/30 backdrop-blur-md text-slate-100"
+                          className="relative z-40 w-72 xs:w-80 rounded-2xl border border-purple-400/40 bg-slate-900/95 p-3 shadow-2xl shadow-purple-500/30 backdrop-blur-md text-slate-100"
                         >
-                          <div className="flex items-center justify-center gap-1.5 mb-0.5 text-cyan-300 text-[10px] font-mono font-bold uppercase tracking-wider">
-                            <Sparkles className="h-3 w-3 text-cyan-400" />
+                          <div className="flex items-center justify-center gap-1.5 mb-0.5 text-purple-300 text-xs font-mono font-bold uppercase tracking-wider">
+                            <Sparkles className="h-3.5 w-3.5 text-purple-400" />
                             <span>RoboX AI Companion</span>
                           </div>
-                          <p className="text-xs sm:text-sm font-semibold leading-snug text-white">
-                            Welcome! 👋 Loading Santhosh Raj&apos;s Portfolio...
+                          <p className="text-xs sm:text-sm font-bold leading-snug text-white">
+                            Welcome! Loading Santhosh Raj&apos;s Portfolio...
                           </p>
                           <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-slate-900/95" />
                         </motion.div>
@@ -163,7 +163,7 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                     </AnimatePresence>
                   </div>
 
-                {/* 3D Shaded RoboX Graphic with Walking Bob */}
+                {/* 3D Shaded RoboX Graphic */}
                 <motion.div
                   animate={
                     phase === 'walk-in' || phase === 'walk-out'
@@ -177,14 +177,14 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                   }
                   className="relative"
                 >
-                  <div className="absolute -inset-3 rounded-full bg-cyan-400/20 blur-lg animate-pulse" />
+                  <div className="absolute -inset-3 rounded-full bg-purple-500/25 blur-lg animate-pulse" />
                   <svg
                     width="76"
                     height="98"
                     viewBox="0 0 100 130"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="relative drop-shadow-[0_10px_20px_rgba(6,182,212,0.4)]"
+                    className="relative drop-shadow-[0_10px_20px_rgba(147,51,234,0.4)]"
                   >
                     <defs>
                       <linearGradient id="splashBody" x1="20%" y1="0%" x2="80%" y2="100%">
@@ -228,7 +228,7 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                       <path d="M32 14 H68 C70 14, 71 16, 70 17 L30 17 C29 16, 30 14, 32 14 Z" fill="#FFFFFF" opacity="0.25" />
 
                       {/* LED Eyes */}
-                      <g fill="#38BDF8" filter="url(#splashEyeGlow)">
+                      <g fill="#C084FC" filter="url(#splashEyeGlow)">
                         <rect x="34" y="17" width="4" height="4" rx="1" />
                         <rect x="40" y="17" width="4" height="4" rx="1" />
                         <rect x="34" y="23" width="4" height="4" rx="1" />
@@ -257,7 +257,7 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
                         cx="50"
                         cy="60"
                         r="5.5"
-                        fill="#38BDF8"
+                        fill="#C084FC"
                         stroke="url(#splashChrome)"
                         strokeWidth="1"
                         filter="url(#splashEyeGlow)"
@@ -288,14 +288,14 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
             {/* Brand Headline */}
               <div className="space-y-1">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-900 border border-slate-800 text-cyan-400">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-900 border border-purple-900/40 text-purple-400">
                     <SquareTerminal className="h-4 w-4" />
                   </div>
                   <h1 className="text-2xl xs:text-3xl font-extrabold tracking-tight text-white">
-                    Santhu<span className="text-cyan-400">.dev</span>
+                    Santhu<span className="text-purple-500">.dev</span>
                   </h1>
                 </div>
-                <p className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.2em] uppercase text-cyan-400">
+                <p className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.2em] uppercase text-purple-400">
                   Backend Developer @ DataMoo.ai
                 </p>
               </div>
@@ -303,23 +303,23 @@ export function SplashScreen({ onComplete }: { onComplete?: () => void }) {
               {/* High-Tech Progress Bar */}
               <div className="w-full space-y-2 pt-2">
                 <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
-                  <span className="flex items-center gap-1 text-cyan-300">
-                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="flex items-center gap-1 text-purple-300 font-bold">
+                    <span className="h-1.5 w-1.5 rounded-full bg-purple-500 animate-pulse" />
                     Initializing System Stack...
                   </span>
-                  <span className="font-bold text-cyan-400">{progress}%</span>
+                  <span className="font-bold text-purple-400">{progress}%</span>
                 </div>
 
-                <div className="h-1.5 w-full rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-slate-900 border border-purple-900/40 overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-emerald-400 shadow-[0_0_10px_#06b6d4]"
+                    className="h-full bg-gradient-to-r from-purple-600 via-indigo-600 to-emerald-400 shadow-[0_0_10px_#9333ea]"
                     style={{ width: `${progress}%` }}
                     transition={{ duration: 0.1 }}
                   />
                 </div>
 
                 {/* Tech Badges */}
-                <div className="flex items-center justify-center gap-2 text-[9px] font-mono text-slate-500 pt-1">
+                <div className="flex items-center justify-center gap-2 text-[9px] font-mono text-slate-400 pt-1 font-bold">
                   <span className="flex items-center gap-1">
                     <CheckCircle2 className="h-2.5 w-2.5 text-emerald-400" />
                     Next.js 16

@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Layers, Database, Shield, Zap, CheckCircle2, Key, SquareTerminal, Eye } from 'lucide-react';
+import { X, ExternalLink, Layers, Database, Shield, Zap, CheckCircle2, Key, SquareTerminal, Play, KeyRound } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -42,11 +43,13 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState<'overview' | 'demo' | 'jsonVideo'>('overview');
 
+  useBodyScrollLock(!!project);
+
   if (!project) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -58,65 +61,76 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
         {/* Modal Window */}
         <motion.div
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
           className={`relative z-10 w-full max-w-3xl rounded-2xl border shadow-xl overflow-hidden backdrop-blur-2xl transition-all max-h-[90vh] flex flex-col ${
             theme === 'dark'
-              ? 'border-slate-800 bg-slate-950/95 text-slate-100'
-              : 'border-slate-200 bg-white/95 text-slate-900'
+              ? 'border-purple-900/40 bg-slate-950/95 text-slate-100'
+              : 'border-purple-200 bg-white text-slate-950 shadow-purple-500/20'
           }`}
         >
           {/* Header Bar */}
           <div className={`flex items-center justify-between border-b px-6 py-4 ${
-            theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-slate-50'
+            theme === 'dark' ? 'border-purple-900/30 bg-slate-950/60' : 'border-purple-100 bg-purple-50/60'
           }`}>
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded-md bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-0.5 text-[10px] font-bold text-cyan-400">
+                <span className="rounded-md bg-purple-100 border border-purple-300 px-2.5 py-0.5 text-[10px] font-bold text-purple-800">
                   {project.category}
                 </span>
-                <span className="text-xs font-mono text-emerald-400">{project.metrics[0]}</span>
+                <span className="text-xs font-mono text-emerald-600 font-bold">{project.metrics[0]}</span>
               </div>
-              <h3 className="text-xl font-bold mt-1">{project.title}</h3>
-              <p className={`text-xs ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+              <h3 className={`text-xl font-extrabold mt-1 ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>{project.title}</h3>
+              <p className={`text-xs font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
                 {project.subtitle}
               </p>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="flex rounded-lg border border-slate-800 p-0.5 bg-slate-900 text-xs">
+              <div className={`flex rounded-lg border p-0.5 text-xs font-mono font-bold ${
+                theme === 'dark' ? 'border-purple-900/40 bg-slate-900' : 'border-purple-200 bg-purple-50'
+              }`}>
                 <button
                   onClick={() => setActiveTab('overview')}
-                  className={`px-3 py-1 rounded-md font-medium transition-all ${
-                    activeTab === 'overview' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400'
+                  className={`px-3 py-1 rounded-md font-bold transition-all cursor-pointer ${
+                    activeTab === 'overview'
+                      ? 'bg-purple-600 text-white'
+                      : theme === 'dark' ? 'text-slate-400' : 'text-slate-900'
                   }`}
                 >
                   Architecture
                 </button>
                 <button
                   onClick={() => setActiveTab('jsonVideo')}
-                  className={`px-3 py-1 rounded-md font-medium transition-all ${
-                    activeTab === 'jsonVideo' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400'
+                  className={`px-3 py-1 rounded-md font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                    activeTab === 'jsonVideo'
+                      ? 'bg-purple-600 text-white'
+                      : theme === 'dark' ? 'text-slate-400' : 'text-slate-900'
                   }`}
                 >
-                  ▶ JSON Video Intro
+                  <Play className="h-3 w-3 fill-current" />
+                  <span>JSON Video Intro</span>
                 </button>
                 <button
                   onClick={() => setActiveTab('demo')}
-                  className={`px-3 py-1 rounded-md font-medium transition-all ${
-                    activeTab === 'demo' ? 'bg-cyan-500/20 text-cyan-400' : 'text-slate-400'
+                  className={`px-3 py-1 rounded-md font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                    activeTab === 'demo'
+                      ? 'bg-purple-600 text-white'
+                      : theme === 'dark' ? 'text-slate-400' : 'text-slate-900'
                   }`}
                 >
-                  Live Lab 🔑
+                  <KeyRound className="h-3 w-3" />
+                  <span>Live Lab</span>
                 </button>
               </div>
 
               <button
                 onClick={onClose}
-                className={`rounded-lg p-1.5 transition-colors ${
-                  theme === 'dark' ? 'hover:bg-slate-800 text-slate-400 hover:text-white' : 'hover:bg-slate-100 text-slate-600 hover:text-slate-900'
+                className={`rounded-lg p-1.5 transition-colors cursor-pointer ${
+                  theme === 'dark' ? 'hover:bg-slate-800 text-slate-400 hover:text-white' : 'hover:bg-purple-100 text-slate-700 hover:text-slate-950'
                 }`}
               >
                 <X className="h-5 w-5" />
@@ -130,10 +144,10 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               <>
                 {/* System Overview */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-cyan-500">
+                  <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-purple-600">
                     System Architecture Overview
                   </h4>
-                  <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
+                  <p className={`text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
                     {project.longDescription}
                   </p>
                 </div>
@@ -144,29 +158,29 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <div
                       key={i}
                       className={`rounded-xl border p-3 text-center ${
-                        theme === 'dark' ? 'border-slate-800 bg-slate-900/40' : 'border-slate-200 bg-slate-50'
+                        theme === 'dark' ? 'border-purple-900/40 bg-slate-900/40' : 'border-purple-200 bg-purple-50/50'
                       }`}
                     >
-                      <Zap className="h-3.5 w-3.5 text-cyan-400 mx-auto mb-1" />
-                      <p className="text-[11px] font-bold font-mono text-cyan-400">{metric}</p>
+                      <Zap className="h-3.5 w-3.5 text-purple-600 mx-auto mb-1" />
+                      <p className="text-[11px] font-extrabold font-mono text-purple-600">{metric}</p>
                     </div>
                   ))}
                 </div>
 
                 {/* Architecture Highlights */}
                 <div className="space-y-2">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-cyan-500 flex items-center gap-1.5">
+                  <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-purple-600 flex items-center gap-1.5">
                     <Layers className="h-3.5 w-3.5" /> Key Architectural Highlights
                   </h4>
                   <div className="grid gap-2 sm:grid-cols-2">
                     {project.architectureHighlights.map((hl, i) => (
                       <div
                         key={i}
-                        className={`flex items-start gap-2 rounded-xl border p-3 text-xs leading-relaxed ${
-                          theme === 'dark' ? 'border-slate-800/80 bg-slate-900/30 text-slate-300' : 'border-slate-200 bg-slate-50 text-slate-700'
+                        className={`flex items-start gap-2 rounded-xl border p-3 text-xs leading-relaxed font-medium ${
+                          theme === 'dark' ? 'border-purple-900/30 bg-slate-900/30 text-slate-300' : 'border-purple-100 bg-purple-50/30 text-slate-900'
                         }`}
                       >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
                         <span>{hl}</span>
                       </div>
                     ))}
@@ -175,23 +189,23 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
                 {/* Data & Security Specs */}
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/30' : 'border-slate-200 bg-slate-50'}`}>
-                    <h5 className="text-xs font-bold text-cyan-400 flex items-center gap-1.5 mb-1.5">
+                  <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-purple-900/40 bg-slate-900/30' : 'border-purple-200 bg-purple-50/30'}`}>
+                    <h5 className="text-xs font-bold text-purple-600 flex items-center gap-1.5 mb-1.5">
                       <Database className="h-3.5 w-3.5" /> Data Pipeline Strategy
                     </h5>
-                    <p className={`text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <p className={`text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
                       {project.databaseChoice}
                     </p>
                   </div>
 
-                  <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-slate-800 bg-slate-900/30' : 'border-slate-200 bg-slate-50'}`}>
-                    <h5 className="text-xs font-bold text-cyan-400 flex items-center gap-1.5 mb-1.5">
+                  <div className={`rounded-xl border p-4 ${theme === 'dark' ? 'border-purple-900/40 bg-slate-900/30' : 'border-purple-200 bg-purple-50/30'}`}>
+                    <h5 className="text-xs font-bold text-purple-600 flex items-center gap-1.5 mb-1.5">
                       <Shield className="h-3.5 w-3.5" /> Security Controls
                     </h5>
-                    <ul className="space-y-1 text-xs">
+                    <ul className="space-y-1 text-xs font-medium">
                       {project.securityFeatures.map((sec, idx) => (
-                        <li key={idx} className={`flex items-center gap-1.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-600'}`}>
-                          <span className="h-1 w-1 rounded-full bg-cyan-400" />
+                        <li key={idx} className={`flex items-center gap-1.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                          <span className="h-1 w-1 rounded-full bg-purple-600" />
                           {sec}
                         </li>
                       ))}
@@ -201,15 +215,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
                 {/* Tech Stack Badges */}
                 <div className="space-y-2">
-                  <h4 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                  <h4 className={`text-[10px] font-mono font-bold uppercase tracking-wider ${theme === 'dark' ? 'text-slate-400' : 'text-purple-700'}`}>
                     Production Tech Stack
                   </h4>
                   <div className="flex flex-wrap gap-1.5">
                     {project.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className={`rounded-lg border px-2.5 py-1 text-xs font-mono font-medium ${
-                          theme === 'dark' ? 'border-slate-800 bg-slate-900 text-cyan-300' : 'border-slate-200 bg-slate-100 text-cyan-700'
+                        className={`rounded-lg border px-2.5 py-1 text-xs font-mono font-bold ${
+                          theme === 'dark' ? 'border-purple-900/40 bg-slate-900 text-purple-300' : 'border-purple-200 bg-purple-50/60 text-purple-900'
                         }`}
                       >
                         {tech}
@@ -220,22 +234,22 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               </>
             ) : activeTab === 'jsonVideo' ? (
               <div className="space-y-4 font-mono text-xs">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <span className="text-cyan-400 font-bold flex items-center gap-1.5">
+                <div className={`flex items-center justify-between border-b pb-2 ${theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'}`}>
+                  <span className="text-purple-600 font-bold flex items-center gap-1.5">
                     <SquareTerminal className="h-4 w-4" /> Live System Payload Stream Video Intro
                   </span>
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+                  <span className="text-[10px] text-emerald-600 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-md">
                     ● STREAM ACTIVE
                   </span>
                 </div>
 
-                <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-2">
-                  <div className="flex items-center justify-between text-[10px] text-slate-500">
+                <div className="rounded-xl border border-purple-900/40 bg-slate-950 p-4 space-y-2 text-purple-300">
+                  <div className="flex items-center justify-between text-[10px] text-slate-400">
                     <span>EVENT_TYPE: SYSTEM_STREAM_PAYLOAD</span>
                     <span>TIMESTAMP: 2026-07-24T18:14:00Z</span>
                   </div>
 
-                  <pre className="text-cyan-300 text-[11px] overflow-x-auto p-3 bg-slate-900/80 rounded-lg border border-slate-800/80 leading-relaxed">
+                  <pre className="text-[11px] overflow-x-auto p-3 bg-slate-900/80 rounded-lg border border-purple-900/30 leading-relaxed">
 {JSON.stringify(
   project.videoIntroJson || {
     system: project.title,
@@ -255,24 +269,26 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             ) : (
               /* Live Demo Credentials Tab */
               <div className="space-y-6">
-                <div className="rounded-xl border border-slate-800 bg-slate-900 p-6 space-y-4">
-                  <div className="flex items-center gap-2 text-cyan-400">
+                <div className={`rounded-xl border p-6 space-y-4 ${
+                  theme === 'dark' ? 'border-purple-900/40 bg-slate-900' : 'border-purple-200 bg-purple-50/40'
+                }`}>
+                  <div className="flex items-center gap-2 text-purple-600">
                     <Key className="h-4 w-4" />
-                    <h4 className="text-sm font-bold">Interactive Sandbox Credentials</h4>
+                    <h4 className="text-sm font-extrabold">Interactive Sandbox Credentials</h4>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
+                  <p className={`text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
                     Test live system features, administrative permissions, and API endpoints using the pre-configured credentials below:
                   </p>
 
                   <div className="grid gap-3 sm:grid-cols-2 font-mono text-xs">
-                    <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                      <span className="text-[10px] text-slate-500 uppercase block">Demo Admin User</span>
-                      <span className="text-cyan-300 font-bold">{project.demoUser || 'admin@santhu.dev'}</span>
+                    <div className={`rounded-lg border p-3 ${theme === 'dark' ? 'border-purple-900/40 bg-slate-950' : 'border-purple-200 bg-white'}`}>
+                      <span className={`text-[10px] uppercase block ${theme === 'dark' ? 'text-slate-500' : 'text-slate-600 font-bold'}`}>Demo Admin User</span>
+                      <span className="text-purple-600 font-extrabold">{project.demoUser || 'admin@santhu.dev'}</span>
                     </div>
 
-                    <div className="rounded-lg border border-slate-800 bg-slate-950 p-3">
-                      <span className="text-[10px] text-slate-500 uppercase block">Demo Access Pass</span>
-                      <span className="text-emerald-300 font-bold">{project.demoPass || 'demo2026_pass'}</span>
+                    <div className={`rounded-lg border p-3 ${theme === 'dark' ? 'border-purple-900/40 bg-slate-950' : 'border-purple-200 bg-white'}`}>
+                      <span className={`text-[10px] uppercase block ${theme === 'dark' ? 'text-slate-500' : 'text-slate-600 font-bold'}`}>Demo Access Pass</span>
+                      <span className="text-emerald-600 font-extrabold">{project.demoPass || 'demo2026_pass'}</span>
                     </div>
                   </div>
 
@@ -282,7 +298,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-5 py-2.5 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all"
+                        className="inline-flex items-center gap-2 rounded-xl bg-purple-600 border border-purple-500 px-5 py-2.5 text-xs font-bold text-white hover:bg-purple-700 transition-all shadow-md shadow-purple-500/20"
                       >
                         <ExternalLink className="h-4 w-4" /> Launch Interactive Live App
                       </a>
@@ -295,15 +311,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           {/* Footer Actions */}
           <div className={`flex items-center justify-end gap-3 border-t p-4 sm:px-6 ${
-            theme === 'dark' ? 'border-slate-800/80 bg-slate-950/60' : 'border-slate-200 bg-slate-50'
+            theme === 'dark' ? 'border-purple-900/30 bg-slate-950/60' : 'border-purple-100 bg-purple-50/60'
           }`}>
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-semibold transition-all ${
-                  theme === 'dark' ? 'border-slate-800 bg-slate-900 text-white hover:bg-slate-800' : 'border-slate-300 bg-white text-slate-800 hover:bg-slate-100'
+                className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 text-xs font-bold transition-all ${
+                  theme === 'dark' ? 'border-purple-900/40 bg-slate-900 text-white hover:bg-slate-800' : 'border-purple-200 bg-white text-slate-950 hover:bg-purple-100'
                 }`}
               >
                 <GithubIcon className="h-3.5 w-3.5" /> Source Code
@@ -314,7 +330,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-4 py-1.5 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all"
+                className="flex items-center gap-1.5 rounded-xl bg-purple-600 border border-purple-500 px-4 py-1.5 text-xs font-bold text-white hover:bg-purple-700 transition-all shadow-md shadow-purple-500/20"
               >
                 <ExternalLink className="h-3.5 w-3.5" /> Live System Demo
               </a>

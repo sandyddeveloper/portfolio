@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, ArrowUpRight, X, Clock, Tag, CheckCircle2, Sparkles, BookOpen } from 'lucide-react';
+import { ArrowUpRight, X, CheckCircle2, Sparkles, BookOpen } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 export interface Article {
@@ -102,18 +102,20 @@ export function BlogSection() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}`}>
+            <span className={`text-xs font-mono font-bold uppercase tracking-wider ${theme === 'dark' ? 'text-purple-400' : 'text-purple-700'}`}>
               Technical Articles & Case Studies
             </span>
-            <span className="rounded-md bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 text-[10px] font-bold text-purple-400 font-mono">
+            <span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold font-mono ${
+              theme === 'dark' ? 'border-purple-900/40 bg-purple-950/40 text-purple-300' : 'border-purple-300 bg-purple-100 text-purple-800'
+            }`}>
               ENGINEERING WRITING
             </span>
           </div>
-          <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+          <h2 className={`text-2xl font-extrabold ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>
             System Architecture Case Studies
           </h2>
         </div>
-        <p className={`max-w-md text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+        <p className={`max-w-md text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
           In-depth technical posts detailing performance optimization, database migrations, and full-stack system design.
         </p>
       </div>
@@ -125,29 +127,35 @@ export function BlogSection() {
             key={art.id}
             className={`group flex flex-col justify-between rounded-2xl border p-6 transition-all ${
               theme === 'dark'
-                ? 'border-slate-800/80 bg-slate-950/60 hover:border-cyan-500/40 text-slate-100'
-                : 'border-slate-200 bg-white hover:border-cyan-500/40 text-slate-900'
+                ? 'border-purple-900/40 bg-slate-950/60 hover:border-purple-500/40 text-slate-100'
+                : 'border-purple-200 bg-white hover:border-purple-400 hover:shadow-xl shadow-purple-500/10 text-slate-950'
             }`}
           >
             <div>
-              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400 mb-3">
-                <span className="rounded-md bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 font-bold text-cyan-400">
+              <div className={`flex items-center justify-between text-[11px] font-mono mb-3 ${
+                theme === 'dark' ? 'text-slate-400' : 'text-slate-600 font-bold'
+              }`}>
+                <span className="rounded-md bg-purple-100 border border-purple-300 px-2 py-0.5 font-bold text-purple-800">
                   {art.category}
                 </span>
                 <span>{art.readTime}</span>
               </div>
 
-              <h3 className="text-base font-bold group-hover:text-cyan-400 transition-colors leading-snug">
+              <h3 className={`text-base font-extrabold transition-colors leading-snug ${
+                theme === 'dark' ? 'group-hover:text-purple-400 text-white' : 'group-hover:text-purple-700 text-slate-950'
+              }`}>
                 {art.title}
               </h3>
-              <p className={`mt-2 text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+              <p className={`mt-2 text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
                 {art.excerpt}
               </p>
             </div>
 
             <button
               onClick={() => setActiveArticle(art)}
-              className="mt-6 flex items-center gap-1.5 text-xs font-semibold text-cyan-400 hover:underline cursor-pointer border-t border-slate-800/60 pt-3"
+              className={`mt-6 flex items-center gap-1.5 text-xs font-bold transition-colors cursor-pointer border-t pt-3 ${
+                theme === 'dark' ? 'border-purple-900/30 text-purple-400 hover:text-purple-300' : 'border-purple-100 text-purple-700 hover:text-purple-900'
+              }`}
             >
               <BookOpen className="h-3.5 w-3.5" />
               <span>Read Full Case Study</span>
@@ -174,40 +182,44 @@ export function BlogSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className={`relative z-10 w-full max-w-2xl rounded-2xl border shadow-xl overflow-hidden backdrop-blur-2xl transition-all max-h-[85vh] flex flex-col ${
-                theme === 'dark' ? 'border-slate-800 bg-slate-950/95 text-slate-100' : 'border-slate-200 bg-white/95 text-slate-900'
+                theme === 'dark' ? 'border-purple-900/40 bg-slate-950/95 text-slate-100' : 'border-purple-200 bg-white text-slate-950'
               }`}
             >
-              <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+              <div className={`flex items-center justify-between border-b px-6 py-4 ${
+                theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'
+              }`}>
                 <div>
-                  <span className="text-[10px] font-mono text-cyan-400 uppercase font-bold">{activeArticle.category} • {activeArticle.readTime}</span>
-                  <h3 className="text-lg font-bold mt-1">{activeArticle.title}</h3>
+                  <span className="text-[10px] font-mono text-purple-600 uppercase font-bold">{activeArticle.category} • {activeArticle.readTime}</span>
+                  <h3 className={`text-lg font-extrabold mt-1 ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>{activeArticle.title}</h3>
                 </div>
-                <button onClick={() => setActiveArticle(null)} className="rounded-lg p-1.5 text-slate-400 hover:text-white">
+                <button onClick={() => setActiveArticle(null)} className={`rounded-lg p-1.5 ${theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-950'}`}>
                   <X className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="p-6 overflow-y-auto space-y-6 text-xs leading-relaxed text-slate-300">
-                <div className="whitespace-pre-line font-sans text-sm text-slate-300">
+              <div className="p-6 overflow-y-auto space-y-6 text-xs leading-relaxed">
+                <div className={`whitespace-pre-line font-sans text-sm font-medium ${
+                  theme === 'dark' ? 'text-slate-300' : 'text-slate-800'
+                }`}>
                   {activeArticle.content}
                 </div>
 
                 {activeArticle.keyTakeaways && (
-                  <div className="space-y-2 border-t border-slate-800 pt-4">
-                    <h4 className="font-bold text-cyan-400 flex items-center gap-1.5">
+                  <div className={`space-y-2 border-t pt-4 ${theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'}`}>
+                    <h4 className="font-extrabold text-purple-600 flex items-center gap-1.5">
                       <Sparkles className="h-4 w-4" /> Key Technical Takeaways
                     </h4>
                     {activeArticle.keyTakeaways.map((take, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs text-slate-300">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                        <span>{take}</span>
+                      <div key={idx} className="flex items-center gap-2 text-xs font-medium">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                        <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-800'}>{take}</span>
                       </div>
                     ))}
                   </div>
                 )}
 
                 {activeArticle.codeSnippet && (
-                  <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 font-mono text-xs text-cyan-300">
+                  <div className="rounded-xl border border-purple-900/40 bg-slate-950 p-4 font-mono text-xs text-purple-300">
                     <pre>{activeArticle.codeSnippet}</pre>
                   </div>
                 )}

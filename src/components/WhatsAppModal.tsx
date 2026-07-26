@@ -13,11 +13,12 @@ import {
   ShieldCheck,
   User,
   KeyRound,
-  Send,
   LockKeyhole
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useToast } from '@/components/Toast';
+import MultiStepLoaderDemo from '@/components/multi-step-loader-demo';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface WhatsAppModalProps {
   isOpen: boolean;
@@ -25,18 +26,20 @@ interface WhatsAppModalProps {
 }
 
 const COUNTRY_CODES = [
-  { code: '+91', country: 'India 🇮🇳' },
-  { code: '+1', country: 'USA / Canada 🇺🇸' },
-  { code: '+44', country: 'UK 🇬🇧' },
-  { code: '+61', country: 'Australia 🇦🇺' },
-  { code: '+971', country: 'UAE 🇦🇪' },
-  { code: '+49', country: 'Germany 🇩🇪' },
-  { code: '+65', country: 'Singapore 🇸🇬' },
+  { code: '+91', country: 'India' },
+  { code: '+1', country: 'USA / Canada' },
+  { code: '+44', country: 'UK' },
+  { code: '+61', country: 'Australia' },
+  { code: '+971', country: 'UAE' },
+  { code: '+49', country: 'Germany' },
+  { code: '+65', country: 'Singapore' },
 ];
 
 export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
   const { theme } = useTheme();
   const { showToast } = useToast();
+
+  useBodyScrollLock(isOpen);
 
   const [step, setStep] = useState<'input' | 'otp' | 'success'>('input');
   const [countryCode, setCountryCode] = useState('+91');
@@ -53,9 +56,6 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  const web3FormsKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || '4da5fe1b-b03d-43d8-9edd-ab59d9ce2ac5';
-  const targetContactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'santhoshrajk1812@gmail.com';
-
   // Countdown timer for OTP resend
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -66,15 +66,6 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
     }
     return () => clearInterval(interval);
   }, [step, timer]);
-
-  // Reset form when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setStep('input');
-      setOtpCode(['', '', '', '', '', '']);
-      setTimer(30);
-    }
-  }, [isOpen]);
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,7 +86,7 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
       setIsSendingOtp(false);
       setStep('otp');
       setTimer(30);
-      showToast('Security OTP Generated 🔐', `Verification Code: ${randomCode}`, 'success');
+      showToast('Security OTP Generated', `Verification Code: ${randomCode}`, 'success');
     }, 600);
   };
 
@@ -148,12 +139,15 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
           otpCode: enteredOtp,
         }),
       });
+
+      // 4-second loader animation buffer for multi-step loading steps
+      await new Promise((res) => setTimeout(res, 4000));
     } catch (err) {
       console.warn('WhatsApp API Dispatch Error:', err);
     } finally {
       setIsVerifying(false);
       setStep('success');
-      showToast('Message Dispatched! 🚀', 'Your verified message was sent directly to Santhosh Raj.', 'success');
+      showToast('Message Dispatched!', 'Your verified message was sent directly to Santhosh Raj.', 'success');
     }
   };
 
@@ -162,40 +156,47 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
     setGeneratedOtp(randomCode);
     setTimer(30);
     setOtpCode(['', '', '', '', '', '']);
-    showToast('New OTP Generated 🔐', `New verification OTP: ${randomCode}`, 'success');
+    showToast('New OTP Generated', `New verification OTP: ${randomCode}`, 'success');
   };
 
   if (!isOpen) return null;
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+    <>
+      <MultiStepLoaderDemo loading={isVerifying} onClose={() => setIsVerifying(false)} />
+      <AnimatePresence>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
         <motion.div
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.92, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.92, y: 20 }}
-          className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl border border-emerald-500/40 bg-slate-950 p-5 sm:p-8 shadow-2xl backdrop-blur-2xl text-slate-100 font-sans space-y-5"
+          className={`relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl border p-5 sm:p-8 shadow-2xl backdrop-blur-2xl font-sans space-y-5 ${
+            theme === 'dark' ? 'border-purple-900/40 bg-slate-950 text-slate-100' : 'border-purple-200 bg-white text-slate-950 shadow-purple-500/20'
+          }`}
         >
           {/* Subtle Ambient Background Glow */}
-          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-purple-500/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-20 h-56 w-56 rounded-full bg-purple-600/10 blur-3xl" />
 
           {/* Modal Header */}
-          <div className="flex items-start justify-between border-b border-slate-800 pb-4">
+          <div className={`flex items-start justify-between border-b pb-4 ${
+            theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'
+          }`}>
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 shadow-md">
+              <div className="p-3 rounded-2xl border border-purple-500/30 bg-purple-500/10 text-purple-600 shadow-md">
                 <LockKeyhole className="h-6 w-6" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-purple-600">
                     ENCRYPTED DIRECT MESSAGING
                   </span>
-                  <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-mono font-bold text-emerald-400">
+                  <span className="rounded-md border border-purple-300 bg-purple-100 px-2 py-0.5 text-[9px] font-mono font-bold text-purple-800">
                     OTP SECURED
                   </span>
                 </div>
-                <h3 className="text-xl font-extrabold text-white mt-0.5">
+                <h3 className={`text-xl font-extrabold mt-0.5 ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>
                   Direct Mobile Dispatch
                 </h3>
               </div>
@@ -203,7 +204,9 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
 
             <button
               onClick={onClose}
-              className="rounded-xl border border-slate-800 bg-slate-900 p-2 text-slate-400 hover:bg-slate-800 hover:text-white transition-colors cursor-pointer"
+              className={`rounded-xl border p-2 transition-colors cursor-pointer ${
+                theme === 'dark' ? 'border-purple-900/40 bg-slate-900 text-slate-400 hover:text-white' : 'border-purple-200 bg-purple-50 text-slate-700 hover:bg-purple-100'
+              }`}
             >
               <X className="h-4 w-4" />
             </button>
@@ -212,14 +215,14 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
           {/* STEP 1: PHONE & MESSAGE INPUT FORM */}
           {step === 'input' && (
             <form onSubmit={handleSendOtp} className="space-y-4">
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className={`text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
                 Enter your contact phone number and message payload. An instant 6-digit verification code will confirm your identity before background dispatch.
               </p>
 
               {/* Name Field */}
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <User className="h-3.5 w-3.5 text-emerald-400" />
+                <label className={`block text-xs font-extrabold flex items-center gap-1.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-950'}`}>
+                  <User className="h-3.5 w-3.5 text-purple-600" />
                   <span>Your Name</span>
                 </label>
                 <input
@@ -227,21 +230,27 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                   value={senderName}
                   onChange={(e) => setSenderName(e.target.value)}
                   placeholder="e.g. Alex Rivera"
-                  className="w-full rounded-xl border border-slate-800 bg-slate-900/90 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none transition-all font-mono"
+                  className={`w-full rounded-xl border px-3.5 py-2.5 text-xs font-mono font-bold transition-all ${
+                    theme === 'dark'
+                      ? 'border-purple-900/40 bg-slate-900 text-white placeholder-slate-500 focus:border-purple-500'
+                      : 'border-purple-200 bg-purple-50/50 text-slate-950 placeholder-slate-400 focus:border-purple-500'
+                  }`}
                 />
               </div>
 
               {/* Phone Number with Country Code */}
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <Phone className="h-3.5 w-3.5 text-emerald-400" />
+                <label className={`block text-xs font-extrabold flex items-center gap-1.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-950'}`}>
+                  <Phone className="h-3.5 w-3.5 text-purple-600" />
                   <span>Your Contact Phone Number *</span>
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={countryCode}
                     onChange={(e) => setCountryCode(e.target.value)}
-                    className="rounded-xl border border-slate-800 bg-slate-900 px-3 py-2.5 text-xs font-mono text-emerald-300 focus:border-emerald-400 focus:outline-none cursor-pointer"
+                    className={`rounded-xl border px-3 py-2.5 text-xs font-mono font-bold focus:outline-none cursor-pointer ${
+                      theme === 'dark' ? 'border-purple-900/40 bg-slate-900 text-purple-300' : 'border-purple-200 bg-purple-50 text-purple-900'
+                    }`}
                   >
                     {COUNTRY_CODES.map((c) => (
                       <option key={c.code} value={c.code}>
@@ -255,15 +264,19 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
                     placeholder="9876543210"
-                    className="flex-1 rounded-xl border border-slate-800 bg-slate-900/90 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none transition-all font-mono"
+                    className={`flex-1 rounded-xl border px-3.5 py-2.5 text-xs font-mono font-bold transition-all ${
+                      theme === 'dark'
+                        ? 'border-purple-900/40 bg-slate-900 text-white placeholder-slate-500 focus:border-purple-500'
+                        : 'border-purple-200 bg-purple-50/50 text-slate-950 placeholder-slate-400 focus:border-purple-500'
+                    }`}
                   />
                 </div>
               </div>
 
               {/* Message Payload */}
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                  <MessageCircle className="h-3.5 w-3.5 text-emerald-400" />
+                <label className={`block text-xs font-extrabold flex items-center gap-1.5 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-950'}`}>
+                  <MessageCircle className="h-3.5 w-3.5 text-purple-600" />
                   <span>Message Payload *</span>
                 </label>
                 <textarea
@@ -272,14 +285,18 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder="Hi Santhosh, I'd like to discuss a backend developer role / API project..."
-                  className="w-full rounded-xl border border-slate-800 bg-slate-900/90 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-emerald-400 focus:outline-none resize-none transition-all font-mono"
+                  className={`w-full rounded-xl border px-3.5 py-2.5 text-xs font-mono font-bold resize-none transition-all ${
+                    theme === 'dark'
+                      ? 'border-purple-900/40 bg-slate-900 text-white placeholder-slate-500 focus:border-purple-500'
+                      : 'border-purple-200 bg-purple-50/50 text-slate-950 placeholder-slate-400 focus:border-purple-500'
+                  }`}
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isSendingOtp}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 border border-emerald-400 px-5 py-3 text-xs font-bold text-slate-950 hover:bg-emerald-400 transition-all cursor-pointer shadow-lg shadow-emerald-500/20 disabled:opacity-50 mt-2"
+                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-purple-600 border border-purple-500 px-5 py-3 text-xs font-bold text-white hover:bg-purple-700 transition-all cursor-pointer shadow-lg shadow-purple-500/20 disabled:opacity-50 mt-2"
               >
                 {isSendingOtp ? (
                   <>
@@ -295,11 +312,11 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
               </button>
 
               {/* Security & Anti-Spam Telemetry Notice */}
-              <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-[11px] text-amber-300/90 leading-relaxed flex items-start gap-2.5">
-                <ShieldCheck className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+              <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-[11px] text-amber-800 font-medium leading-relaxed flex items-start gap-2.5">
+                <ShieldCheck className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-amber-400 block mb-0.5">Security & Anti-Spam Notice</span>
-                  <span>To prevent fraud, unsolicited spam, and unauthorized misuse from unwanted persons, your IP address, geolocation coordinates, and device specs are logged with every submission.</span>
+                  <span className="font-bold text-amber-900 block mb-0.5">Security & Anti-Spam Notice</span>
+                  <span>To prevent fraud, unsolicited spam, and unauthorized misuse, your IP address, geolocation coordinates, and device specs are logged with every submission.</span>
                 </div>
               </div>
             </form>
@@ -309,21 +326,25 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
           {step === 'otp' && (
             <div className="space-y-5">
               {/* Generated OTP Alert Badge */}
-              <div className="rounded-2xl border border-emerald-500/40 bg-emerald-950/40 p-4 space-y-2 text-center">
-                <div className="flex items-center justify-center gap-2 text-xs font-mono font-bold text-emerald-400">
+              <div className={`rounded-2xl border p-4 space-y-2 text-center ${
+                theme === 'dark' ? 'border-purple-500/40 bg-purple-950/40' : 'border-purple-200 bg-purple-50/80'
+              }`}>
+                <div className="flex items-center justify-center gap-2 text-xs font-mono font-bold text-purple-600">
                   <KeyRound className="h-4 w-4" />
                   <span>SECURITY OTP GENERATED</span>
                 </div>
-                <div className="text-2xl font-extrabold font-mono tracking-widest text-white bg-slate-950/80 border border-emerald-500/30 rounded-xl py-2 px-4 inline-block">
+                <div className={`text-2xl font-extrabold font-mono tracking-widest border rounded-xl py-2 px-4 inline-block ${
+                  theme === 'dark' ? 'text-white bg-slate-950 border-purple-500/30' : 'text-purple-900 bg-white border-purple-300'
+                }`}>
                   {generatedOtp}
                 </div>
-                <p className="text-[11px] text-slate-300">
-                  OTP sent for number <span className="font-mono text-emerald-300 font-bold">{countryCode} {phoneNumber}</span>. Enter code below or click Auto-Fill.
+                <p className={`text-[11px] font-medium ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>
+                  OTP sent for number <span className="font-mono text-purple-600 font-bold">{countryCode} {phoneNumber}</span>. Enter code below or click Auto-Fill.
                 </p>
                 <button
                   type="button"
                   onClick={handleAutoFillOtp}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/40 bg-emerald-500/20 px-3 py-1 text-[11px] font-mono font-bold text-emerald-300 hover:bg-emerald-500/30 transition-all cursor-pointer mt-1"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-purple-500/40 bg-purple-600 text-white px-3 py-1 text-[11px] font-mono font-bold hover:bg-purple-700 transition-all cursor-pointer mt-1 shadow-sm"
                 >
                   <Sparkles className="h-3 w-3" />
                   <span>Auto-Fill Demo OTP ({generatedOtp})</span>
@@ -332,7 +353,7 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
 
               {/* 6 Input Digit Boxes */}
               <div className="space-y-2">
-                <label className="block text-xs font-mono font-bold text-center text-slate-300">
+                <label className={`block text-xs font-mono font-bold text-center ${theme === 'dark' ? 'text-slate-300' : 'text-slate-950'}`}>
                   ENTER 6-DIGIT VERIFICATION CODE:
                 </label>
                 <div className="flex items-center justify-center gap-2 sm:gap-3">
@@ -345,7 +366,11 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                       value={digit}
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(idx, e)}
-                      className="h-12 w-10 sm:h-14 sm:w-12 rounded-xl border border-slate-700 bg-slate-900 text-center font-mono text-lg font-bold text-emerald-400 focus:border-emerald-400 focus:outline-none shadow-inner transition-all"
+                      className={`h-12 w-10 sm:h-14 sm:w-12 rounded-xl border text-center font-mono text-lg font-extrabold focus:border-purple-500 focus:outline-none shadow-inner transition-all ${
+                        theme === 'dark'
+                          ? 'border-purple-900/40 bg-slate-900 text-purple-300'
+                          : 'border-purple-300 bg-purple-50 text-purple-900'
+                      }`}
                     />
                   ))}
                 </div>
@@ -357,7 +382,7 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                   type="button"
                   onClick={handleVerifyOtp}
                   disabled={isVerifying}
-                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-emerald-500 border border-emerald-400 px-5 py-3 text-xs font-bold text-slate-950 hover:bg-emerald-400 transition-all cursor-pointer shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-purple-600 border border-purple-500 px-5 py-3 text-xs font-bold text-white hover:bg-purple-700 transition-all cursor-pointer shadow-lg shadow-purple-500/20 disabled:opacity-50"
                 >
                   {isVerifying ? (
                     <>
@@ -372,11 +397,13 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                   )}
                 </button>
 
-                <div className="flex items-center justify-between text-xs font-mono text-slate-400 px-1">
+                <div className={`flex items-center justify-between text-xs font-mono font-bold px-1 ${
+                  theme === 'dark' ? 'text-slate-400' : 'text-slate-700'
+                }`}>
                   <button
                     type="button"
                     onClick={() => setStep('input')}
-                    className="hover:text-white transition-colors cursor-pointer"
+                    className="hover:text-purple-600 transition-colors cursor-pointer"
                   >
                     ← Edit Phone Number
                   </button>
@@ -387,7 +414,7 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
                     <button
                       type="button"
                       onClick={handleResendOtp}
-                      className="text-emerald-400 font-bold hover:underline cursor-pointer"
+                      className="text-purple-600 font-extrabold hover:underline cursor-pointer"
                     >
                       Resend New OTP
                     </button>
@@ -400,24 +427,24 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
           {/* STEP 3: SUCCESS SCREEN */}
           {step === 'success' && (
             <div className="py-6 text-center space-y-4">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-emerald-400 bg-emerald-500/20 text-emerald-400 shadow-lg shadow-emerald-500/20 animate-bounce">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-2 border-emerald-500 bg-emerald-500/20 text-emerald-600 shadow-lg shadow-emerald-500/20 animate-bounce">
                 <CheckCircle2 className="h-8 w-8" />
               </div>
               <div className="space-y-1">
-                <h4 className="text-lg font-extrabold text-white">Identity Verified & Message Sent!</h4>
-                <p className="text-xs text-emerald-300 font-mono">
+                <h4 className={`text-lg font-extrabold ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>Identity Verified & Message Sent!</h4>
+                <p className="text-xs text-emerald-700 font-mono font-bold">
                   Your message has been securely routed to Santhosh Raj via background direct channel.
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-950/40 px-4 py-2 text-xs font-mono text-emerald-400">
-                <Lock className="h-3.5 w-3.5 text-emerald-400" />
+              <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-100 px-4 py-2 text-xs font-mono font-bold text-emerald-800">
+                <Lock className="h-3.5 w-3.5 text-emerald-600" />
                 <span>Encrypted Channel • No Public Data Exposed</span>
               </div>
               <div className="pt-2">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="rounded-xl border border-slate-800 bg-slate-900 px-6 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition-all cursor-pointer"
+                  className="rounded-xl bg-purple-600 border border-purple-500 px-6 py-2.5 text-xs font-bold text-white hover:bg-purple-700 transition-all cursor-pointer shadow-md shadow-purple-500/20"
                 >
                   Close Window
                 </button>
@@ -427,5 +454,6 @@ export function WhatsAppModal({ isOpen, onClose }: WhatsAppModalProps) {
         </motion.div>
       </div>
     </AnimatePresence>
+    </>
   );
 }
