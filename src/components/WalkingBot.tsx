@@ -13,14 +13,13 @@ import {
   Briefcase,
   Code2,
   Mail,
-  Calendar,
   CheckCircle2,
   Sparkles,
   ExternalLink,
   PhoneCall,
-  ChevronRight
+  ChevronRight,
+  Target
 } from 'lucide-react';
-import { useTheme } from '@/context/ThemeContext';
 
 type Persona = 'hr' | 'client' | 'developer';
 type BotAction = 'idle' | 'dance' | 'scan';
@@ -34,21 +33,19 @@ interface VisitorData {
 }
 
 const KNOWLEDGE_BASE: Record<string, string> = {
-  default: "Greetings! 👋 I'm RoboX 3D. Click 'Scan & Tailor Briefing' to get a customized profile overview for your role!",
-  skills: "🛠️ Santhosh's Stack: Backend Developer @ DataMoo.ai | Python, Django REST, PostgreSQL, Scalable Fintech APIs, Next.js, Docker & RAG AI!",
-  projects: "💼 Production Systems: Fintech Mutual Fund Transaction Engines, Django REST APIs, Docker Pipelines & RAG AI Agents!",
-  contact: "📬 Contact Santhosh Raj directly at santhoshrajk1812@gmail.com for Backend & Full-Stack engineering roles!",
-  joke: "🤖 Why do Python & Django developers love Next.js 16? Because server actions and REST APIs execute at warp speed! ⚡",
+  default: "Greetings! I'm RoboX 3D. Click 'Scan & Tailor Briefing' to get a customized profile overview for your role!",
+  skills: "Santhosh's Stack: Backend Developer @ DataMoo.ai | Python, Django REST, PostgreSQL, Scalable Fintech APIs, Next.js, Docker & RAG AI!",
+  projects: "Production Systems: Fintech Mutual Fund Transaction Engines, Django REST APIs, Docker Pipelines & RAG AI Agents!",
+  contact: "Contact Santhosh Raj directly at santhoshrajk1812@gmail.com for Backend & Full-Stack engineering roles!",
+  joke: "Why do Python & Django developers love Next.js 16? Because server actions and REST APIs execute at warp speed!",
 };
 
 export function WalkingBot() {
-  const { theme } = useTheme();
-
   // Widget & Modal States
   const [isOpen, setIsOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [action, setAction] = useState<BotAction>('idle');
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [scanningSectionTitle, setScanningSectionTitle] = useState<string | null>(null);
 
   // Form & Briefing Modals
   const [showIntakeModal, setShowIntakeModal] = useState(false);
@@ -66,42 +63,7 @@ export function WalkingBot() {
   const [chatInput, setChatInput] = useState('');
   const [activeTab, setActiveTab] = useState<'chat' | 'actions' | 'nav'>('chat');
 
-  // Listen for Voice Bio Navigation and Travel Commands
-  React.useEffect(() => {
-    const handleTravelAndScan = (e: Event) => {
-      const customEvt = e as CustomEvent<{ sectionId: string; topicTitle: string }>;
-      if (!customEvt.detail) return;
-      const { sectionId, topicTitle } = customEvt.detail;
-
-      setAction('scan');
-      setScanningSectionTitle(topicTitle);
-      playSound('scan');
-
-      setSpeechText(`🚀 Traveling to ${topicTitle} [${sectionId}] ... Voice narration playing in background! 🎙️`);
-      setIsOpen(true);
-
-      const elem = document.querySelector(sectionId);
-      if (elem) {
-        elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        // Add glowing pulse border highlight
-        elem.classList.add('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950', 'transition-all', 'duration-500');
-        setTimeout(() => {
-          elem.classList.remove('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950');
-        }, 6000);
-      }
-
-      setTimeout(() => {
-        setAction('idle');
-        setScanningSectionTitle(null);
-      }, 5000);
-    };
-
-    window.addEventListener('bot-travel-and-scan', handleTravelAndScan);
-    return () => window.removeEventListener('bot-travel-and-scan', handleTravelAndScan);
-  }, []);
-
-  const playSound = (type: 'beep' | 'scan') => {
+  const playSound = React.useCallback((type: 'beep' | 'scan') => {
     if (!soundEnabled || typeof window === 'undefined') return;
     try {
       const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
@@ -128,7 +90,40 @@ export function WalkingBot() {
     } catch {
       // Audio context fallback
     }
-  };
+  }, [soundEnabled]);
+
+  // Listen for Voice Bio Navigation and Travel Commands
+  React.useEffect(() => {
+    const handleTravelAndScan = (e: Event) => {
+      const customEvt = e as CustomEvent<{ sectionId: string; topicTitle: string }>;
+      if (!customEvt.detail) return;
+      const { sectionId, topicTitle } = customEvt.detail;
+
+      setAction('scan');
+      playSound('scan');
+
+      setSpeechText(`Traveling to ${topicTitle} [${sectionId}] ... Voice narration playing in background!`);
+      setIsOpen(true);
+
+      const elem = document.querySelector(sectionId);
+      if (elem) {
+        elem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Add glowing pulse border highlight
+        elem.classList.add('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950', 'transition-all', 'duration-500');
+        setTimeout(() => {
+          elem.classList.remove('ring-4', 'ring-cyan-500', 'ring-offset-4', 'ring-offset-slate-950');
+        }, 6000);
+      }
+
+      setTimeout(() => {
+        setAction('idle');
+      }, 5000);
+    };
+
+    window.addEventListener('bot-travel-and-scan', handleTravelAndScan);
+    return () => window.removeEventListener('bot-travel-and-scan', handleTravelAndScan);
+  }, [playSound]);
 
   const handleOpenScanForm = () => {
     playSound('scan');
@@ -205,7 +200,7 @@ export function WalkingBot() {
     else if (inputLower.includes('project') || inputLower.includes('work')) setSpeechText(KNOWLEDGE_BASE.projects);
     else if (inputLower.includes('contact') || inputLower.includes('email')) setSpeechText(KNOWLEDGE_BASE.contact);
     else if (inputLower.includes('joke')) setSpeechText(KNOWLEDGE_BASE.joke);
-    else setSpeechText(`🤖 "${chatInput}" -> Synced with Santhosh Raj's architecture!`);
+    else setSpeechText(`"${chatInput}" -> Synced with Santhosh Raj's architecture!`);
 
     setChatInput('');
   };
@@ -225,7 +220,7 @@ export function WalkingBot() {
       {/* 1. VISITOR INTAKE FORM MODAL */}
       <AnimatePresence>
         {showIntakeModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -356,7 +351,7 @@ export function WalkingBot() {
       {/* 2. PERSONA-TAILORED BRIEFING POP-UP CONTAINER */}
       <AnimatePresence>
         {showBriefingModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -368,11 +363,11 @@ export function WalkingBot() {
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-emerald-400" />
                   <div>
-                    <h3 className="text-sm font-bold">
+                    <h3 className="text-base font-bold">
                       Briefing for {visitor.firstName || 'Visitor'} {visitor.lastName}
                     </h3>
-                    <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider">
-                      Tailored Persona: {visitor.persona === 'hr' ? '👔 HR / Recruiter' : visitor.persona === 'client' ? '💼 Client / Project Founder' : '💻 Developer / Tech Peer'}
+                    <span className="text-xs font-mono text-purple-600 font-bold uppercase tracking-wider">
+                      Tailored Persona: {visitor.persona === 'hr' ? 'HR / Recruiter' : visitor.persona === 'client' ? 'Client / Project Founder' : 'Developer / Tech Peer'}
                     </span>
                   </div>
                 </div>
@@ -387,13 +382,15 @@ export function WalkingBot() {
 
               {/* PERSONA CONTENT 1: HR / RECRUITER */}
               {visitor.persona === 'hr' && (
-                <div className="space-y-4 text-xs">
-                  <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-3.5 leading-relaxed text-cyan-200">
-                    <p className="font-semibold text-white mb-1">🎯 Executive Hiring Summary</p>
+                <div className="space-y-4 text-sm">
+                  <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-3.5 leading-relaxed text-purple-200">
+                    <p className="font-bold text-white mb-1 flex items-center gap-1.5">
+                      <Target className="h-4 w-4 text-purple-400" /> Executive Hiring Summary
+                    </p>
                     Santhosh Raj is a <strong>Backend Developer @ DataMoo.ai</strong> and Full-Stack Engineer specializing in <strong>Python, Django REST Framework, PostgreSQL, Scalable Fintech (Mutual Funds) APIs</strong>, Docker, and currently engineering RAG AI systems.
                   </div>
 
-                  <div className="space-y-2 font-mono text-[11px]">
+                  <div className="space-y-2 font-mono text-xs font-bold">
                     <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Target Roles:</span>
                       <span className="font-bold text-white">Full-Stack Lead / Senior Engineer</span>
@@ -401,7 +398,7 @@ export function WalkingBot() {
 
                     <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-slate-400">Primary Stack:</span>
-                      <span className="text-cyan-300 font-bold">Next.js 16, TS, Node, Python, SQL</span>
+                      <span className="text-purple-300 font-bold">Next.js 16, TS, Node, Python, SQL</span>
                     </div>
 
                     <div className="flex items-center justify-between rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
@@ -418,15 +415,15 @@ export function WalkingBot() {
                   <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2">
                     <a
                       href={`mailto:${targetContactEmail}?subject=Full-Stack Role Inquiry`}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-cyan-500/20 border border-cyan-400/40 py-2 text-xs font-bold text-cyan-300 hover:bg-cyan-500/30 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-purple-600 border border-purple-500 py-2.5 text-xs font-bold text-white hover:bg-purple-700 transition-all"
                     >
-                      <Mail className="h-3.5 w-3.5" /> Email Candidate
+                      <Mail className="h-4 w-4" /> Email Candidate
                     </a>
                     <button
                       onClick={() => handleJumpTo('#projects')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
                     >
-                      <Briefcase className="h-3.5 w-3.5" /> View Projects
+                      <Briefcase className="h-4 w-4" /> View Projects
                     </button>
                   </div>
                 </div>
@@ -434,25 +431,27 @@ export function WalkingBot() {
 
               {/* PERSONA CONTENT 2: CLIENT / PROJECT FOUNDER */}
               {visitor.persona === 'client' && (
-                <div className="space-y-4 text-xs">
+                <div className="space-y-4 text-sm">
                   <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 leading-relaxed text-emerald-200">
-                    <p className="font-semibold text-white mb-1">🚀 Product & Engineering Services</p>
+                    <p className="font-bold text-white mb-1 flex items-center gap-1.5">
+                      <Sparkles className="h-4 w-4 text-emerald-400" /> Product & Engineering Services
+                    </p>
                     Santhosh Raj partners with clients & startup founders to take product concepts from zero-to-one into <strong>scalable, high-performance web applications</strong>.
                   </div>
 
-                  <div className="space-y-2 font-mono text-[11px]">
+                  <div className="space-y-2 font-mono text-xs font-bold">
                     <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
                       <span className="text-emerald-400 font-bold block mb-0.5">1. Full-Stack Web Development</span>
                       <span className="text-slate-400">Next.js 16, React, Node.js, Python backends & clean modern styling.</span>
                     </div>
 
                     <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
-                      <span className="text-cyan-400 font-bold block mb-0.5">2. Database & API Performance</span>
+                      <span className="text-purple-400 font-bold block mb-0.5">2. Database & API Performance</span>
                       <span className="text-slate-400">PostgreSQL indexing, Redis caching, zero-lock query optimization.</span>
                     </div>
 
                     <div className="rounded-lg border border-slate-800 bg-slate-900/60 p-2.5">
-                      <span className="text-purple-400 font-bold block mb-0.5">3. Rapid Time-to-Market</span>
+                      <span className="text-purple-300 font-bold block mb-0.5">3. Rapid Time-to-Market</span>
                       <span className="text-slate-400">High-velocity shipping, clean maintainable code, zero technical debt.</span>
                     </div>
                   </div>
@@ -460,15 +459,15 @@ export function WalkingBot() {
                   <div className="pt-2 border-t border-slate-800 flex flex-wrap gap-2">
                     <a
                       href={`mailto:${targetContactEmail}?subject=Project Discovery Consultation`}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-500/20 border border-emerald-400/40 py-2 text-xs font-bold text-emerald-300 hover:bg-emerald-500/30 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-emerald-500 border border-emerald-400 py-2.5 text-xs font-bold text-slate-950 hover:bg-emerald-400 transition-all"
                     >
-                      <PhoneCall className="h-3.5 w-3.5" /> Book Project Call
+                      <PhoneCall className="h-4 w-4" /> Book Project Call
                     </a>
                     <button
                       onClick={() => handleJumpTo('#sql-lab')}
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
+                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-slate-800 border border-slate-700 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-700 transition-all"
                     >
-                      <Sparkles className="h-3.5 w-3.5" /> Test SQL Sandbox
+                      <Sparkles className="h-4 w-4" /> Test SQL Sandbox
                     </button>
                   </div>
                 </div>
@@ -476,9 +475,11 @@ export function WalkingBot() {
 
               {/* PERSONA CONTENT 3: DEVELOPER / PEER */}
               {visitor.persona === 'developer' && (
-                <div className="space-y-4 text-xs">
+                <div className="space-y-4 text-sm">
                   <div className="rounded-xl border border-purple-500/30 bg-purple-500/10 p-3.5 leading-relaxed text-purple-200">
-                    <p className="font-semibold text-white mb-1">💻 Developer Tech Specs</p>
+                    <p className="font-bold text-white mb-1 flex items-center gap-1.5">
+                      <Code2 className="h-4 w-4 text-purple-400" /> Developer Tech Specs
+                    </p>
                     Welcome fellow dev! Explore Santhosh Raj&apos;s real-time GitHub telemetry (`@sandyddeveloper`), interactive SQL sandbox, and distributed architecture topology.
                   </div>
 
@@ -582,24 +583,27 @@ export function WalkingBot() {
             {/* TAB 1: AI CHAT */}
             {activeTab === 'chat' && (
               <div className="mt-3 space-y-2.5 border-t border-slate-800/80 pt-2.5">
-                <div className="flex flex-wrap gap-1">
+                <div className="flex flex-wrap gap-1.5">
                   <button
                     onClick={handleOpenScanForm}
-                    className="rounded-lg border border-cyan-500/40 bg-cyan-500/10 px-2 py-1 text-[11px] font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all flex items-center gap-1"
+                    className="rounded-xl border border-purple-500/40 bg-purple-500/10 px-2.5 py-1.5 text-xs font-bold text-purple-400 hover:bg-purple-500/20 transition-all flex items-center gap-1.5"
                   >
-                    🔍 Scan & Tailor Briefing
+                    <Scan className="h-3.5 w-3.5" />
+                    <span>Scan & Tailor Briefing</span>
                   </button>
                   <button
                     onClick={() => setSpeechText(KNOWLEDGE_BASE.skills)}
-                    className="rounded-lg border border-slate-800 bg-slate-900 px-2 py-1 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
+                    className="rounded-xl border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs font-bold text-slate-300 hover:border-purple-500/40 hover:text-purple-400 transition-all flex items-center gap-1.5"
                   >
-                    🛠️ Tech Stack
+                    <Code2 className="h-3.5 w-3.5 text-purple-400" />
+                    <span>Tech Stack</span>
                   </button>
                   <button
                     onClick={() => setSpeechText(KNOWLEDGE_BASE.projects)}
-                    className="rounded-lg border border-slate-800 bg-slate-900 px-2 py-1 text-[11px] text-slate-300 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
+                    className="rounded-xl border border-slate-800 bg-slate-900 px-2.5 py-1.5 text-xs font-bold text-slate-300 hover:border-purple-500/40 hover:text-purple-400 transition-all flex items-center gap-1.5"
                   >
-                    💼 Projects
+                    <Briefcase className="h-3.5 w-3.5 text-purple-400" />
+                    <span>Projects</span>
                   </button>
                 </div>
 
@@ -609,11 +613,11 @@ export function WalkingBot() {
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="Ask RoboX or type 'scan'..."
-                    className="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+                    className="w-full rounded-xl bg-slate-900 border border-slate-800 px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 font-mono"
                   />
                   <button
                     type="submit"
-                    className="rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1.5 text-cyan-400 hover:bg-cyan-500/20 transition-all"
+                    className="rounded-xl bg-purple-600 border border-purple-500 px-3 py-2 text-white hover:bg-purple-700 transition-all"
                   >
                     <Send className="h-3.5 w-3.5" />
                   </button>
@@ -627,25 +631,25 @@ export function WalkingBot() {
                 <div className="grid grid-cols-2 gap-1.5">
                   <button
                     onClick={handleOpenScanForm}
-                    className="col-span-2 rounded-xl border border-cyan-500/40 bg-cyan-500/10 px-3 py-2 text-[11px] font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all flex items-center justify-center gap-1.5"
+                    className="col-span-2 rounded-xl border border-purple-500/40 bg-purple-500/10 px-3 py-2 text-xs font-bold text-purple-400 hover:bg-purple-500/20 transition-all flex items-center justify-center gap-1.5"
                   >
-                    <Scan className="h-3.5 w-3.5" /> 🔍 Scan & Tailor Briefing
+                    <Scan className="h-4 w-4" /> Scan & Tailor Briefing
                   </button>
 
                   <button
                     onClick={() => { setAction('dance'); playSound('beep'); }}
-                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'dance' ? 'bg-pink-500/10 border-pink-500/40 text-pink-400' : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
+                    className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${action === 'dance' ? 'bg-pink-500/10 border-pink-500/40 text-pink-400' : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white'
                       }`}
                   >
-                    💃 3D Dance Party
+                    <Sparkles className="h-3.5 w-3.5" /> 3D Dance Party
                   </button>
 
                   <button
                     onClick={() => { setAction('idle'); playSound('beep'); }}
-                    className={`rounded-xl border px-3 py-2 text-[11px] font-semibold transition-all ${action === 'idle' ? 'bg-slate-800 text-white border-slate-700' : 'bg-slate-900 text-slate-400 border-slate-800'
+                    className={`rounded-xl border px-3 py-2 text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${action === 'idle' ? 'bg-slate-800 text-white border-slate-700' : 'bg-slate-900 text-slate-400 border-slate-800'
                       }`}
                   >
-                    ⏸️ Reset Action
+                    Reset Action
                   </button>
                 </div>
               </div>
@@ -702,17 +706,44 @@ export function WalkingBot() {
         )}
       </AnimatePresence>
 
-      {/* FULL STATIC 3D ROBOT STRUCTURE IN BOTTOM RIGHT */}
-      <button
-        onClick={() => {
-          playSound('beep');
-          setIsOpen(!isOpen);
-        }}
-        className="group relative flex items-center justify-center cursor-pointer transition-all active:scale-95 p-1"
-        title="Click to open RoboX 3D Scanner & AI Companion"
-      >
-        {/* Glow Aura */}
-        <div className="absolute -inset-2 rounded-full bg-cyan-500/20 blur-xl group-hover:bg-cyan-500/35 transition-all" />
+      {/* DOCKABLE ROBOT STRUCTURE IN BOTTOM RIGHT */}
+      {isMinimized ? (
+        <button
+          onClick={() => {
+            playSound('beep');
+            setIsMinimized(false);
+          }}
+          className="flex items-center gap-2 rounded-full border border-cyan-500/40 bg-slate-950/90 px-4 py-2 text-xs font-mono font-bold text-cyan-400 shadow-xl backdrop-blur-md hover:border-cyan-400 hover:scale-105 transition-all cursor-pointer"
+          title="Expand RoboX Assistant"
+        >
+          <span className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
+          <span>🤖 RoboX AI</span>
+        </button>
+      ) : (
+        <div className="relative group">
+          {/* Dock / Minimize Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsMinimized(true);
+              setIsOpen(false);
+            }}
+            className="absolute -top-2 -right-2 z-30 h-6 w-6 rounded-full bg-slate-900 border border-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            title="Minimize RoboX Assistant"
+          >
+            ✕
+          </button>
+
+          <button
+            onClick={() => {
+              playSound('beep');
+              setIsOpen(!isOpen);
+            }}
+            className="relative flex items-center justify-center cursor-pointer transition-all active:scale-95 p-1"
+            title="Click to open RoboX 3D Scanner & AI Companion"
+          >
+            {/* Glow Aura */}
+            <div className="absolute -inset-2 rounded-full bg-cyan-500/20 blur-xl group-hover:bg-cyan-500/35 transition-all" />
 
         {/* JETPACK FIRE THRUSTER PARTICLES */}
         <div className="absolute -bottom-3 z-0 flex gap-4 pointer-events-none">
@@ -800,11 +831,11 @@ export function WalkingBot() {
               {/* Glowing 3D Eyes */}
               {action === 'dance' ? (
                 <g fill="#F472B6" filter="url(#eyeGlow)">
-                  <text x="39" y="27" textAnchor="middle" fontSize="11" fontWeight="bold">★</text>
-                  <text x="61" y="27" textAnchor="middle" fontSize="11" fontWeight="bold">★</text>
+                  <circle cx="39" cy="22" r="3.5" />
+                  <circle cx="61" cy="22" r="3.5" />
                 </g>
               ) : (
-                <g fill="#38bdf8" filter="url(#eyeGlow)">
+                <g fill="#C084FC" filter="url(#eyeGlow)">
                   <rect x="34" y="17" width="4" height="4" rx="1" />
                   <rect x="40" y="17" width="4" height="4" rx="1" />
                   <rect x="34" y="23" width="4" height="4" rx="1" />
@@ -840,7 +871,7 @@ export function WalkingBot() {
                 cx="50"
                 cy="60"
                 r="5.5"
-                fill="#38bdf8"
+                fill="#C084FC"
                 stroke="url(#chromeGradient)"
                 strokeWidth="1"
                 filter="url(#eyeGlow)"
@@ -890,6 +921,8 @@ export function WalkingBot() {
           </svg>
         </motion.div>
       </button>
+      </div>
+      )}
     </div>
   );
 }

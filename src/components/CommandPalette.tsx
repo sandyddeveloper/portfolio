@@ -4,13 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
-  Command,
   Sun,
   Moon,
   SquareTerminal,
   Layers,
   Code2,
-  FileText,
   Mail,
   X,
   ArrowRight,
@@ -18,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useToast } from '@/components/Toast';
+import { useBodyScrollLock } from '@/hooks/useBodyScrollLock';
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -28,6 +27,8 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const { theme, toggleTheme } = useTheme();
   const { showToast } = useToast();
   const [query, setQuery] = useState('');
+
+  useBodyScrollLock(isOpen);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -139,7 +140,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 sm:px-6">
+      <div className="fixed inset-0 z-[100] flex items-start justify-center pt-20 px-4 sm:px-6">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -151,34 +152,41 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
         {/* Command Box */}
         <motion.div
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.95, y: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           className={`relative z-10 w-full max-w-xl rounded-3xl border shadow-2xl overflow-hidden backdrop-blur-2xl transition-all ${
             theme === 'dark'
-              ? 'border-slate-800 bg-slate-900/95 text-slate-100 shadow-cyan-950/40'
-              : 'border-slate-200 bg-white/95 text-slate-900 shadow-slate-300/60'
+              ? 'border-purple-900/40 bg-slate-950/95 text-slate-100 shadow-purple-950/40'
+              : 'border-purple-200 bg-white text-slate-950 shadow-purple-500/20'
           }`}
         >
           {/* Search Header */}
-          <div className="flex items-center gap-3 border-b border-slate-800/60 px-5 py-4">
-            <Search className="h-5 w-5 text-cyan-400 shrink-0" />
+          <div className={`flex items-center gap-3 border-b px-5 py-4 ${
+            theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'
+          }`}>
+            <Search className="h-5 w-5 text-purple-600 shrink-0" />
             <input
               type="text"
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Type a command or search (e.g. projects, theme, contact)..."
-              className={`w-full bg-transparent text-sm focus:outline-none placeholder:text-slate-500 font-mono ${
-                theme === 'dark' ? 'text-white' : 'text-slate-900'
+              className={`w-full bg-transparent text-sm focus:outline-none placeholder:text-slate-400 font-mono font-bold ${
+                theme === 'dark' ? 'text-white' : 'text-slate-950'
               }`}
             />
             <div className="flex items-center gap-1">
-              <kbd className="rounded-lg bg-slate-800 border border-slate-700 px-2 py-0.5 text-[10px] font-mono text-slate-400">
+              <kbd className={`rounded-lg border px-2 py-0.5 text-[10px] font-mono font-bold ${
+                theme === 'dark' ? 'border-purple-900/40 bg-slate-800 text-slate-400' : 'border-purple-200 bg-purple-50 text-purple-900'
+              }`}>
                 ESC
               </kbd>
-              <button onClick={onClose} className="rounded-lg p-1 text-slate-400 hover:text-white">
+              <button onClick={onClose} className={`rounded-lg p-1 transition-colors ${
+                theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-950'
+              }`}>
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -200,20 +208,20 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
                     className={`w-full flex items-center justify-between rounded-2xl p-3 text-left transition-all cursor-pointer group ${
                       theme === 'dark'
                         ? 'hover:bg-slate-800/80 text-slate-200 hover:text-white'
-                        : 'hover:bg-slate-100 text-slate-700 hover:text-slate-900'
+                        : 'hover:bg-purple-50 text-slate-950 font-bold'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 group-hover:scale-105 transition-transform">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-500/10 text-purple-600 border border-purple-500/30 group-hover:scale-105 transition-transform">
                         <IconComponent className="h-4.5 w-4.5" />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold">{cmd.title}</p>
-                        <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider">{cmd.category}</span>
+                        <p className={`text-xs font-extrabold ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>{cmd.title}</p>
+                        <span className="text-[10px] font-mono text-purple-600 font-bold uppercase tracking-wider">{cmd.category}</span>
                       </div>
                     </div>
 
-                    <ArrowRight className="h-4 w-4 text-slate-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="h-4 w-4 text-purple-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </button>
                 );
               })
@@ -221,11 +229,11 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
           </div>
 
           {/* Footer Bar */}
-          <div className={`flex items-center justify-between border-t px-5 py-2.5 text-[11px] font-mono text-slate-500 ${
-            theme === 'dark' ? 'border-slate-800/60 bg-slate-950/60' : 'border-slate-200 bg-slate-100/60'
+          <div className={`flex items-center justify-between border-t px-5 py-2.5 text-[11px] font-mono ${
+            theme === 'dark' ? 'border-purple-900/30 bg-slate-950/60 text-slate-400' : 'border-purple-100 bg-purple-50/60 text-slate-700 font-bold'
           }`}>
             <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3 w-3 text-cyan-400" />
+              <Sparkles className="h-3 w-3 text-purple-600" />
               <span>Santhu.dev Command Engine</span>
             </div>
             <span>Use ↑ ↓ to navigate</span>

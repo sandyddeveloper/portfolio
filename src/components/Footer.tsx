@@ -4,11 +4,11 @@ import React from 'react';
 import {
   ArrowUp,
   Mail,
-  SquareTerminal,
-  Copy
+  SquareTerminal
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useToast } from '@/components/Toast';
+import FloatingDockDemo from '@/components/floating-dock-demo';
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -37,81 +37,59 @@ export function Footer() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (href: string) => {
-    const elem = document.querySelector(href);
-    if (elem) {
-      elem.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleCopyEmail = () => {
     const email = 'santhoshrajk1812@gmail.com';
     navigator.clipboard.writeText(email);
-    showToast('Email Copied! 📋', `${email} saved to clipboard.`, 'success');
+    showToast('Email Copied!', `${email} saved to clipboard.`, 'success');
   };
 
   return (
     <footer
       className={`relative w-full border-t transition-all duration-300 mt-12 sm:mt-16 ${theme === 'dark'
-          ? 'border-slate-800/80 bg-slate-950/95 text-slate-300'
-          : 'border-slate-200 bg-slate-50/95 text-slate-700'
+        ? 'border-purple-900/40 bg-slate-950/95 text-slate-300'
+        : 'border-purple-200 bg-white text-slate-950'
         }`}
     >
       {/* Top Accent Gradient Divider Line */}
-      <div className="h-0.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
+      <div className="h-0.5 w-full bg-gradient-to-r from-purple-600 via-indigo-600 to-violet-600" />
 
       {/* Subtle Ambient Background Watermark Text */}
       <div className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 select-none text-[80px] sm:text-[120px] lg:text-[150px] font-black uppercase tracking-tighter opacity-[0.03] whitespace-nowrap">
         SANTHOSH RAJ
       </div>
 
-      <div className="mx-auto w-full max-w-[1600px] 2xl:max-w-[1800px] 3xl:max-w-[2200px] 4xl:max-w-[2800px] px-6 sm:px-12 lg:px-16 py-10 sm:py-12 space-y-8">
-        {/* Main Footer Row */}
-        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between border-b border-slate-800/60 pb-8">
-          {/* Brand Info */}
+      <div className="mx-auto w-full max-w-[1600px] 2xl:max-w-[1800px] px-6 sm:px-12 lg:px-16 py-8 sm:py-10 space-y-6">
+        {/* Top Header Row: Brand Info + Social Actions */}
+        <div className={`flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between border-b pb-6 ${theme === 'dark' ? 'border-purple-900/30' : 'border-purple-100'
+          }`}>
+          {/* Left: Brand Info */}
           <div className="space-y-2 max-w-md">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono font-bold">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-600 font-mono font-bold">
                 <SquareTerminal className="h-4 w-4" />
               </div>
-              <span className="text-lg font-bold tracking-tight text-white">
+              <span className={`text-lg font-extrabold tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>
                 Santhosh Raj
               </span>
-              <span className="rounded-full bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 text-[10px] font-mono text-cyan-400 font-semibold">
+              <span className="rounded-full bg-purple-100 border border-purple-300 px-2 py-0.5 text-[10px] font-mono text-purple-800 font-bold">
                 Backend Developer @ DataMoo.ai
               </span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className={`text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
               Specialized in Python, Django REST, PostgreSQL, Scalable Fintech APIs, Docker, Next.js 16, and RAG AI Systems.
             </p>
           </div>
 
-          {/* Quick Navigation Links */}
-          <div className="flex flex-wrap items-center gap-6 text-xs font-medium text-slate-400">
-            {[
-              { name: 'About', href: '#about' },
-              { name: 'Projects', href: '#projects' },
-              { name: 'SQL Lab', href: '#sql-lab' },
-              { name: 'Experience', href: '#experience' },
-              { name: 'Contact', href: '#contact' },
-            ].map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="hover:text-cyan-400 transition-colors cursor-pointer"
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Social Links & Back To Top */}
+          {/* Right: Social Links & Back To Top */}
           <div className="flex items-center gap-3 shrink-0">
             <a
               href="https://github.com/sandyddeveloper"
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
+              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all ${theme === 'dark'
+                ? 'border-purple-900/40 bg-slate-900/80 text-slate-400 hover:text-white'
+                : 'border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100'
+                }`}
               title="GitHub Profile"
             >
               <GithubIcon />
@@ -121,7 +99,10 @@ export function Footer() {
               href="https://linkedin.com"
               target="_blank"
               rel="noreferrer"
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:border-cyan-500/40 hover:text-cyan-400 transition-all"
+              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all ${theme === 'dark'
+                ? 'border-purple-900/40 bg-slate-900/80 text-slate-400 hover:text-white'
+                : 'border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100'
+                }`}
               title="LinkedIn Profile"
             >
               <LinkedinIcon />
@@ -129,7 +110,10 @@ export function Footer() {
 
             <button
               onClick={handleCopyEmail}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900/80 text-slate-400 hover:border-cyan-500/40 hover:text-cyan-400 transition-all cursor-pointer"
+              className={`flex h-9 w-9 items-center justify-center rounded-xl border transition-all cursor-pointer ${theme === 'dark'
+                ? 'border-purple-900/40 bg-slate-900/80 text-slate-400 hover:text-white'
+                : 'border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100'
+                }`}
               title="Copy Direct Email"
             >
               <Mail className="h-4 w-4" />
@@ -137,7 +121,7 @@ export function Footer() {
 
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-3.5 py-2 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer group"
+              className="flex items-center gap-1.5 rounded-xl bg-purple-600 border border-purple-500 px-3.5 py-2 text-xs font-bold text-white hover:bg-purple-700 transition-all cursor-pointer group shadow-md shadow-purple-500/20"
               title="Back to top"
             >
               <span className="hidden sm:inline">Top</span>
@@ -146,12 +130,15 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright & Tech Stack Badge */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500 font-mono">
+        {/* Bottom Copyright */}
+        <div className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs font-mono font-bold ${theme === 'dark' ? 'text-slate-500' : 'text-slate-700'
+          }`}>
           <div>
-            © 2026 <span className="text-slate-300 font-semibold">Santhosh Raj</span>. All rights reserved.
+            © 2026 <span className={theme === 'dark' ? 'text-slate-300' : 'text-slate-950 font-extrabold'}>Santhosh Raj</span>. All rights reserved.
           </div>
-
+          <div className="flex flex-col items-center justify-center my-2 lg:my-0">
+            <FloatingDockDemo />
+          </div>
           <div className="flex items-center gap-2">
             <span>Built with Next.js 16, TypeScript & Tailwind CSS</span>
           </div>

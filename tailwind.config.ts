@@ -12,10 +12,11 @@ const config: Config = {
         "5xl": "3840px",
       },
       boxShadow: {
-        glass: "0 20px 80px rgba(15, 23, 42, 0.35)",
+        glass: "0 20px 80px rgba(147, 51, 234, 0.15)",
+        "purple-glow": "0 0 25px rgba(147, 51, 234, 0.35)",
       },
       backgroundImage: {
-        sparkle: "radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 44%)",
+        sparkle: "radial-gradient(circle at top, rgba(147,51,234,0.12), transparent 44%)",
       },
     },
   },

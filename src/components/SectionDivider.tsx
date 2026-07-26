@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react';
+
 import { motion } from 'framer-motion';
 
 export function SectionDivider() {
   return (
-    <div className="relative my-2 sm:my-2 w-full hidden md:flex items-center justify-center overflow-hidden">
+    <div className="relative my-2 sm:my-4 w-full hidden md:flex items-center justify-center overflow-hidden">
       {/* Base Subtle Line */}
       <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
 

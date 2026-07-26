@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Database, Play, Zap, CheckCircle2, RefreshCw, Layers, ShieldCheck } from 'lucide-react';
+import { Play, Zap, CheckCircle2, RefreshCw } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 
 interface QueryPreset {
@@ -80,29 +79,31 @@ export function SQLLab() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className={`text-xs font-semibold uppercase tracking-wider ${theme === 'dark' ? 'text-cyan-400' : 'text-cyan-600'}`}>
+            <span className={`text-xs font-mono font-bold uppercase tracking-wider ${theme === 'dark' ? 'text-purple-400' : 'text-purple-700'}`}>
               Database & Query Performance Lab
             </span>
-            <span className="rounded-md bg-cyan-500/10 border border-cyan-500/30 px-2 py-0.5 text-[10px] font-bold text-cyan-400 font-mono">
+            <span className={`rounded-md border px-2 py-0.5 text-[10px] font-bold font-mono ${
+              theme === 'dark' ? 'border-purple-900/40 bg-purple-950/40 text-purple-300' : 'border-purple-300 bg-purple-100 text-purple-800'
+            }`}>
               POSTGRESQL + PRISMA
             </span>
           </div>
-          <h2 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>
+          <h2 className={`text-2xl font-extrabold ${theme === 'dark' ? 'text-white' : 'text-slate-950'}`}>
             Live SQL Performance Sandbox
           </h2>
         </div>
-        <p className={`max-w-md text-xs leading-relaxed ${theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}`}>
+        <p className={`max-w-md text-xs leading-relaxed font-medium ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>
           Run live simulated PostgreSQL queries and toggle B-Tree Indexing to see real-time query optimization benchmarks.
         </p>
       </div>
 
       {/* Main Container */}
       <div className={`rounded-2xl border shadow-sm backdrop-blur-xl transition-all overflow-hidden ${
-        theme === 'dark' ? 'border-slate-800/80 bg-slate-950/80' : 'border-slate-200 bg-white'
+        theme === 'dark' ? 'border-purple-900/40 bg-slate-950/80 text-slate-100' : 'border-purple-200 bg-white text-slate-950 shadow-purple-500/10'
       }`}>
         {/* Control Bar */}
         <div className={`flex flex-wrap items-center justify-between gap-3 border-b px-6 py-3.5 ${
-          theme === 'dark' ? 'border-slate-800/80 bg-slate-900/40' : 'border-slate-200 bg-slate-50'
+          theme === 'dark' ? 'border-purple-900/30 bg-slate-900/40' : 'border-purple-100 bg-purple-50/50'
         }`}>
           {/* Query Presets */}
           <div className="flex flex-wrap items-center gap-1.5">
@@ -110,10 +111,10 @@ export function SQLLab() {
               <button
                 key={preset.id}
                 onClick={() => handleSelectPreset(preset)}
-                className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
+                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   selectedPreset.id === preset.id
-                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                    : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-purple-600 text-white shadow-sm'
+                    : theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-900 hover:bg-purple-100'
                 }`}
               >
                 {preset.name}
@@ -123,7 +124,7 @@ export function SQLLab() {
 
           {/* Indexing Benchmark Toggle */}
           <div className="flex items-center gap-3 text-xs font-mono">
-            <span className={theme === 'dark' ? 'text-slate-400' : 'text-slate-600'}>B-Tree Indexing:</span>
+            <span className={`font-bold ${theme === 'dark' ? 'text-slate-400' : 'text-slate-700'}`}>B-Tree Indexing:</span>
             <button
               onClick={() => {
                 setIsIndexed(!isIndexed);
@@ -131,8 +132,8 @@ export function SQLLab() {
               }}
               className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold transition-all cursor-pointer ${
                 isIndexed
-                  ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
-                  : 'border-amber-500/40 bg-amber-500/10 text-amber-400'
+                  ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700'
+                  : 'border-amber-500/40 bg-amber-500/10 text-amber-700'
               }`}
             >
               <Zap className="h-3 w-3" />
@@ -150,17 +151,17 @@ export function SQLLab() {
                 aria-label="SQL Query Input"
                 value={customQuery}
                 onChange={(e) => setCustomQuery(e.target.value)}
-                className={`w-full rounded-xl border px-4 py-3 text-xs font-mono transition-all ${
+                className={`w-full rounded-xl border px-4 py-3 text-xs font-mono font-bold transition-all ${
                   theme === 'dark'
-                    ? 'border-slate-800 bg-slate-900 text-cyan-300 focus:border-cyan-400'
-                    : 'border-slate-300 bg-slate-50 text-slate-900 focus:border-cyan-600'
+                    ? 'border-purple-900/40 bg-slate-900 text-purple-300 focus:border-purple-500'
+                    : 'border-purple-200 bg-purple-50/50 text-slate-950 focus:border-purple-500'
                 }`}
               />
             </div>
             <button
               onClick={handleRunQuery}
               disabled={isExecuting}
-              className="flex items-center justify-center gap-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 px-5 py-3 text-xs font-bold text-cyan-400 hover:bg-cyan-500/20 transition-all cursor-pointer disabled:opacity-50"
+              className="flex items-center justify-center gap-2 rounded-xl bg-purple-600 border border-purple-500 px-5 py-3 text-xs font-bold text-white hover:bg-purple-700 transition-all cursor-pointer shadow-md shadow-purple-500/20 disabled:opacity-50"
             >
               {isExecuting ? (
                 <>
@@ -169,7 +170,7 @@ export function SQLLab() {
                 </>
               ) : (
                 <>
-                  <Play className="h-3.5 w-3.5 fill-cyan-400" />
+                  <Play className="h-3.5 w-3.5 fill-white" />
                   <span>Run Query</span>
                 </>
               )}
@@ -177,30 +178,37 @@ export function SQLLab() {
           </div>
 
           {/* Results Table & Telemetry */}
-          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs text-slate-200 space-y-3">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-800 pb-2.5 text-slate-400 gap-2 sm:gap-0">
+          <div className={`rounded-xl border p-4 font-mono text-xs space-y-3 ${
+            theme === 'dark'
+              ? 'border-purple-900/40 bg-slate-950 text-slate-200'
+              : 'border-purple-200 bg-purple-50/40 text-slate-950'
+          }`}>
+            <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-2.5 gap-2 sm:gap-0 ${
+              theme === 'dark' ? 'border-purple-900/30 text-slate-400' : 'border-purple-100 text-slate-700'
+            }`}>
               <div className="flex flex-wrap items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                <span className="text-emerald-400 font-bold">Query Completed</span>
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                <span className="text-emerald-700 font-bold">Query Completed</span>
                 <span>•</span>
-                <span className="text-cyan-400">{lastExecutionTime}ms execution speed</span>
+                <span className="text-purple-700 font-bold">{lastExecutionTime}ms execution speed</span>
               </div>
-              <span className="text-[11px] text-slate-500">
-                {isIndexed ? '⚡ B-Tree Scan' : '⚠️ Sequential Table Scan'}
+              <span className="text-xs font-bold text-purple-700 flex items-center gap-1">
+                <Zap className="h-3.5 w-3.5 text-purple-600" />
+                {isIndexed ? 'B-Tree Index Scan' : 'Sequential Table Scan'}
               </span>
             </div>
 
             {/* Table Format Output */}
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-[11px]">
+              <table className="w-full text-left text-xs font-mono font-bold">
                 <thead>
-                  <tr className="border-b border-slate-800 text-slate-500">
+                  <tr className={`border-b ${theme === 'dark' ? 'border-purple-900/30 text-slate-400' : 'border-purple-200 text-purple-900 font-extrabold'}`}>
                     {Object.keys(selectedPreset.rows[0] || {}).map((col) => (
                       <th key={col} className="pb-2 font-bold uppercase">{col}</th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-slate-300">
+                <tbody className={`divide-y ${theme === 'dark' ? 'divide-purple-900/30 text-slate-300' : 'divide-purple-100 text-slate-950 font-medium'}`}>
                   {selectedPreset.rows.map((row, idx) => (
                     <tr key={idx}>
                       {Object.values(row).map((val, i) => (
