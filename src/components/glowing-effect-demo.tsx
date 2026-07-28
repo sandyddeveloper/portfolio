@@ -11,7 +11,7 @@ export default function GlowingEffectDemo() {
         area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
         icon={<Server className="h-5 w-5 text-purple-600 dark:text-purple-400" />}
         title="Scalable API & Backend Architecture"
-        description="Software Developer at DataMoo.ai specializing in Python, Django REST Framework, PostgreSQL, and sub-30ms fintech APIs."
+        description="Designing high-concurrency Python & Django REST services engineered for low-latency operations and resilient data pipelines."
       />
 
       <GridItem

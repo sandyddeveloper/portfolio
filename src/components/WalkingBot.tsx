@@ -40,7 +40,8 @@ const KNOWLEDGE_BASE: Record<string, string> = {
   joke: "Why do Python & Django developers love Next.js 16? Because server actions and REST APIs execute at warp speed!",
 };
 
-export function WalkingBot() {
+export function WalkingBot({ isHidden = false }: { isHidden?: boolean }) {
+  if (isHidden) return null;
   // Widget & Modal States
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
