@@ -33,11 +33,14 @@ interface VisitorData {
 }
 
 const KNOWLEDGE_BASE: Record<string, string> = {
-  default: "Greetings! I'm RoboX 3D. Click 'Scan & Tailor Briefing' to get a customized profile overview for your role!",
-  skills: "Santhosh's Stack: Backend Developer @ DataMoo.ai | Python, Django REST, PostgreSQL, Scalable Fintech APIs, Next.js, Docker & RAG AI!",
-  projects: "Production Systems: Fintech Mutual Fund Transaction Engines, Django REST APIs, Docker Pipelines & RAG AI Agents!",
-  contact: "Contact Santhosh Raj directly at santhoshrajk1812@gmail.com for Backend & Full-Stack engineering roles!",
-  joke: "Why do Python & Django developers love Next.js 16? Because server actions and REST APIs execute at warp speed!",
+  default: "Greetings! I'm your Engineering Copilot. Ask me anything about Santhosh's backend architecture, low-latency APIs, RAG AI systems, or PostgreSQL indexing strategy!",
+  skills: "Santhosh's Stack: Backend & Full-Stack Specialist | Python, Django REST, PostgreSQL, Redis, Sub-14ms API Latency, Next.js 16, Celery & Docker!",
+  projects: "Featured Engineering Systems: Real-Time Telemetry Dashboard (10M+ events/day), Mutual Fund Transaction Engine, Automated Celery Worker DAGs, RAG Vector Search Copilot!",
+  contact: "Reach out to Santhosh Raj directly at santhoshrajk1812@gmail.com for Backend & Full-Stack engineering roles or system consulting!",
+  architecture: "Architecture Overview: Santhosh designs decoupled microservices using Django REST / FastAPI, PostgreSQL for relational integrity, Redis for in-memory caching, and Celery for async worker queues.",
+  rag: "RAG AI Agent: Built using vector embeddings (Pinecone / SQLite cache), Node.js middleware for streaming LLM responses, and AST code context parsing.",
+  mutualfund: "Mutual Fund Engine: Handled high-concurrency order processing by using optimistic row locking, PostgreSQL partition indexing, and sub-30ms execution pathways.",
+  joke: "Why do backend engineers prefer sub-14ms APIs over fancy animations? Because fast responses make users and servers happy!",
 };
 
 export function WalkingBot({ isHidden = false }: { isHidden?: boolean }) {
@@ -199,9 +202,12 @@ export function WalkingBot({ isHidden = false }: { isHidden?: boolean }) {
       handleOpenScanForm();
     } else if (inputLower.includes('skill') || inputLower.includes('stack')) setSpeechText(KNOWLEDGE_BASE.skills);
     else if (inputLower.includes('project') || inputLower.includes('work')) setSpeechText(KNOWLEDGE_BASE.projects);
+    else if (inputLower.includes('architecture') || inputLower.includes('system') || inputLower.includes('design')) setSpeechText(KNOWLEDGE_BASE.architecture);
+    else if (inputLower.includes('rag') || inputLower.includes('ai') || inputLower.includes('vector')) setSpeechText(KNOWLEDGE_BASE.rag);
+    else if (inputLower.includes('mutual') || inputLower.includes('fintech') || inputLower.includes('fund')) setSpeechText(KNOWLEDGE_BASE.mutualfund);
     else if (inputLower.includes('contact') || inputLower.includes('email')) setSpeechText(KNOWLEDGE_BASE.contact);
     else if (inputLower.includes('joke')) setSpeechText(KNOWLEDGE_BASE.joke);
-    else setSpeechText(`"${chatInput}" -> Synced with Santhosh Raj's architecture!`);
+    else setSpeechText(`"${chatInput}" -> Querying Santhosh Raj's architecture knowledge base...`);
 
     setChatInput('');
   };

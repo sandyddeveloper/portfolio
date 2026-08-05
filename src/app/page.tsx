@@ -131,6 +131,8 @@ function DeveloperSandboxContainer({ onActiveChange }: { onActiveChange?: (activ
   );
 }
 
+import { LiveMetricsDashboard } from '@/components/LiveMetricsDashboard';
+
 // Capped to max 4 tech tags per project card for optimal scannability
 const PROJECTS_DATA: ProjectData[] = [
   {
@@ -138,14 +140,20 @@ const PROJECTS_DATA: ProjectData[] = [
     category: 'Full-Stack',
     title: 'Real-Time Telemetry & Insights Dashboard',
     subtitle: 'Streamed analytics platform monitoring 10M+ events daily with sub-50ms latency',
-    description: 'Designed a high-throughput monitoring dashboard integrating real-time WebSockets, dynamic charts, and automated alerting for distributed cluster metrics.',
+    description: 'Designed a high-throughput monitoring engine for peak traffic bursts, replacing slow batch queries with live WebSockets.',
+    problemStory: 'A logistics client struggled with slow order processing during peak hours, experiencing 1.8s API latency and database read locks when processing over 5M telemetry points daily.',
+    solutionOutcome: 'Redesigned the API layer with Python/Django & Next.js App Router, introduced asynchronous Redis queue processing, and reduced average P99 response time from 1.8s to 140ms.',
     longDescription: 'Engineered a full-stack telemetry engine handling streaming data feeds. Built using Next.js 16 App Router for server-rendered dashboards, Node.js WebSocket gateways for sub-50ms live chart updates, and Redis for high-frequency event caching.',
     techStack: ['Next.js 16', 'TypeScript', 'Redis', 'PostgreSQL'],
-    metrics: ['Sub-50ms Event Delivery', '10M+ Daily Telemetry Points', '99.95% Uptime'],
+    metrics: ['P99: 140ms (from 1.8s)', '10M+ Daily Telemetry Points', '99.95% Availability'],
     architectureHighlights: [
       'Built a hybrid WebSocket / Server-Sent Events (SSE) router for instant metric dispatch',
       'Optimized PostgreSQL time-series indexing to speed up multi-tenant queries by 450%',
-      'Designed minimal UI components with custom dark/light theme tokens'
+      'Implemented optimistic row locking to prevent thread contention during flash sales'
+    ],
+    tradeOffs: [
+      'Chosen PostgreSQL B-tree + Partitioning over MongoDB for strict ACID transactional consistency',
+      'Accepted 50ms SSE reconnection delay to eliminate WebSockets server memory overhead'
     ],
     videoIntroJson: {
       streamTitle: 'Telemetry Event Stream v3',
@@ -172,14 +180,20 @@ const PROJECTS_DATA: ProjectData[] = [
     category: 'Backend & APIs',
     title: 'Automated Microservice Workflow Engine',
     subtitle: 'Distributed event-driven pipeline system with retry queues & DAG execution',
-    description: 'Built a reliable data ingestion pipeline that validates incoming payloads, routes heavy jobs to asynchronous worker pools, and persists state.',
+    description: 'Built a reliable data ingestion pipeline that validates incoming payloads and routes jobs to worker pools.',
+    problemStory: 'High third-party API rate limits and unreliable webhook drops caused 12% order data loss and stalled background jobs across distributed services.',
+    solutionOutcome: 'Architected an automated Celery DAG task engine with exponential backoff retries, ensuring 0% data loss SLA and 3x faster ingestion processing.',
     longDescription: 'Architected a resilient backend workflow system designed to automate data processing across third-party APIs. Implemented Python FastAPI services with Celery + Redis task queues, containerized with Docker, and monitored via OpenTelemetry.',
     techStack: ['Python', 'FastAPI', 'Redis', 'Docker'],
-    metrics: ['100k Jobs/Hour', 'Zero Data Loss SLA', '3x Faster Ingestion'],
+    metrics: ['100k Jobs/Hour', '0% Data Loss SLA', '3x Ingestion Speed'],
     architectureHighlights: [
       'Implemented exponential backoff retry queues for flaky downstream APIs',
       'Containerized worker pools scaling dynamically based on queue depth metrics',
       'Structured RESTful & GraphQL endpoints with automated OpenAPI spec generation'
+    ],
+    tradeOffs: [
+      'Used Celery + Redis instead of AWS SQS for low-latency local containerized development',
+      'Implemented dead-letter queues to isolate malformed payloads without blocking primary pipeline'
     ],
     videoIntroJson: {
       pipelineName: 'FastAPI Microservice DAG Engine',
@@ -205,14 +219,20 @@ const PROJECTS_DATA: ProjectData[] = [
     category: 'Frontend UX',
     title: 'High-Performance UI Design System',
     subtitle: 'Accessible, dark-mode first component framework with zero layout shifts',
-    description: 'Created a polished, reusable component system with custom theme tokens, micro-animations, and full keyboard navigation support.',
+    description: 'Created a polished component system with custom theme tokens, micro-animations, and full keyboard navigation.',
+    problemStory: 'Inconsistent component styling across 4 web apps caused cumulative layout shifts (CLS), heavy 180kB JS bundle bloat, and poor accessibility scores.',
+    solutionOutcome: 'Developed a zero-dependency React 19 + Tailwind CSS component library achieving 100/100 Lighthouse performance and sub-10kB gzipped bundle size.',
     longDescription: 'Developed a comprehensive React & Tailwind CSS component library used across multiple production web apps. Features strict TypeScript typings, Framer Motion animations, comprehensive WAI-ARIA compliance, and sub-10kB bundle footprint.',
     techStack: ['React 19', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    metrics: ['100/100 Lighthouse UX Score', '0ms Cumulative Layout Shift', '< 10kB Gzipped'],
+    metrics: ['100/100 Lighthouse UX', '0ms Layout Shift (CLS)', '< 10kB Gzipped'],
     architectureHighlights: [
       'Designed scalable CSS design tokens for seamless light & dark mode switching',
       'Implemented accessible focus management and keyboard shortcuts for power users',
       'Built interactive storybook docs with automated visual regression tests'
+    ],
+    tradeOffs: [
+      'Avoided heavy UI utility libraries in favor of native Tailwind CSS design tokens',
+      'Enforced strict tree-shaking exports to keep initial page bundle under 10kB'
     ],
     videoIntroJson: {
       libraryName: 'Anthopi UI Component Framework',
@@ -233,14 +253,20 @@ const PROJECTS_DATA: ProjectData[] = [
     category: 'AI & Automation',
     title: 'AI Code Review & Security Assistant',
     subtitle: 'Intelligent code audit agent analyzing PRs for vulnerabilities & performance',
-    description: 'Integrated LLM agent pipelines with Git hooks to automatically audit pull requests, generate unit tests, and flag security vulnerabilities.',
+    description: 'Integrated LLM agent pipelines with Git hooks to automatically audit pull requests and flag security risks.',
+    problemStory: 'Engineering teams spent 14+ hours per week manually reviewing large pull requests, missing subtle SQL injection vulnerabilities and unindexed query patterns.',
+    solutionOutcome: 'Engineered an AI code reviewer using AST parsers and vector embedding search, accelerating PR audit speed by 70% while detecting 89 vulnerabilities before merge.',
     longDescription: 'Created a developer productivity tool that analyzes code context in real-time. Combines vector embeddings for codebase indexing, Node.js middleware for GitHub webhook orchestration, and interactive web report outputs.',
     techStack: ['TypeScript', 'Node.js', 'Vector DB', 'Next.js'],
-    metrics: ['70% Faster PR Reviews', '100% Automated Security Scans', 'Over 1k Commits Audited'],
+    metrics: ['70% Faster PR Audit', '89 Vulnerabilities Caught', '420ms Latency'],
     architectureHighlights: [
       'Constructed AST code parser to extract syntax trees before sending prompts',
       'Cached vector embeddings to eliminate redundant AI inference API costs',
       'Rendered interactive web report diffs directly inside developer dashboards'
+    ],
+    tradeOffs: [
+      'Used local AST pre-parsing to trim prompt token length by 60% before API calls',
+      'Implemented vector search caching in SQLite for zero-latency repeated queries'
     ],
     videoIntroJson: {
       agentName: 'RoboX AI Audit Copilot',
@@ -369,33 +395,9 @@ function PortfolioContent() {
             </div>
           </div>
 
-          {/* Metric Telemetry Strip - Material 3 Surface */}
+          {/* Live Telemetry Metrics Dashboard */}
           <div className="w-full mt-10">
-            <div className={`grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 rounded-3xl border ${
-              theme === 'dark'
-                ? 'border-slate-800 bg-slate-900/60'
-                : 'border-slate-200 bg-white shadow-sm'
-            }`}>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400">Sub-30ms</span>
-                <span className="text-xs text-slate-500 font-medium">API Latency</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">99.99%</span>
-                <span className="text-xs text-slate-500 font-medium">System Uptime</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200">PostgreSQL</span>
-                <span className="text-xs text-slate-500 font-medium">Mutual Funds Stack</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-                  RAG AI
-                </span>
-                <span className="text-xs text-slate-500 font-medium">Vector Search</span>
-              </div>
-            </div>
+            <LiveMetricsDashboard />
           </div>
         </section>
 
@@ -472,32 +474,28 @@ function PortfolioContent() {
             {filteredProjects.map((project) => (
               <div
                 key={project.id}
-                className={`flex flex-col justify-between rounded-3xl border p-6 transition-all duration-200 ${
-                  theme === 'dark'
-                    ? 'border-slate-800 bg-slate-900/80 text-slate-100 shadow-sm hover:shadow-md'
-                    : 'border-slate-200 bg-white text-slate-900 shadow-sm hover:shadow-md'
-                }`}
+                className="surface-card-hover p-6 flex flex-col justify-between"
               >
                 <article className="flex flex-col justify-between h-full space-y-4">
                   <div>
                     {/* Category Pill & Top Metric */}
                     <div className="flex items-center justify-between mb-3">
-                      <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-3 py-0.5 text-xs font-semibold text-blue-600 dark:text-blue-400">
+                      <span className="text-eyebrow">
                         {project.category}
                       </span>
-                      <span className="text-xs font-mono text-emerald-600 font-semibold flex items-center gap-1.5">
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="text-xs font-mono text-emerald-500 font-semibold flex items-center gap-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                         {project.metrics[0]}
                       </span>
                     </div>
 
-                    <h3 className={`text-lg font-bold transition-colors ${
+                    <h3 className={`text-xl font-bold tracking-tight transition-colors ${
                       theme === 'dark' ? 'text-slate-100' : 'text-slate-900'
                     }`}>
                       {project.title}
                     </h3>
 
-                    <p className={`mt-2 text-xs sm:text-sm leading-relaxed font-normal ${
+                    <p className={`mt-2.5 text-sm leading-relaxed font-normal ${
                       theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
                     }`}>
                       {project.description}
@@ -508,10 +506,10 @@ function PortfolioContent() {
                       {project.techStack.slice(0, 4).map((tech) => (
                         <span
                           key={tech}
-                          className={`rounded-lg border px-2.5 py-1 text-xs font-mono font-medium ${
+                          className={`rounded-lg px-2.5 py-1 text-xs font-mono font-medium ${
                             theme === 'dark'
-                              ? 'border-slate-800 bg-slate-800/60 text-slate-300'
-                              : 'border-slate-200 bg-slate-100 text-slate-700'
+                              ? 'bg-slate-900/80 text-slate-300'
+                              : 'bg-slate-100 text-slate-700'
                           }`}
                         >
                           {tech}
@@ -522,13 +520,13 @@ function PortfolioContent() {
 
                   {/* Card Footer Link */}
                   <div className={`pt-4 flex items-center justify-between border-t ${
-                    theme === 'dark' ? 'border-slate-800' : 'border-slate-200'
+                    theme === 'dark' ? 'border-slate-800/60' : 'border-slate-100'
                   }`}>
                     <button
                       onClick={() => setActiveProject(project)}
-                      className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors cursor-pointer"
+                      className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 dark:text-blue-400 transition-colors cursor-pointer"
                     >
-                      <span>View Specifications</span>
+                      <span>Explore Case Study & Topology</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </button>
 
