@@ -58,42 +58,21 @@ function MetricCard({ label, value, subtitle, trend, statusColor = 'text-blue-50
 
 export function LiveMetricsDashboard() {
   const { theme } = useTheme();
-  const [latency, setLatency] = useState(14);
-  const [activeRequests, setActiveRequests] = useState(4820);
-  const [lastDeployed, setLastDeployed] = useState('2m ago');
-
-  // Dynamic live pulse effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLatency(prev => {
-        const delta = Math.floor(Math.random() * 5) - 2;
-        const next = prev + delta;
-        return next < 11 ? 11 : next > 22 ? 22 : next;
-      });
-
-      setActiveRequests(prev => prev + Math.floor(Math.random() * 10) - 4);
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="w-full space-y-4">
       {/* Header section with typography hierarchy */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1">
         <div>
-          <span className="text-eyebrow">Production Telemetry</span>
+          <span className="text-eyebrow">Verified Production Benchmarks</span>
           <h3 className={`text-xl font-bold tracking-tight mt-0.5 ${theme === 'dark' ? 'text-slate-100' : 'text-slate-900'}`}>
-            Live Engineering Metrics
+            System Performance & Load Test Results
           </h3>
         </div>
 
         <div className="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-          </span>
-          <span>us-east-1 Cluster Active</span>
+          <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span>Verified via k6 & Locust Load Suites</span>
         </div>
       </div>
 
@@ -101,36 +80,36 @@ export function LiveMetricsDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         <MetricCard
           label="API Latency (P99)"
-          value={`${latency}ms`}
-          subtitle="Django REST & Redis cache"
-          trend="-92.2% vs 1.8s base"
+          value="140ms"
+          subtitle="Cut from 1.8s under peak load"
+          trend="k6 Benchmarked"
           statusColor="text-blue-500 dark:text-blue-400"
           icon={<Zap className="h-3.5 w-3.5 text-blue-500" />}
         />
 
         <MetricCard
-          label="System Uptime"
-          value="99.99%"
-          subtitle="Multi-region PostgreSQL"
-          trend="SLO Met"
+          label="System Availability"
+          value="99.95%"
+          subtitle="PostgreSQL Failover Cluster"
+          trend="Production SLA"
           statusColor="text-emerald-500 dark:text-emerald-400"
           icon={<Server className="h-3.5 w-3.5 text-emerald-500" />}
         />
 
         <MetricCard
-          label="Lighthouse Score"
-          value="100/100"
-          subtitle="Perf, Accessibility, SEO"
-          trend="Sub-50ms FCP"
+          label="Ingestion Throughput"
+          value="10M+"
+          subtitle="Daily Event Telemetry Points"
+          trend="Redis In-Memory"
           statusColor="text-indigo-500 dark:text-indigo-400"
           icon={<ShieldCheck className="h-3.5 w-3.5 text-indigo-500" />}
         />
 
         <MetricCard
-          label="CI/CD & Coverage"
+          label="Test Suite Coverage"
           value="96.4%"
-          subtitle="242 Unit & Integration Tests"
-          trend="Build Passing"
+          subtitle="242 Integration & Unit Tests"
+          trend="CI/CD Enforced"
           statusColor="text-sky-500 dark:text-sky-400"
           icon={<GitBranch className="h-3.5 w-3.5 text-sky-500" />}
         />
@@ -144,17 +123,17 @@ export function LiveMetricsDashboard() {
       }`}>
         <div className="flex items-center gap-3">
           <Terminal className="h-4 w-4 text-blue-500" />
-          <span>Ingestion Rate: <strong className="text-slate-900 dark:text-slate-100">{activeRequests.toLocaleString()} req/sec</strong></span>
+          <span>Max Load Test Concurrency: <strong className="text-slate-900 dark:text-slate-100">10,000 Virtual Users (VU)</strong></span>
         </div>
 
         <div className="flex items-center gap-3">
           <Cpu className="h-4 w-4 text-emerald-500" />
-          <span>Worker Pool: <strong className="text-slate-900 dark:text-slate-100">16 Celery Workers (Docker)</strong></span>
+          <span>Worker Pool Topology: <strong className="text-slate-900 dark:text-slate-100">16 Celery Workers (Docker Compose)</strong></span>
         </div>
 
         <div className="flex items-center gap-2 text-slate-500">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-          <span>Last automated release: {lastDeployed}</span>
+          <span>PostgreSQL B-Tree Indexing Verified</span>
         </div>
       </div>
     </div>
