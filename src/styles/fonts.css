@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Familjen Grotesk";
+  src: url("/fonts/FamiljenGroteskVariable_Regular-s.p.04jxz-d23sc_e.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Haas Display";
+  src: url("/fonts/NeueHaasDisplay_Roman-s.p.0ykdwddnvy5f_.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Martian Mono";
+  src: url("/fonts/MartianMono_Light-s.p.0htes.s6weu9-.woff2") format("woff2");
+  font-weight: 300 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Editorial New";
+  src: url("/fonts/PPEditorialNew_Ultralight-s.p.0qe_2frr_fmiu.woff2") format("woff2");
+  font-weight: 200 300;
+  font-style: italic, normal;
+  font-display: swap;
+}

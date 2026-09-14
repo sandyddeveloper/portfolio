@@ -1,0 +1,94 @@
+@import "../styles/fonts.css";
+@import "../styles/trionn-preloader.css";
+@import "../styles/trionn-clean.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-familjen: "Familjen Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-neue: "Neue Haas Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-martian: "Martian Mono", monospace;
+  --font-editorial: "PP Editorial New", Georgia, serif;
+
+  --default-font-family: var(--font-neue);
+  --color-black: #272727;
+  --color-white: #fff;
+  --color-cream: #e6e4e2;
+  --color-grey-light: #9c9c9c;
+  --color-grey-line: #434343;
+  --color-cream-line: #d8d8d8;
+  --color-dark-font: #434343;
+  --color-light-font: #d8d8d8;
+  --pl-panel-gray: #c8c8c8;
+  --pl-line-gray: #434343;
+  --pl-corner-plus-offset: calc(-6px - 6.5px);
+}
+
+html {
+  background-color: #040508;
+  color: #d8d8d8;
+  font-family: var(--font-neue);
+}
+
+body {
+  background-color: #040508;
+  color: #d8d8d8;
+  overflow-x: hidden;
+}
+
+/* Character Roll Split Animation */
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  line-height: 1;
+  overflow: visible;
+  user-select: none;
+}
+
+.nav-link .text-layer.clone {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-link:hover .text-layer.original .char {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.nav-link:hover .text-layer.clone {
+  opacity: 1;
+}
+
+.nav-link:hover .text-layer.clone .char {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.char {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+/* Trionn Button Underline Sweep */
+.button_wrapper:hover .u-left {
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.button_wrapper:hover .u-right {
+  transform: scaleX(1);
+  transition: transform 0.3s ease;
+}
+
+.button_wrapper:hover .arrow-sprite {
+  opacity: 1;
+  transform: translateX(4px);
+}
