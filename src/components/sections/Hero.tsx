@@ -69,16 +69,24 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
       <div className="tr__container relative z-10 flex flex-col justify-between w-full flex-1 pointer-events-none">
         {/* Banner Top Block */}
         <div className="banner-top-block flex flex-col w-full items-start pointer-events-none">
+          {/* Availability Status Chip */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 backdrop-blur-xs pointer-events-auto">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#D8D8D8]">
+              Available for select projects &amp; roles
+            </span>
+          </div>
+
           <div className="grid grid-cols-12 gap-6 mb-8 w-full">
             <div
-              className="banner-title-block w-full flex flex-col items-start col-span-12 lg:col-span-8 pointer-events-auto"
+              className="banner-title-block w-full flex flex-col items-start col-span-12 lg:col-span-9 pointer-events-auto"
               id="s1-headline"
             >
               <h1 className="z-2 font-display text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-[#D8D8D8] leading-none mb-1">
-                Designed to
+                Santhosh Raj
               </h1>
               <h1 className="z-2 font-display text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-[#D8D8D8] leading-none flex items-baseline flex-wrap">
-                <span className="inline-block mr-4 font-display font-bold text-[#D8D8D8]">mean</span>
+                <span className="inline-block mr-4 font-display font-bold text-[#D8D8D8]">crafting</span>
                 <RotatingHeroWord />
               </h1>
             </div>
@@ -115,7 +123,7 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
               </button>
             </div>
 
-            {/* Book Call Button */}
+            {/* View Work Button */}
             <div
               style={{
                 ["--button_wrapper-color" as string]: "#D8D8D8",
@@ -125,17 +133,19 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
               className="button_wrapper relative w-56 uppercase transition-opacity duration-300 hover:opacity-95"
             >
               <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://calendly.com"
-                className="btn button-text relative flex w-full min-h-10 cursor-pointer items-center overflow-hidden no-underline uppercase text-[#9C9C9C]"
+                href="#work-section"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("work-section")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="btn button-text relative flex w-full min-h-10 cursor-pointer items-center overflow-hidden no-underline uppercase text-[#9C9C9C] hover:text-[#D8D8D8] transition-colors"
               >
                 <span className="underline pointer-events-none absolute inset-x-0 bottom-0 h-px">
                   <span className="u-right absolute inset-x-0 bottom-0 h-px bg-[#9C9C9C] origin-left"></span>
                   <span className="u-left absolute inset-x-0 bottom-0 h-px bg-[#9C9C9C] origin-left"></span>
                 </span>
                 <span className="word relative inline-flex text-xs font-mono tracking-wider">
-                  Book a 30-minute call
+                  View Selected Work
                 </span>
                 <span className="arrow-sprite ml-2 opacity-0 transition-all duration-300 flex items-center">
                   <svg width="10" height="9" viewBox="0 0 10 9" fill="none" className="w-2.5 h-2.5">
@@ -150,11 +160,12 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
         {/* Center spacing area so the 3D emblem floats majestically in the middle */}
         <div className="flex-1 min-h-[160px] md:min-h-[220px] pointer-events-none" />
 
-        {/* Banner Bottom Block (Status, Blast CTA, and Est. 2012 - matching Image 1) */}
+        {/* Banner Bottom Block */}
         <div className="banner-text-block grid grid-cols-12 gap-6 w-full pt-4 items-end pointer-events-none">
           {/* About / Scroll Down indicator */}
           <div
             id="s1-scroll"
+            data-cursor-text="SCROLL"
             className="col-span-4 flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-[#9C9C9C] pointer-events-auto cursor-pointer hover:text-white transition-colors"
             onClick={() => {
               const el = document.getElementById("about-section");
@@ -170,6 +181,7 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
           {/* Blast Status Badge */}
           <div
             id="s1-stats"
+            data-cursor-text="HOLD"
             onClick={triggerBlast}
             className="col-span-12 lg:col-span-4 flex flex-col items-center text-center cursor-pointer pointer-events-auto group transition-transform active:scale-95 pb-2"
             title="Click or Hold anywhere to Blast"
@@ -188,27 +200,25 @@ export default function Hero({ onDiscussClick, playSound }: HeroProps) {
             </span>
           </div>
 
-          {/* Est 2012 Box & Subtext (Exact Trionn structure from Image 1) */}
+          {/* R Symbol Badge Box & Subtext */}
           <div className="col-span-8 lg:col-span-4 flex flex-col items-end gap-3 ml-auto pointer-events-auto">
             <div id="s1-box">
               <div className="flex border border-[#2F323B] overflow-hidden rounded-sm min-h-16 text-light-font title bg-[#0C0C0C]/50 backdrop-blur-xs">
-                <div className="flex flex-col justify-center items-center min-w-24 border-r border-[#2F323B] text-center gap-1.5 p-3">
-                  <svg width="43" height="27" viewBox="0 0 43 27" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-8 h-4.5">
-                    <path d="M22.0098 0.00488281C33.425 0.18638 42.5948 5.94967 42.9004 13.1299C42.964 13.2463 43 13.3704 43 13.5C42.9856 13.5991 42.9515 13.6943 42.9033 13.7861C42.6622 21.1215 33.1713 26.9999 21.4551 27C9.58671 27 0 20.9681 0 13.5C7.01302e-06 6.03191 9.58672 0 21.4551 0L22.0098 0.00488281ZM15.2822 14.6484C15.6586 20.8749 19.0438 24.7598 21.4551 24.7598C23.8663 24.7596 27.2505 20.8747 27.627 14.6484H15.2822ZM3.65332 14.6484C4.35225 18.9618 8.94408 22.5637 15.1729 24.04C13.1002 21.666 11.9316 18.1611 11.7217 14.6484H3.65332ZM31.1875 14.6484C30.9775 18.1613 29.8092 21.666 27.7363 24.04C33.9652 22.5638 38.5569 18.9618 39.2559 14.6484H31.1875ZM15.1729 2.95898C8.94443 4.43513 4.35279 8.03764 3.65332 12.3506H11.7217C11.9318 8.83797 13.1 5.33279 15.1729 2.95898ZM21.4551 2.24023C19.044 2.24023 15.6589 6.12472 15.2822 12.3506H27.627C27.2502 6.12487 23.8662 2.24039 21.4551 2.24023ZM27.7363 2.95898C29.8093 5.33278 30.9773 8.83781 31.1875 12.3506H39.2559C38.5564 8.03762 33.9648 4.43511 27.7363 2.95898Z" fill="#D8D8D8" />
-                  </svg>
-                  <span className="text-xs font-mono uppercase block text-[#D8D8D8] tracking-wider">Est. 2012</span>
+                <div className="flex flex-col justify-center items-center min-w-20 border-r border-[#2F323B] text-center gap-1 p-3">
+                  <span className="font-display font-bold text-2xl text-white tracking-tighter">R</span>
+                  <span className="text-[10px] font-mono uppercase block text-[#9C9C9C] tracking-widest">Portfolio</span>
                 </div>
                 <div className="p-3 flex flex-col justify-center text-left">
                   <span className="text-[11px] leading-snug uppercase block text-[#D8D8D8] font-mono">
-                    14+ years shaping <br />
-                    digital direction.
+                    Full-Stack Engineer &amp; <br />
+                    Systems Developer
                   </span>
                 </div>
               </div>
             </div>
             <div id="s1-sub" className="max-w-xs text-right">
               <p className="text-[11px] text-[#9C9C9C] leading-snug">
-                Websites, AI products, brands, and systems built for clarity, scale and impact.
+                Websites, AI products, scalable APIs, and distributed systems built for clarity and scale.
               </p>
             </div>
           </div>

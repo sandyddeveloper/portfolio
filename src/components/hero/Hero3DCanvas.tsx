@@ -206,12 +206,12 @@ function Hero3DCanvas({
     function getCameraConfig() {
       const w = window.innerWidth;
       return w > 1440
-        ? { fov: 42, z: 6.0, sx: 1.0, x: 0, y: 0 }
+        ? { fov: 42, z: 5.4, sx: 1.2, x: 0, y: 0 }
         : w >= 1024
-          ? { fov: 40, z: 6.28, sx: 0.9, x: 0, y: -0.02 }
+          ? { fov: 40, z: 5.7, sx: 1.1, x: 0, y: -0.02 }
           : w >= 768
-            ? { fov: 38, z: 7.55, sx: 0.84, x: 0, y: -0.035 }
-            : { fov: 36, z: 9.35, sx: 0.74, x: 0, y: -0.055 };
+            ? { fov: 38, z: 6.8, sx: 1.0, x: 0, y: -0.035 }
+            : { fov: 36, z: 8.2, sx: 0.9, x: 0, y: -0.055 };
     }
 
     const camConf = getCameraConfig();
@@ -249,26 +249,30 @@ function Hero3DCanvas({
     const envMap = pmremGen.fromScene(envScene).texture;
     pmremGen.dispose();
 
-    // --- 3. Lighting (Exact Trionn Lights) ---
-    scene.add(new THREE.AmbientLight(0x2a3040, 2.8));
+    // --- 3. Lighting (Enhanced High-Visibility Studio Lights) ---
+    scene.add(new THREE.AmbientLight(0x404d66, 3.6));
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.6);
-    keyLight.position.set(4, 5, 4);
+    const frontLight = new THREE.DirectionalLight(0xe8f0ff, 2.0);
+    frontLight.position.set(0, 0.5, 7);
+    scene.add(frontLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.6);
+    keyLight.position.set(4, 5, 5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x8899aa, 0.8);
-    fillLight.position.set(-4, 1, -2);
+    const fillLight = new THREE.DirectionalLight(0xa0b8d8, 1.6);
+    fillLight.position.set(-4, 1, 3);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xccddee, 1.5);
+    const rimLight = new THREE.DirectionalLight(0xddeeff, 2.4);
     rimLight.position.set(0, -3, -5);
     scene.add(rimLight);
 
-    const topLight = new THREE.DirectionalLight(0xaabbcc, 1.0);
-    topLight.position.set(0, 8, 2);
+    const topLight = new THREE.DirectionalLight(0xccddee, 1.6);
+    topLight.position.set(0, 8, 3);
     scene.add(topLight);
 
-    const backLight = new THREE.DirectionalLight(0x667788, 1.2);
+    const backLight = new THREE.DirectionalLight(0x8899aa, 1.5);
     backLight.position.set(0, 0, -8);
     scene.add(backLight);
 
@@ -318,10 +322,10 @@ function Hero3DCanvas({
 
     // --- 4. 3 Authentic Trionn Shapes & Normal Shard Partitioning ---
     const extrudeSettings: THREE.ExtrudeGeometryOptions = {
-      depth: 0.42,
+      depth: 0.48,
       bevelEnabled: true,
-      bevelThickness: 0.008,
-      bevelSize: 0.006,
+      bevelThickness: 0.012,
+      bevelSize: 0.008,
       bevelSegments: 1,
       curveSegments: 12,
     };
@@ -332,106 +336,125 @@ function Hero3DCanvas({
     function updateGroupTransform() {
       const c = getCameraConfig();
       emblemGroup.scale.set(c.sx, c.sx, c.sx);
-      emblemGroup.position.set(c.x, c.y, -0.42 / 2);
+      emblemGroup.position.set(c.x, c.y, -0.48 / 2);
     }
     updateGroupTransform();
 
-    const createShape = (fn: (s: THREE.Shape) => void) => {
+    // --- 4. 3 Authentic 'RRR' Monogram Shapes & Normal Shard Partitioning ---
+    const createRShape = (posAngle: number, rotAngle: number, scale = 1.85, radiusOffset = 0.88) => {
+      const cosP = Math.cos(posAngle);
+      const sinP = Math.sin(posAngle);
+      const cosR = Math.cos(rotAngle);
+      const sinR = Math.sin(rotAngle);
+
+      const tr = (x: number, y: number): [number, number] => {
+        const sx = x * scale;
+        const sy = y * scale;
+        const rx = sx * cosR - sy * sinR + radiusOffset * cosP;
+        const ry = sx * sinR + sy * cosR + radiusOffset * sinP;
+        return [Math.round(rx * 10000) / 10000, Math.round(ry * 10000) / 10000];
+      };
+
       const s = new THREE.Shape();
-      fn(s);
+
+      // Outer boundary of geometric 'R'
+      const p0 = tr(-0.24, -0.42);
+      s.moveTo(p0[0], p0[1]);
+
+      const p1 = tr(-0.24, 0.34);
+      const p2 = tr(-0.16, 0.42);
+      s.lineTo(p1[0], p1[1]);
+      s.lineTo(p2[0], p2[1]);
+
+      const p3 = tr(0.12, 0.42);
+      s.lineTo(p3[0], p3[1]);
+
+      const cp1 = tr(0.36, 0.42);
+      const p4 = tr(0.36, 0.18);
+      s.quadraticCurveTo(cp1[0], cp1[1], p4[0], p4[1]);
+
+      const cp2 = tr(0.36, -0.04);
+      const p5 = tr(0.10, -0.04);
+      s.quadraticCurveTo(cp2[0], cp2[1], p5[0], p5[1]);
+
+      const p6 = tr(0.12, -0.04);
+      const p7 = tr(0.34, -0.36);
+      const p8 = tr(0.28, -0.42);
+      s.lineTo(p6[0], p6[1]);
+      s.lineTo(p7[0], p7[1]);
+      s.lineTo(p8[0], p8[1]);
+
+      const p9 = tr(0.12, -0.42);
+      s.lineTo(p9[0], p9[1]);
+
+      const p10 = tr(-0.06, -0.04);
+      s.lineTo(p10[0], p10[1]);
+
+      const p11 = tr(-0.10, -0.04);
+      s.lineTo(p11[0], p11[1]);
+
+      const p12 = tr(-0.10, -0.42);
+      s.lineTo(p12[0], p12[1]);
+
+      s.closePath();
+
+      // Inner counter hole for 'R' loop
+      const hole = new THREE.Path();
+      const h0 = tr(-0.10, 0.10);
+      hole.moveTo(h0[0], h0[1]);
+
+      const h1 = tr(-0.10, 0.28);
+      hole.lineTo(h1[0], h1[1]);
+
+      const h2 = tr(0.08, 0.28);
+      hole.lineTo(h2[0], h2[1]);
+
+      const hcp1 = tr(0.20, 0.28);
+      const h3 = tr(0.20, 0.19);
+      hole.quadraticCurveTo(hcp1[0], hcp1[1], h3[0], h3[1]);
+
+      const hcp2 = tr(0.20, 0.10);
+      const h4 = tr(0.08, 0.10);
+      hole.quadraticCurveTo(hcp2[0], hcp2[1], h4[0], h4[1]);
+
+      hole.closePath();
+      s.holes.push(hole);
+
       return s;
     };
 
-    const s0 = createShape((s) => {
-      s.moveTo(-0.140182, -0.2239285);
-      s.bezierCurveTo(-0.1261855, -0.2239285, -0.113243, -0.2163645, -0.106392, -0.204135);
-      s.lineTo(-0.0132215, -0.038037);
-      s.bezierCurveTo(0.001271, -0.0121985, -0.0174065, 0.0196695, -0.047027, 0.0196695);
-      s.lineTo(-0.4300165, 0.0196695);
-      s.bezierCurveTo(-0.4598385, 0.0196695, -0.478485, 0.0519715, -0.4635585, 0.07781);
-      s.lineTo(0.1073065, 1.065563);
-      s.bezierCurveTo(0.114111, 1.0773585, 0.114235, 1.0918665, 0.1076165, 1.1037705);
-      s.lineTo(0.013516, 1.2732165);
-      s.bezierCurveTo(-0.001116, 1.2995355, -0.0388585, 1.299861, -0.053909, 1.2737745);
-      s.lineTo(-0.7673585, 0.039029);
-      s.bezierCurveTo(-0.774287, 0.0270475, -0.78709, 0.0196695, -0.8009315, 0.0196695);
-      s.lineTo(-1.2267785, 0.0196695);
-      s.bezierCurveTo(-1.2403875, 0.0196695, -1.2530045, 0.0125395, -1.2600105, 0.000868);
-      s.lineTo(-1.359753, -0.16523);
-      s.bezierCurveTo(-1.375253, -0.191053, -1.356653, -0.2239285, -1.3265365, -0.2239285);
-      s.lineTo(-0.140182, -0.2239285);
-      s.closePath();
-    });
-
-    const s1 = createShape((s) => {
-      s.moveTo(0.655185, 0.5729575);
-      s.bezierCurveTo(0.648272, 0.584908, 0.648241, 0.5996175, 0.6551075, 0.611599);
-      s.lineTo(0.8809425, 1.005919);
-      s.bezierCurveTo(0.887685, 1.0176835, 0.887778, 1.0321295, 0.8811905, 1.043987);
-      s.lineTo(0.787028, 1.213526);
-      s.bezierCurveTo(0.772396, 1.239845, 0.7346535, 1.2401705, 0.7195875, 1.2140995);
-      s.lineTo(0.130789, 0.1955945);
-      s.bezierCurveTo(0.123876, 0.183644, 0.123845, 0.1689035, 0.1307425, 0.156922);
-      s.lineTo(0.2290435, -0.014322);
-      s.bezierCurveTo(0.243939, -0.0402845, 0.281418, -0.040269, 0.2962825, -0.0142755);
-      s.lineTo(0.470022, 0.2892765);
-      s.bezierCurveTo(0.4848865, 0.315239, 0.522319, 0.3152855, 0.5372455, 0.2893385);
-      s.lineTo(1.107289, -0.7013285);
-      s.bezierCurveTo(1.1142175, -0.713341, 1.1270205, -0.72075, 1.1408775, -0.72075);
-      s.lineTo(1.335604, -0.7207655);
-      s.bezierCurveTo(1.365426, -0.720781, 1.384088, -0.6884635, 1.369146, -0.662625);
-      s.lineTo(0.655185, 0.5729575);
-      s.closePath();
-    });
-
-    const s2 = createShape((s) => {
-      s.moveTo(0.2825805, -0.599881);
-      s.bezierCurveTo(0.2973675, -0.625704, 0.2787055, -0.6578665, 0.2489455, -0.6578665);
-      s.lineTo(-0.900178, -0.6578665);
-      s.bezierCurveTo(-0.9137715, -0.6578665, -0.9263885, -0.665012, -0.9333945, -0.676668);
-      s.lineTo(-1.033137, -0.8427815);
-      s.bezierCurveTo(-1.0486525, -0.8686045, -1.030037, -0.9014645, -0.9999205, -0.9014645);
-      s.lineTo(0.433659, -0.9014645);
-      s.bezierCurveTo(0.4475625, -0.9014645, 0.460412, -0.90892, 0.4673095, -0.92101);
-      s.lineTo(0.691486, -1.31347);
-      s.bezierCurveTo(0.6983835, -1.3255445, 0.7112175, -1.333, 0.7251365, -1.333);
-      s.lineTo(0.9199715, -1.333);
-      s.bezierCurveTo(0.9497625, -1.333, 0.968409, -1.3007755, 0.9535755, -1.2749525);
-      s.lineTo(0.361491, -0.2442025);
-      s.bezierCurveTo(0.3545625, -0.232159, 0.3417595, -0.22475, 0.327887, -0.22475);
-      s.lineTo(0.1348655, -0.22475);
-      s.bezierCurveTo(0.1051055, -0.22475, 0.0864435, -0.2569125, 0.1012305, -0.2827355);
-      s.lineTo(0.2825805, -0.599881);
-      s.closePath();
-    });
+    // 3 Authentic 'RRR' Limbs arranged in 120-degree rotational symmetry (scaled up for prominent centerpiece presence)
+    const s0 = createRShape((5 * Math.PI) / 6, (5 * Math.PI) / 6, 1.85, 0.88); // Limb 0: Top-Left 'R'
+    const s1 = createRShape(Math.PI / 6, Math.PI / 6, 1.85, 0.88);             // Limb 1: Top-Right 'R'
+    const s2 = createRShape((3 * Math.PI) / 2, (3 * Math.PI) / 2, 1.85, 0.88); // Limb 2: Bottom 'R'
 
     const masterMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x3a3d42,
-      emissive: new THREE.Color(0x1a2030),
-      emissiveIntensity: 0.15,
-      metalness: 1.0,
-      roughness: 0.08,
-      transmission: 0.35,
-      ior: 2.4,
-      transparent: true,
-      opacity: 0.88,
+      color: 0x96a2b5,
+      emissive: new THREE.Color(0x222d3d),
+      emissiveIntensity: 0.28,
+      metalness: 0.88,
+      roughness: 0.14,
+      transmission: 0.04,
+      ior: 1.8,
+      transparent: false,
+      opacity: 1.0,
       reflectivity: 1.0,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
+      clearcoatRoughness: 0.08,
       envMap,
-      envMapIntensity: 3.0,
+      envMapIntensity: 4.2,
       side: THREE.DoubleSide,
     });
 
     const edgeMat1 = new THREE.LineBasicMaterial({
-      color: 0x4e5768,
+      color: 0x88b2ea,
       transparent: true,
-      opacity: 0.38,
+      opacity: 0.85,
     });
     const edgeMat2 = new THREE.LineBasicMaterial({
-      color: 0x687588,
+      color: 0xc4e2ff,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.75,
     });
 
     interface ShardItem {
@@ -644,9 +667,9 @@ function Hero3DCanvas({
     }
 
     // --- 6. Authentic Trionn Curve Math (eA, ev, ew, eg) ---
-    const eh = new THREE.Vector3(-0.59, 0.1, 0.21);
-    const ep = new THREE.Vector3(0.28, -0.85, 0.21);
-    const em = new THREE.Vector3(0.54, 0.48, 0.21);
+    const eh = new THREE.Vector3(-0.78, 0.50, 0.24); // Connected to Limb 0 (Top-Left R)
+    const ep = new THREE.Vector3(0.00, -0.99, 0.24);  // Connected to Limb 2 (Bottom R)
+    const em = new THREE.Vector3(0.85, 0.42, 0.24);  // Connected to Limb 1 (Top-Right R)
     const ef = new THREE.Vector3();
 
     function projectAnchor(v: THREE.Vector3) {
@@ -700,8 +723,10 @@ function Hero3DCanvas({
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.lineWidth = 0.85;
-      ctx.strokeStyle = "rgba(75, 85, 105, 0.4)";
+      ctx.lineWidth = 1.8;
+      ctx.strokeStyle = "rgba(135, 165, 215, 0.85)";
+      ctx.shadowColor = "rgba(100, 160, 255, 0.6)";
+      ctx.shadowBlur = 6;
       ctx.globalAlpha = alpha;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
@@ -732,26 +757,28 @@ function Hero3DCanvas({
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+      ctx.shadowColor = "rgba(255, 130, 20, 0.9)";
+      ctx.shadowBlur = 8;
       for (let i = 0; i < segs.length - 1; i++) {
         const l = segs[i].tRatio;
         const s = Math.pow(1 - l, 0.5);
         let r, g, b;
         if (l < 0.45) {
           r = 255;
-          g = Math.round(130 * (1 - (l / 0.45) * 0.7));
-          b = 0;
+          g = Math.round(160 * (1 - (l / 0.45) * 0.7));
+          b = 30;
         } else {
           const e = Math.min(1, (l - 0.45) / 0.55);
-          r = Math.round(140 * (1 - e));
-          g = Math.round(150 + 50 * (1 - e));
+          r = Math.round(160 * (1 - e));
+          g = Math.round(180 + 70 * (1 - e));
           b = 255;
         }
         ctx.beginPath();
         ctx.moveTo(segs[i].p.x, segs[i].p.y);
         ctx.lineTo(segs[i + 1].p.x, segs[i + 1].p.y);
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 3.2;
         ctx.strokeStyle = `rgb(${r},${g},${b})`;
-        ctx.globalAlpha = 0.95 * s;
+        ctx.globalAlpha = 1.0 * s;
         ctx.stroke();
       }
       ctx.restore();
@@ -955,15 +982,15 @@ function Hero3DCanvas({
             s.flashActive = false;
           }
           const f = s.flash;
-          s.material.roughness = Math.max(0.02, 0.08 - 0.06 * f);
-          s.material.clearcoatRoughness = Math.max(0.01, 0.05 - 0.035 * f);
-          s.material.emissive.setHex(f > 0.05 ? 0xff4400 : 0x1a2030);
-          s.material.emissiveIntensity = 0.15 + 0.85 * f;
+          s.material.roughness = Math.max(0.04, 0.14 - 0.08 * f);
+          s.material.clearcoatRoughness = Math.max(0.02, 0.08 - 0.05 * f);
+          s.material.emissive.setHex(f > 0.05 ? 0xff5500 : 0x222d3d);
+          s.material.emissiveIntensity = 0.28 + 0.85 * f;
         } else {
-          s.material.roughness = 0.08;
-          s.material.clearcoatRoughness = 0.05;
-          s.material.emissive.setHex(0x1a2030);
-          s.material.emissiveIntensity = 0.15;
+          s.material.roughness = 0.14;
+          s.material.clearcoatRoughness = 0.08;
+          s.material.emissive.setHex(0x222d3d);
+          s.material.emissiveIntensity = 0.28;
         }
       });
 
@@ -1102,10 +1129,10 @@ function Hero3DCanvas({
 
           const allCurves = [curveW, curveY, curveB];
 
-          // Draw curved lines
-          ev(lctx, curveW, 0.4 * linesAlpha);
-          ev(lctx, curveY, 0.4 * linesAlpha);
-          ev(lctx, curveB, 0.4 * linesAlpha);
+          // Draw curved lines with rich visibility and glow
+          ev(lctx, curveW, 0.95 * linesAlpha);
+          ev(lctx, curveY, 0.95 * linesAlpha);
+          ev(lctx, curveB, 0.95 * linesAlpha);
 
           // Draw traveling incandescent pulses
           pulsesState.forEach((p, idx) => {
@@ -1122,28 +1149,28 @@ function Hero3DCanvas({
             { p: curveB[Math.floor(curveB.length / 2)], seed: 3.7, ap: c },
           ].forEach(({ p, seed, ap }) => {
             const u = (Math.sin(1.8 * nowSec + 2.1 * seed) + 1) / 2;
-            const depthAlpha = Math.max(0.2, Math.min(1, 1.5 * ap.worldZ + 0.6));
+            const depthAlpha = Math.max(0.35, Math.min(1, 1.5 * ap.worldZ + 0.6));
 
             lctx.save();
-            lctx.globalAlpha = 0.75 * depthAlpha * linesAlpha;
-            lctx.fillStyle = "rgba(190, 195, 205, 1)";
+            lctx.globalAlpha = 0.95 * depthAlpha * linesAlpha;
+            lctx.fillStyle = "rgba(220, 235, 255, 1)";
             lctx.beginPath();
-            lctx.arc(p.x, p.y, 2.0, 0, Math.PI * 2);
+            lctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
             lctx.fill();
 
-            const rRadius = 5 + 4 * u;
+            const rRadius = 9 + 6 * u;
             const grad = lctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rRadius);
-            grad.addColorStop(0, "rgba(255, 160, 60, 0.85)");
-            grad.addColorStop(0.4, "rgba(255, 100, 20, 0.3)");
+            grad.addColorStop(0, "rgba(255, 175, 70, 0.95)");
+            grad.addColorStop(0.4, "rgba(255, 110, 20, 0.5)");
             grad.addColorStop(1, "rgba(255, 60, 0, 0)");
             lctx.fillStyle = grad;
             lctx.beginPath();
             lctx.arc(p.x, p.y, rRadius, 0, Math.PI * 2);
             lctx.fill();
 
-            lctx.globalAlpha = 0.25 * (1 - u) * depthAlpha * linesAlpha;
-            lctx.strokeStyle = "rgba(180, 190, 210, 1)";
-            lctx.lineWidth = 1.2;
+            lctx.globalAlpha = 0.65 * (1 - u) * depthAlpha * linesAlpha;
+            lctx.strokeStyle = "rgba(200, 225, 255, 1)";
+            lctx.lineWidth = 1.8;
             lctx.beginPath();
             lctx.arc(p.x, p.y, rRadius, 0, Math.PI * 2);
             lctx.stroke();
@@ -1194,7 +1221,7 @@ function Hero3DCanvas({
             const hit3D = new THREE.Vector3();
             ray.ray.intersectPlane(planeZ, hit3D);
 
-            const targetPt = [eh, ep, em][hitIdx].clone().applyMatrix4(emblemGroup.matrixWorld);
+            const targetPt = [eh, em, ep][hitIdx].clone().applyMatrix4(emblemGroup.matrixWorld);
             triggerBolt(hit3D, targetPt);
             weldCooldown = 0.05 + 0.04 * Math.random();
           } else if (!lineHit) {
@@ -1291,6 +1318,7 @@ return (
   <div
     ref={containerRef}
     id="trionn-symbol-canvas-wrap"
+    data-cursor-text="DRAG"
     className="fixed inset-0 w-full h-screen pointer-events-auto cursor-grab active:cursor-grabbing z-0 overflow-hidden"
     style={{ touchAction: "none" }}
   >

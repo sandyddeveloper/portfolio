@@ -51,10 +51,10 @@ export default function About() {
                 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4vw] font-display font-medium leading-[1.15] tracking-tight max-w-5xl"
               >
                 <span className="text-white">
-                  Trionn is an independent digital studio crafting meaningful brand experiences{" "}
+                  Santhosh Raj is a full-stack engineer and systems developer crafting high-performance digital products{" "}
                 </span>
                 <span className="text-[#656873]">
-                  through strategy, design, and technology.
+                  through scalable architecture, precision engineering, and intuitive design.
                 </span>
               </h2>
             </div>
@@ -76,13 +76,13 @@ export default function About() {
             </svg>
           </div>
 
-          {/* Subtitle & Mission Statement (Image 3) */}
+          {/* Subtitle & Mission Statement */}
           <div className="about-subtitle-block grid grid-cols-12 gap-6">
             <div className="col-span-12 sm:col-span-6 lg:col-span-4 lg:col-start-2">
               <span className="title block text-sm sm:text-base font-display font-bold uppercase tracking-wider text-white leading-snug">
-                WE DESIGN FOR LONGEVITY
+                ENGINEERED FOR LONGEVITY
                 <br />
-                CLARITY FIRST, CRAFT ALWAYS,
+                SPEED FIRST, CRAFT ALWAYS,
                 <br />
                 BUILT TO SCALE.
               </span>
@@ -90,7 +90,7 @@ export default function About() {
 
             <div className="col-span-12 sm:col-span-6 lg:col-span-4 lg:col-start-8 flex flex-col">
               <p className="mb-8 text-sm md:text-base text-[#9C9C9C] leading-relaxed">
-                Our mission is to make technology feel human by designing digital products that are intuitive, purposeful, and meaningful to people.
+                Dedicated to building resilient backend architectures, fluid interactive user experiences, and intelligent AI-assisted workflows that scale seamlessly under high load.
               </p>
 
               {/* Trionn Signature Link Button */}

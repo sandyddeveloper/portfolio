@@ -11,9 +11,10 @@ interface MenuDrawerProps {
 
 export default function MenuDrawer({ isOpen, onClose, onOpenContact }: MenuDrawerProps) {
   const menuItems = [
-    { label: "Work", href: "#works-section" },
-    { label: "Services", href: "#" },
-    { label: "About", href: "#" },
+    { label: "Work", href: "#work-section" },
+    { label: "About", href: "#about-section" },
+    { label: "Vision", href: "#vision-section" },
+    { label: "Services", href: "#work-section" },
     { label: "Contact", href: "#", isContact: true },
   ];
 
@@ -71,15 +72,22 @@ export default function MenuDrawer({ isOpen, onClose, onOpenContact }: MenuDrawe
                       onClose();
                       onOpenContact();
                     }}
-                    className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tight text-[#272727] hover:text-[#9C9C9C] transition-colors"
+                    className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tight text-[#272727] hover:text-[#9C9C9C] transition-colors cursor-pointer"
                   >
                     {item.label}
                   </button>
                 ) : (
                   <a
                     href={item.href}
-                    onClick={onClose}
-                    className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tight text-[#272727] hover:text-[#9C9C9C] transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onClose();
+                      const targetId = item.href.replace("#", "");
+                      setTimeout(() => {
+                        document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth" });
+                      }, 250);
+                    }}
+                    className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tight text-[#272727] hover:text-[#9C9C9C] transition-colors cursor-pointer"
                   >
                     {item.label}
                   </a>
@@ -89,12 +97,11 @@ export default function MenuDrawer({ isOpen, onClose, onOpenContact }: MenuDrawe
           </ul>
 
           <div className="mb-12">
-            <a
-              href="#"
-              className="inline-block py-2 px-4 rounded-full border border-black/30 text-xs uppercase tracking-wider text-[#272727] hover:border-black transition-colors"
+            <span
+              className="inline-block py-2 px-4 rounded-full border border-black/20 text-xs font-mono uppercase tracking-wider text-[#272727]"
             >
-              ✦ The TRIONN name Story
-            </a>
+              ✦ Santhosh Raj Portfolio &bull; 2026
+            </span>
           </div>
         </div>
 

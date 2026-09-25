@@ -3,9 +3,9 @@ import "./globals.css";
 import SmoothScroll from "@/components/common/SmoothScroll";
 
 export const metadata: Metadata = {
-  title: "TRIONN | AI-Powered Creative Design & Development Studio in India",
+  title: "Santhosh Raj | Full-Stack Systems Engineer & Creative Developer",
   description:
-    "TRIONN is an independent AI-powered digital studio crafting meaningful brand experiences through strategy, design, and technology. Based in Rajkot, Gujarat, India, we create premium websites, immersive digital products, and interactive experiences for ambitious brands worldwide.",
+    "Portfolio of Santhosh Raj - Full-Stack Engineer & Creative Developer specializing in scalable Next.js architectures, Python/Django microservices, and AI-driven platforms.",
   icons: {
     icon: [
       { url: "/images/favicon.svg", type: "image/svg+xml" },

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import RollingButton from "./RollingButton";
+import React from "react";
 
 interface HeaderProps {
   onOpenContact: () => void;
@@ -17,87 +16,139 @@ export default function Header({
   onToggleSound,
 }: HeaderProps) {
   return (
-    <header className="site-header fixed top-0 left-0 w-full z-99 py-6 md:py-8 transition-all duration-300 mix-blend-difference">
-      <div className="tr__container flex items-center justify-between">
-        {/* Brand Logo */}
-        <a href="/" className="logo block z-50">
-          <img
-            src="/images/logo.svg"
-            alt="TRIONN"
-            className="w-28 md:w-32 h-auto"
-          />
+    <header className="site-header fixed top-0 left-0 w-full z-99 py-6 md:py-8 bg-transparent transition-all duration-300 select-none pointer-events-none">
+      <div className="tr__container flex items-center justify-between w-full pointer-events-auto">
+        {/* Left: Brand Logo with RRR Insignia & Santhosh Raj */}
+        <a
+          href="/"
+          className="logo flex items-center gap-3.5 z-50 group no-underline text-inherit cursor-pointer"
+        >
+          {/* Futuristic RRR Insignia Badge */}
+          <div className="relative w-9 h-9 rounded-xl border border-white/20 bg-white/5 backdrop-blur-md flex items-center justify-center overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)] group-hover:border-white/50 group-hover:shadow-[0_0_18px_rgba(255,255,255,0.25)] group-hover:scale-105 transition-all duration-300">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-white transform group-hover:rotate-12 transition-transform duration-300"
+            >
+              <defs>
+                <linearGradient id="rrr-header-grad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#FFFFFF" />
+                  <stop offset="0.5" stopColor="#D8E2F0" />
+                  <stop offset="1" stopColor="#90A4C0" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M6 4h6.5c2.2 0 4 1.8 4 4 0 1.5-.8 2.8-2 3.5l2.7 6.5h-3.2l-2.4-5.8H9v5.8H6V4zm3 5.4h3.5c.8 0 1.5-.7 1.5-1.5s-.7-1.5-1.5-1.5H9v3z"
+                fill="url(#rrr-header-grad)"
+              />
+              <circle cx="18.5" cy="5.5" r="1.5" fill="#34D399" className="animate-pulse" />
+            </svg>
+          </div>
+
+          {/* Typography Lockup */}
+          <div className="flex flex-col">
+            <span className="font-display font-bold tracking-wider text-sm sm:text-base text-white uppercase group-hover:text-white transition-colors leading-tight">
+              Santhosh Raj
+            </span>
+            <span className="flex items-center gap-1.5 text-[9px] font-mono tracking-widest text-[#9C9C9C] uppercase leading-none mt-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Creative Developer</span>
+            </span>
+          </div>
         </a>
 
-        {/* Header Right Actions */}
-        <div className="flex items-center gap-3">
-          {/* Sound Toggle */}
+        {/* Center: ONLY Availability Status Pill */}
+        <div className="hidden md:flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-white/20 transition-colors">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+          </span>
+          <span className="text-[11px] font-mono uppercase tracking-widest text-[#D8D8D8]">
+            Available for select projects &amp; roles
+          </span>
+        </div>
+
+        {/* Right: Sound Toggle, Let's Talk CTA & Menu */}
+        <div className="flex items-center gap-2.5 sm:gap-3.5">
+          {/* Sound Visualizer Pill */}
           <button
             type="button"
             id="sound-toggle"
-            title={isSoundEnabled ? "Disable sound" : "Enable sound"}
+            title={isSoundEnabled ? "Mute audio" : "Enable sound"}
             aria-label="Toggle sound"
             onClick={onToggleSound}
-            className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${
+            className={`group relative flex h-9 items-center gap-2 px-3 rounded-full border transition-all duration-300 cursor-pointer ${
               isSoundEnabled
-                ? "bg-white/20 text-white"
-                : "bg-white/10 text-white/50 hover:text-white"
+                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 shadow-[0_0_15px_rgba(52,211,153,0.2)]"
+                : "border-white/15 bg-white/5 text-white/60 hover:text-white hover:border-white/30 hover:bg-white/10"
             }`}
           >
-            <svg
-              width="16"
-              height="15"
-              viewBox="0 0 16 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-3.5"
-            >
-              <g opacity={isSoundEnabled ? "1" : "0.5"}>
+            {isSoundEnabled ? (
+              <div className="flex items-end gap-[2.5px] h-3.5">
+                <span className="w-[2px] bg-emerald-400 rounded-full animate-eq-1" />
+                <span className="w-[2px] bg-emerald-400 rounded-full animate-eq-2" />
+                <span className="w-[2px] bg-emerald-400 rounded-full animate-eq-3" />
+                <span className="w-[2px] bg-emerald-400 rounded-full animate-eq-4" />
+              </div>
+            ) : (
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity"
+              >
                 <path
-                  d="M13.7223 1.45716C13.5773 1.31116 13.3425 1.31116 13.1975 1.45716C13.0526 1.60326 13.0526 1.84007 13.1975 1.98617C14.5261 3.32546 15.2578 5.10621 15.2578 7.00034C15.2578 8.89447 14.5261 10.6752 13.1975 12.0145C13.0526 12.1606 13.0526 12.3974 13.1975 12.5435C13.27 12.6165 13.365 12.6531 13.4599 12.6531C13.5548 12.6531 13.6498 12.6165 13.7223 12.5435C15.1909 11.0629 15.9998 9.09428 15.9998 7.00034C15.9998 4.90641 15.1909 2.9378 13.7223 1.45716Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M12.1651 4.03432C12.0203 3.88832 11.7853 3.88826 11.6404 4.03437C11.4955 4.18042 11.4955 4.41723 11.6404 4.56333C12.2848 5.21289 12.6396 6.07801 12.6396 6.99943C12.6396 7.92084 12.2848 8.78596 11.6404 9.43552C11.4955 9.58162 11.4955 9.81842 11.6404 9.96448C11.7129 10.0375 11.8078 10.0741 11.9028 10.0741C11.9977 10.0741 12.0927 10.0375 12.1651 9.96453C12.9496 9.17367 13.3817 8.12065 13.3817 6.99943C13.3817 5.8782 12.9496 4.82519 12.1651 4.03432Z"
-                  fill="currentColor"
-                />
-                <path
-                  d="M9.40909 0.0603026C9.20504 -0.0396761 8.96751 -0.0139545 8.78915 0.127196L4.5934 3.45119L4.38994 3.61238V6.99429C4.38994 7.20824 4.21789 7.38169 4.00566 7.38169C3.79344 7.38169 3.62139 7.20824 3.62139 6.99429V3.62231H1.05146C0.471695 3.62231 0 4.09784 0 4.68233V9.3176C0 9.90214 0.471695 10.3777 1.05146 10.3777H3.95735H4.37739L4.59339 10.5488L7.27858 12.676V10.051C7.27858 9.83708 7.45063 9.66364 7.66285 9.66364C7.87508 9.66364 8.04712 9.83708 8.04712 10.051V13.2849L8.78909 13.8727C8.89536 13.9568 9.02259 14 9.15127 14C9.23859 14 9.32658 13.9801 9.40904 13.9397C9.61307 13.8398 9.73984 13.6356 9.73984 13.4069V0.593075C9.73984 0.36442 9.61313 0.16023 9.40909 0.0603026Z"
-                  fill="currentColor"
-                />
-              </g>
-              {!isSoundEnabled && (
-                <line
-                  x1="15"
-                  y1="0.707595"
-                  x2="1.70711"
-                  y2="14.0005"
+                  d="M7 2L3.5 5H1v6h2.5L7 14V2z"
                   stroke="currentColor"
-                  strokeOpacity="0.6"
+                  strokeWidth="1.3"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
-              )}
-            </svg>
+                <line x1="10" y1="5" x2="15" y2="10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                <line x1="15" y1="5" x2="10" y2="10" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+              </svg>
+            )}
+            <span className="text-[10px] font-mono tracking-widest uppercase hidden sm:inline-block">
+              {isSoundEnabled ? "Sound" : "Muted"}
+            </span>
           </button>
 
-          {/* "Let's Talk" Button */}
+          {/* "Let's Talk" Capsule CTA */}
           <button
             type="button"
             onClick={onOpenContact}
-            className="title pt-1.5 pb-2 px-5 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-white/90 transition-all duration-300"
+            className="group relative h-9 px-4 sm:px-5 rounded-full bg-white text-black font-mono text-xs uppercase tracking-wider font-bold hover:bg-[#E6E4E2] shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:shadow-[0_0_25px_rgba(255,255,255,0.35)] transition-all duration-300 flex items-center gap-2 active:scale-95 cursor-pointer"
           >
-            Let&apos;s talk
+            <span className="w-1.5 h-1.5 rounded-full bg-black/80 group-hover:bg-emerald-500 transition-colors" />
+            <span>Let&apos;s talk</span>
+            <svg
+              width="10"
+              height="9"
+              viewBox="0 0 10 9"
+              fill="none"
+              className="w-2.5 h-2.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            >
+              <path
+                d="M5.47372 8.652V6.552L8.32972 3.752V4.9L5.47372 2.1V0L9.32372 3.836V4.816L5.47372 8.652ZM0 5.11V3.542H8.60972V5.11H0Z"
+                fill="currentColor"
+              />
+            </svg>
           </button>
 
-          {/* Menu Trigger */}
+          {/* Menu Trigger Pill */}
           <button
             type="button"
             onClick={onOpenMenu}
-            className="title flex items-center gap-2 pt-1.5 pb-2 px-4 rounded-full border border-white text-white text-xs font-medium uppercase tracking-wider hover:border-white/60 transition-all duration-300"
+            className="group relative h-9 px-3.5 sm:px-4 rounded-full border border-white/20 hover:border-white bg-white/5 hover:bg-white/10 text-white font-mono text-xs tracking-widest uppercase flex items-center gap-2.5 transition-all duration-300 active:scale-95 cursor-pointer"
           >
-            <span>Menu</span>
-            <div className="flex flex-col gap-1 w-3">
-              <span className="h-px w-3 bg-current block"></span>
-              <span className="h-px w-3 bg-current block"></span>
+            <span className="hidden xs:inline-block">Menu</span>
+            <div className="flex flex-col gap-[3.5px] w-4">
+              <span className="h-[1.5px] w-4 bg-current rounded-full transition-all duration-300 group-hover:w-2.5 group-hover:bg-amber-300" />
+              <span className="h-[1.5px] w-2.5 bg-current rounded-full transition-all duration-300 group-hover:w-4 group-hover:bg-amber-300" />
             </div>
           </button>
         </div>

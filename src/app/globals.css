@@ -92,3 +92,26 @@ body {
   opacity: 1;
   transform: translateX(4px);
 }
+
+/* Audio Visualizer Equalizer */
+@keyframes eq-bar {
+  0%, 100% {
+    height: 3px;
+  }
+  50% {
+    height: 14px;
+  }
+}
+.animate-eq-1 {
+  animation: eq-bar 0.65s ease-in-out infinite alternate;
+}
+.animate-eq-2 {
+  animation: eq-bar 0.45s ease-in-out 0.15s infinite alternate;
+}
+.animate-eq-3 {
+  animation: eq-bar 0.75s ease-in-out 0.3s infinite alternate;
+}
+.animate-eq-4 {
+  animation: eq-bar 0.55s ease-in-out 0.1s infinite alternate;
+}
+

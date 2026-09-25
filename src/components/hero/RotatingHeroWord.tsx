@@ -4,11 +4,11 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 const ROTATING_WORDS = [
-  "depth.",
-  "impact.",
-  "purpose.",
-  "something.",
-  "intention.",
+  "scalable systems.",
+  "digital products.",
+  "AI platforms.",
+  "creative code.",
+  "web experiences.",
 ];
 
 export default function RotatingHeroWord() {
@@ -160,7 +160,7 @@ export default function RotatingHeroWord() {
       >
         {/* Static SSR fallback before client hydration */}
         <span className="word-slot inline-block relative">
-          {"depth.".split("").map((ch, i) => (
+          {"scalable systems.".split("").map((ch, i) => (
             <span
               key={i}
               className="char inline-block will-change-[filter,opacity,transform]"
